@@ -1,5 +1,5 @@
 # System Info Hub 🌐💻
-[![Live Demo](https://img.shields.io/badge/Demo-Live%20Demo-green?style=for-the-badge)](https://whoisneon.github.io/System-Info-Hub)
+[![Live Demo](https://img.shields.io/badge/Demo-Live%20Demo-green?style=for-the-badge)](https://whoisneon.github.io/System-Info-Hub)</br>
 **Get detailed information about your system, browser, network, and more, all in one place.**
 
 System Info Hub is a sleek and modern web application designed to quickly gather and display a comprehensive overview of your device's specifications, browser details, and network information. Built with a focus on user experience and clarity, it's perfect for developers, tech enthusiasts, or anyone curious about their current environment.
@@ -8,10 +8,11 @@ System Info Hub is a sleek and modern web application designed to quickly gather
 
 * **Network Information:**
     * Public IP Address
+    * Public IPv6 Address
     * Geographic Location (City, Country)
     * Internet Service Provider (ISP)
     * Connection Type (e.g., AS-number)
-    * System Time Zone
+    * IP Time Zone
 * **Browser Details:**
     * Browser Name (Chrome, Firefox, Safari, Edge, Opera, IE)
     * Browser Version
@@ -24,6 +25,7 @@ System Info Hub is a sleek and modern web application designed to quickly gather
     * System Architecture (e.g., Win32)
     * CPU Cores
     * Device Memory (in GB)
+    * System Time Zone
 * **Display & Graphics:**
     * Screen Resolution
     * Viewport Size
