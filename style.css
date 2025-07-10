@@ -203,6 +203,7 @@ body {
 
 .info-value {
     font-weight: 500;
+    text-align: right;
     flex-basis: max-content;
     max-width: 70%;
     overflow-wrap: break-word;
@@ -211,6 +212,10 @@ body {
     align-items: center;
     justify-content: flex-end;
     gap: 5px;
+}
+
+#user-agent{
+    text-align: left;
 }
 
 #ipv6-address{
