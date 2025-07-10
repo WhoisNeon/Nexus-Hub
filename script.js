@@ -161,8 +161,48 @@ function getGPUInfo() {
             const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
             if (debugInfo) {
                 const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
-                // Attempt to return a cleaner, more readable GPU name
-                return renderer.match(/((NVIDIA|AMD|Intel|Apple|Adreno|Mali|PowerVR)[\w\s()]*)/i)?.[1] || renderer;
+
+                let match = renderer.match(/(NVIDIA GeForce (?:RTX|GTX|MX|Quadro) \d+[A-Za-z]*)/);
+                if (match && match[1]) {
+                    return match[1];
+                }
+
+                match = renderer.match(/(AMD Radeon(?:TM)?(?: Pro)?(?: \w+)?(?: Graphics)?(?: Mobile)?(?: Vega \d+)?(?: RX \d+)?(?: \d+M)?)/i);
+                if (match && match[1]) {
+                    return match[1].replace(/\s*\(\w+\)$/, '').trim();
+                }
+
+                match = renderer.match(/(Intel\(R\) (?:Iris\(R\) Xe|Iris\(R\) Plus|HD Graphics \d+|UHD Graphics \d+|Xe Graphics))/);
+                if (match && match[1]) {
+                    return match[1];
+                }
+
+                match = renderer.match(/(Adreno(?:TM)? \d+)/i);
+                if (match && match[1]) {
+                    return match[1];
+                }
+
+                match = renderer.match(/((?:Mali|Apple)[\w\d\s-]*?(?:GPU)?(?:(?:MP)?\d)?)/i);
+                if (match && match[1]) {
+                    return match[1].replace(/\s+\(.*?$/, '').trim();
+                }
+                
+                match = renderer.match(/(PowerVR(?:TM)? [\w\d\s-]*)/i);
+                if (match && match[1]) {
+                    return match[1];
+                }
+
+                match = renderer.match(/(Samsung Xclipse \d+)/i);
+                if (match && match[1]) {
+                    return match[1];
+                }
+                
+                match = renderer.match(/(Qualcomm Adreno|ARM Mali|Imagination PowerVR|Apple A\d+ GPU|Microsoft Basic Render Driver)/i);
+                 if (match && match[1]) {
+                    return match[1];
+                }
+
+                return renderer;
             }
         }
     } catch (e) {
