@@ -301,7 +301,7 @@ function loadBrowserAndSystemInfo() {
     setTextContent(elements.memory, navigator.deviceMemory ? `${navigator.deviceMemory} GB` : 'Unknown');
     setTextContent(elements.systemTimezone, Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown');
 
-    setTextContent(elements.screenResolution, `${screen.width}×${screen.height}`);
+    setTextContent(elements.screenResolution, `${window.innerWidth}×${window.innerHeight}`);
     setTextContent(elements.viewportSize, `${window.innerWidth}×${window.innerHeight}`);
     setTextContent(elements.colorDepth, `${screen.colorDepth}-bit`);
     setTextContent(elements.gpu, getGPUInfo());
