@@ -4,7 +4,7 @@ const elements = {
     location: document.getElementById('location'),
     isp: document.getElementById('isp'),
     connectionType: document.getElementById('connection-type'),
-    systemTimezone: document.getElementById('system-timezone'),
+    ipTimezone: document.getElementById('ip-timezone'),
     browser: document.getElementById('browser'),
     browserVersion: document.getElementById('browser-version'),
     browserEngine: document.getElementById('browser-engine'),
@@ -15,6 +15,7 @@ const elements = {
     architecture: document.getElementById('architecture'),
     cpuCores: document.getElementById('cpu-cores'),
     memory: document.getElementById('memory'),
+    systemTimezone: document.getElementById('system-timezone'),
     screenResolution: document.getElementById('screen-resolution'),
     viewportSize: document.getElementById('viewport-size'),
     colorDepth: document.getElementById('color-depth'),
@@ -34,7 +35,6 @@ const elements = {
     body: document.body,
     videoBackground: document.getElementById('video-background'),
     osIcon: document.getElementById('os-icon'),
-    ipTimezone: document.getElementById('ip-timezone'),
 };
 
 const setTextContent = (element, text) => {
@@ -301,7 +301,7 @@ function loadBrowserAndSystemInfo() {
     setTextContent(elements.memory, navigator.deviceMemory ? `${navigator.deviceMemory} GB` : 'Unknown');
     setTextContent(elements.systemTimezone, Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown');
 
-    setTextContent(elements.screenResolution, `${window.innerWidth}×${window.innerHeight}`);
+    setTextContent(elements.screenResolution, `${screen.width}×${screen.height}`);
     setTextContent(elements.viewportSize, `${window.innerWidth}×${window.innerHeight}`);
     setTextContent(elements.colorDepth, `${screen.colorDepth}-bit`);
     setTextContent(elements.gpu, getGPUInfo());
