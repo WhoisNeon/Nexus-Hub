@@ -1,5 +1,6 @@
 const elements = {
     ipAddress: document.getElementById('ip-address'),
+    ipv6Address: document.getElementById('ipv6-address'),
     location: document.getElementById('location'),
     isp: document.getElementById('isp'),
     connectionType: document.getElementById('connection-type'),
@@ -32,7 +33,8 @@ const elements = {
     themeToggle: document.getElementById('theme-toggle-button'),
     body: document.body,
     videoBackground: document.getElementById('video-background'),
-    osIcon: document.getElementById('os-icon')
+    osIcon: document.getElementById('os-icon'),
+    ipTimezone: document.getElementById('ip-timezone'),
 };
 
 const setTextContent = (element, text) => {
@@ -53,7 +55,6 @@ const addCopyFeature = (elementId) => {
         const copyButton = document.createElement('button');
         copyButton.className = 'copy-button';
         copyButton.innerHTML = '<i class="ph ph-clipboard"></i>';
-        // Add aria-label for accessibility
         copyButton.setAttribute('aria-label', `Copy ${element.id.replace(/-/g, ' ')}`);
 
         copyButton.onclick = async (e) => {
@@ -67,7 +68,6 @@ const addCopyFeature = (elementId) => {
                 }, 1500);
             } catch (err) {
                 console.error('Failed to copy: ', err);
-                alert('Failed to copy text. Please try again.');
                 copyButton.innerHTML = '<i class="ph ph-x"></i>';
                 setTimeout(() => {
                     copyButton.innerHTML = '<i class="ph ph-clipboard"></i>';
@@ -161,49 +161,8 @@ function getGPUInfo() {
             const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
             if (debugInfo) {
                 const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
-
-                let match = renderer.match(/(NVIDIA GeForce (?:RTX|GTX|MX|Quadro) \d+[A-Za-z]*)/);
-                if (match && match[1]) {
-                    return match[1];
-                }
-
-                match = renderer.match(/(AMD Radeon(?:TM)?(?: Pro)?(?: \w+)?(?: Graphics)?(?: Mobile)?(?: Vega \d+)?(?: RX \d+)?(?: \d+M)?)/i);
-                if (match && match[1]) {
-                    return match[1].replace(/\s*\(\w+\)$/, '').trim();
-                }
-
-                match = renderer.match(/(Intel\(R\) (?:Iris\(R\) Xe|Iris\(R\) Plus|HD Graphics \d+|UHD Graphics \d+|Xe Graphics))/);
-                if (match && match[1]) {
-                    return match[1];
-                }
-
-                match = renderer.match(/(Adreno(?:TM)? \d+)/i);
-                if (match && match[1]) {
-                    return match[1];
-                }
-
-                match = renderer.match(/((?:Mali|Apple)[\w\d\s-]*?(?:GPU)?(?:(?:MP)?\d)?)/i);
-                if (match && match[1]) {
-                    return match[1].replace(/\s+\(.*?$/, '').trim();
-                }
-                
-                match = renderer.match(/(PowerVR(?:TM)? [\w\d\s-]*)/i);
-                if (match && match[1]) {
-                    return match[1];
-                }
-
-                match = renderer.match(/(Samsung Xclipse \d+)/i);
-                if (match && match[1]) {
-                    return match[1];
-                }
-                
-                // Broad fallback for other known vendors if specific model isn't caught
-                match = renderer.match(/(Qualcomm Adreno|ARM Mali|Imagination PowerVR|Apple A\d+ GPU|Microsoft Basic Render Driver)/i);
-                 if (match && match[1]) {
-                    return match[1];
-                }
-
-                return renderer;
+                // Attempt to return a cleaner, more readable GPU name
+                return renderer.match(/((NVIDIA|AMD|Intel|Apple|Adreno|Mali|PowerVR)[\w\s()]*)/i)?.[1] || renderer;
             }
         }
     } catch (e) {
@@ -213,78 +172,74 @@ function getGPUInfo() {
 }
 
 async function fetchIPInfo() {
-    const cachedIpInfo = sessionStorage.getItem('ipInfo');
-    if (cachedIpInfo) {
-        const data = JSON.parse(cachedIpInfo);
-        updateNetworkInfo(data);
-        return;
-    }
+    let ipv4 = 'Not available';
+    let ipv6 = 'Not available';
 
-    const ipApis = [
-        { url: 'https://api.ipify.org?format=json', parser: (data) => data.ip },
-        { url: 'https://httpbin.org/ip', parser: (data) => data.origin },
-        { url: 'https://api.my-ip.io/ip.json', parser: (data) => data.ip }
-    ];
+    try {
+        const mainResponse = await fetch('https://api.my-ip.io/v2/ip.json');
+        if (!mainResponse.ok) throw new Error(`Primary API failed: ${mainResponse.status}`);
+        const data = await mainResponse.json();
 
-    let ipAddress = null;
-    for (const api of ipApis) {
-        try {
-            const response = await fetch(api.url);
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            const data = await response.json();
-            ipAddress = api.parser(data);
-            if (ipAddress) break;
-        } catch (error) {
-            console.warn(`IP API ${api.url} failed:`, error);
-        }
-    }
+        // Update location and ISP info from the primary API response
+        setTextContent(elements.location, data.country ? data.country.name : 'Location unavailable');
+        setTextContent(elements.isp, data.asn ? data.asn.name : 'ISP unavailable');
+        setTextContent(elements.connectionType, data.asn ? `AS-${data.asn.number}` : 'Unknown');
+        setTextContent(elements.ipTimezone, data.timeZone ? data.timeZone : 'Unknown');
 
-    if (ipAddress) {
-        try {
-            const geoResponse = await fetch(`http://ip-api.com/json/${ipAddress}`);
-            if (!geoResponse.ok) throw new Error(`HTTP error! status: ${geoResponse.status}`);
-            const geoData = await geoResponse.json();
-
-            if (geoData.status === 'success') {
-                const info = {
-                    ip: ipAddress,
-                    location: `${geoData.city || 'Unknown'}, ${geoData.country || 'Unknown'}`,
-                    isp: geoData.isp || 'Unknown',
-                    connectionType: geoData.as ? geoData.as.split(' ')[0].replace('AS', 'AS-') : 'Unknown',
-                };
-                sessionStorage.setItem('ipInfo', JSON.stringify(info));
-                updateNetworkInfo(info);
-            } else {
-                console.warn('Geo IP API status not success:', geoData.message);
-                fallbackNetworkInfo(ipAddress);
+        if (data.type === 'IPv4') {
+            ipv4 = data.ip;
+            // Now try to get IPv6
+            try {
+                const ipv6Response = await fetch('https://api6.ipify.org?format=json');
+                if (ipv6Response.ok) {
+                    const ipv6Data = await ipv6Response.json();
+                    ipv6 = ipv6Data.ip;
+                }
+            } catch (e) {
+                console.warn('Could not fetch IPv6 address.');
             }
-        } catch (geoError) {
-            console.error('Geo IP info fetch failed:', geoError);
-            fallbackNetworkInfo(ipAddress);
+        } else if (data.type === 'IPv6') {
+            ipv6 = data.ip;
+            // Now try to get IPv4
+            try {
+                const ipv4Response = await fetch('https://api.ipify.org?format=json');
+                if (ipv4Response.ok) {
+                    const ipv4Data = await ipv4Response.json();
+                    ipv4 = ipv4Data.ip;
+                }
+            } catch (e) {
+                console.warn('Could not fetch IPv4 address.');
+            }
         }
-    } else {
-        fallbackNetworkInfo(null);
+
+    } catch (error) {
+        console.error('IP info fetch failed:', error);
+        // Fallback in case my-ip.io fails completely
+        try {
+             const [ipv4Res, ipv6Res] = await Promise.allSettled([
+                fetch('https://api.ipify.org?format=json'),
+                fetch('https://api64.ipify.org?format=json')
+            ]);
+            if (ipv4Res.status === 'fulfilled' && ipv4Res.value.ok) ipv4 = (await ipv4Res.value.json()).ip;
+            if (ipv6Res.status === 'fulfilled' && ipv6Res.value.ok) ipv6 = (await ipv6Res.value.json()).ip;
+        } catch (fallbackError) {
+             console.error('Fallback IP fetch also failed:', fallbackError);
+        }
+        setTextContent(elements.location, 'Location unavailable');
+        setTextContent(elements.isp, 'ISP unavailable');
+        setTextContent(elements.connectionType, 'Unknown');
     }
+
+    updateNetworkInfo({ ip: ipv4, ipv6: ipv6 });
 }
 
 function updateNetworkInfo(data) {
     setTextContent(elements.ipAddress, data.ip || 'Unavailable');
-    setTextContent(elements.location, data.location || 'Location unavailable');
-    setTextContent(elements.isp, data.isp || 'ISP unavailable');
-    setTextContent(elements.connectionType, data.connectionType || 'Unknown');
+    setTextContent(elements.ipv6Address, data.ipv6 || 'Not available');
     setTextContent(elements.systemTimezone, Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown');
-    if (data.ip) addCopyFeature('ip-address');
+    if (data.ip && data.ip !== 'Not available') addCopyFeature('ip-address');
+    if (data.ipv6 && data.ipv6 !== 'Not available');
 }
-
-function fallbackNetworkInfo(ip) {
-    setTextContent(elements.ipAddress, ip || 'Unavailable');
-    setTextContent(elements.location, 'Location unavailable');
-    setTextContent(elements.isp, 'ISP unavailable');
-    setTextContent(elements.connectionType, 'Unknown');
-    setTextContent(elements.systemTimezone, Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown');
-    if (ip) addCopyFeature('ip-address');
-}
-
 
 function loadBrowserAndSystemInfo() {
     const { browser, version, engine } = getBrowserInfo();
@@ -298,13 +253,13 @@ function loadBrowserAndSystemInfo() {
 
     setTextContent(elements.os, os);
     setTextContent(elements.deviceType, deviceType);
-    setTextContent(elements.architecture, navigator.platform || 'Unknown');
-    setTextContent(elements.cpuCores, navigator.hardwareConcurrency || 'Unknown');
-    setTextContent(elements.memory, navigator.deviceMemory ? `${navigator.deviceMemory} GB` : 'Unknown');
-
     if (elements.osIcon) {
         setInnerHTML(elements.osIcon, `<i class="${osIconClass}"></i>`);
     }
+
+    setTextContent(elements.architecture, navigator.platform || 'Unknown');
+    setTextContent(elements.cpuCores, navigator.hardwareConcurrency ? `${navigator.hardwareConcurrency}` : 'Unknown');
+    setTextContent(elements.memory, navigator.deviceMemory ? `${navigator.deviceMemory} GB` : 'Unknown');
 
     setTextContent(elements.screenResolution, `${screen.width}×${screen.height}`);
     setTextContent(elements.viewportSize, `${window.innerWidth}×${window.innerHeight}`);
@@ -324,41 +279,30 @@ function loadBrowserAndSystemInfo() {
     setTextContent(elements.webglSupport, (() => {
         try {
             const canvas = document.createElement('canvas');
-            return canvas.getContext('webgl') || canvas.getContext('experimental-webgl') ? 'Supported' : 'Not supported';
+            return !!(canvas.getContext('webgl') || canvas.getContext('experimental-webgl'));
         } catch (e) {
             return 'Not supported';
         }
-    })());
-
+    })() ? 'Supported' : 'Not supported');
     setTextContent(elements.geolocationSupport, 'geolocation' in navigator ? 'Supported' : 'Not supported');
     setTextContent(elements.touchSupport, ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) ? 'Yes' : 'No');
     setTextContent(elements.onlineStatus, navigator.onLine ? 'Online' : 'Offline');
 }
 
 function applyTheme(isDarkMode) {
-    if (isDarkMode) {
-        elements.body.classList.add('dark-mode');
-        elements.themeToggle.classList.remove('theme-toggle--toggled');
-    } else {
-        elements.body.classList.remove('dark-mode');
-        elements.themeToggle.classList.add('theme-toggle--toggled');
-    }
+    elements.body.classList.toggle('dark-mode', isDarkMode);
+    elements.themeToggle.classList.toggle('theme-toggle--toggled', !isDarkMode);
     localStorage.setItem('darkMode', isDarkMode);
 }
 
 function toggleTheme() {
-    applyTheme(elements.body.classList.contains('dark-mode') ? false : true);
+    applyTheme(!elements.body.classList.contains('dark-mode'));
 }
 
 document.addEventListener('DOMContentLoaded', function () {
     const savedTheme = localStorage.getItem('darkMode');
-    if (savedTheme === 'true') {
-        applyTheme(true);
-    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && savedTheme === null) {
-        applyTheme(true);
-    } else {
-        applyTheme(false);
-    }
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(savedTheme === 'true' || (savedTheme === null && prefersDark));
 
     elements.themeToggle.addEventListener('click', toggleTheme);
 
