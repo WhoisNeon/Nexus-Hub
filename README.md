@@ -1,6 +1,7 @@
 # System Info Hub 🌐💻
-[![Live Demo](https://img.shields.io/badge/Demo-Live%20Demo-green?style=for-the-badge)](https://whoisneon.github.io/System-Info-Hub)</br>
 **Get detailed information about your system, browser, network, and more, all in one place.**
+
+[![Live Demo](https://img.shields.io/badge/Demo-Live%20Demo-green?style=for-the-badge)](https://whoisneon.github.io/System-Info-Hub)
 
 System Info Hub is a sleek and modern web application designed to quickly gather and display a comprehensive overview of your device's specifications, browser details, and network information. Built with a focus on user experience and clarity, it's perfect for developers, tech enthusiasts, or anyone curious about their current environment.
 
