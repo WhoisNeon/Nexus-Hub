@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Info Hub</title>
+    <link rel="icon" href="assets/favicon.png" type="image/x-icon">
+    <meta name="description" content="Get detailed information about your system, browser, network, and more.">
+    <meta name="keywords" content="system info, browser info, ip address, network details, device information">
+    <meta property="og:title" content="System Info Hub">
+    <meta property="og:description" content="Get detailed information about your system, browser, network, and more.">
+    <meta property="og:image" content="https://whoisneon.github.io/System-Info-Hub/assets/logo.png">
+    <meta property="og:url" content="https://whoisneon.github.io/System-Info-Hub">
+    <meta property="og:type" content="website">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/theme-toggles@4.10.1/css/expand.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <video autoplay muted loop playsinline id="video-background">
+        <source src="assets/background.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="container">
+        <div class="header">
+            <a href="https://github.com/WhoisNeon/SystemInfoHub" target="_blank" rel="noopener noreferrer"
+                class="github-toggle" aria-label="View on GitHub">
+                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor"
+                    viewBox="0 0 24 24">
+                    <path
+                        d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.42 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.73.084-.73 1.205.084 1.838 1.238 1.838 1.238 1.07 1.835 2.809 1.305 3.49.998.108-.775.418-1.305.762-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.89-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                </svg>
+            </a>
+            <h1>System Info Hub</h1>
+            <button class="theme-toggle" id="theme-toggle-button" type="button" aria-label="Toggle theme">
+                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="1em" height="1em" fill="currentColor"
+                    class="theme-toggle__expand" viewBox="0 0 32 32">
+                    <clipPath id="theme-toggle__expand__cutout">
+                        <path d="M0-11h25a1 1 0 0017 13v30H0Z" />
+                    </clipPath>
+                    <g clip-path="url(#theme-toggle__expand__cutout)">
+                        <circle cx="16" cy="16" r="8.4" />
+                        <path
+                            d="M18.3 3.2c0 1.3-1 2.3-2.3 2.3s-2.3-1-2.3-2.3S14.7.9 16 .9s2.3 1 2.3 2.3zm-4.6 25.6c0-1.3 1-2.3 2.3-2.3s2.3 1 2.3 2.3-1 2.3-2.3 2.3-2.3-1-2.3-2.3zm15.1-10.5c-1.3 0-2.3-1-2.3-2.3s1-2.3 2.3-2.3 2.3 1 2.3 2.3-1 2.3-2.3 2.3zM3.2 13.7c1.3 0 2.3 1 2.3 2.3s-1 2.3-2.3 2.3S.9 17.3.9 16s1-2.3 2.3-2.3zm5.8-7C9 7.9 7.9 9 6.7 9S4.4 8 4.4 6.7s1-2.3 2.3-2.3S9 5.4 9 6.7zm16.3 21c-1.3 0-2.3-1-2.3-2.3s1-2.3 2.3-2.3 2.3 1 2.3 2.3-1 2.3-2.3 2.3zm2.4-21c0 1.3-1 2.3-2.3 2.3S23 7.9 23 6.7s1-2.3 2.3-2.3 2.4 1 2.4 2.3zM6.7 23C8 23 9 24 9 25.3s-1 2.3-2.3 2.3-2.3-1-2.3-2.3 1-2.3 2.3-2.3z" />
+                    </g>
+                </svg>
+            </button>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="ph ph-globe"></i></div>
+                    <h3 class="card-title">Network Information</h3>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">IP Address</span>
+                    <span class="info-value" id="ip-address">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Location</span>
+                    <span class="info-value" id="location">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">ISP</span>
+                    <span class="info-value" id="isp">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Connection Type</span>
+                    <span class="info-value" id="connection-type">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Time Zone</span>
+                    <span class="info-value" id="system-timezone">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="ph ph-google-chrome-logo"></i>
+                    </div>
+                    <h3 class="card-title">Browser Details</h3>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Browser</span>
+                    <span class="info-value" id="browser">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Version</span>
+                    <span class="info-value" id="browser-version">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Engine</span>
+                    <span class="info-value" id="browser-engine">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">User Agent</span>
+                    <span class="info-value" id="user-agent">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Cookies Enabled</span>
+                    <span class="info-value" id="cookies-enabled">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="card-header">
+                    <div class="card-icon" id="os-icon">
+                        <i class="loading"></i>
+                    </div>
+                    <h3 class="card-title">System Information</h3>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Operating System</span>
+                    <span class="info-value" id="os">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Device Type</span>
+                    <span class="info-value" id="device-type">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Architecture</span>
+                    <span class="info-value" id="architecture">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">CPU Cores</span>
+                    <span class="info-value" id="cpu-cores">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Memory</span>
+                    <span class="info-value" id="memory">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="ph ph-monitor"></i>
+                    </div>
+                    <h3 class="card-title">Display & Graphics</h3>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Screen Resolution</span>
+                    <span class="info-value" id="screen-resolution">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Viewport Size</span>
+                    <span class="info-value" id="viewport-size">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Color Depth</span>
+                    <span class="info-value" id="color-depth">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">GPU</span>
+                    <span class="info-value" id="gpu">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Pixel Ratio</span>
+                    <span class="info-value" id="pixel-ratio">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="ph ph-lock-key"></i>
+                    </div>
+                    <h3 class="card-title">Security & Privacy</h3>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">HTTPS</span>
+                    <span class="info-value" id="https-status">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Do Not Track</span>
+                    <span class="info-value" id="dnt-status">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">WebRTC</span>
+                    <span class="info-value" id="webrtc-status">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Local Storage</span>
+                    <span class="info-value" id="local-storage">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Session Storage</span>
+                    <span class="info-value" id="session-storage">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="ph ph-lightning"></i>
+                    </div>
+                    <h3 class="card-title">Web Features</h3>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">JavaScript</span>
+                    <span class="info-value" id="javascript-enabled">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">WebGL</span>
+                    <span class="info-value" id="webgl-support">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Geolocation</span>
+                    <span class="info-value" id="geolocation-support">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Touch Support</span>
+                    <span class="info-value" id="touch-support">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Online Status</span>
+                    <span class="info-value" id="online-status">
+                        <i class="loading"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; 2025 WhoisNeon. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="script.js" defer></script>
+</body>
+
+</html>
