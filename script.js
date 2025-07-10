@@ -276,7 +276,6 @@ async function fetchIPInfo() {
 function updateNetworkInfo(data) {
     setTextContent(elements.ipAddress, data.ip || 'Unavailable');
     setTextContent(elements.ipv6Address, data.ipv6 || 'Not available');
-    setTextContent(elements.systemTimezone, Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown');
     if (data.ip && data.ip !== 'Not available') addCopyFeature('ip-address');
     if (data.ipv6 && data.ipv6 !== 'Not available');
 }
@@ -300,6 +299,7 @@ function loadBrowserAndSystemInfo() {
     setTextContent(elements.architecture, navigator.platform || 'Unknown');
     setTextContent(elements.cpuCores, navigator.hardwareConcurrency ? `${navigator.hardwareConcurrency}` : 'Unknown');
     setTextContent(elements.memory, navigator.deviceMemory ? `${navigator.deviceMemory} GB` : 'Unknown');
+    setTextContent(elements.systemTimezone, Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown');
 
     setTextContent(elements.screenResolution, `${screen.width}×${screen.height}`);
     setTextContent(elements.viewportSize, `${window.innerWidth}×${window.innerHeight}`);
