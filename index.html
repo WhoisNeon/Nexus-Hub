@@ -233,6 +233,7 @@
             border-radius: 50%;
             z-index: 2;
             text-decoration: none;
+            transition: opacity 0.3s ease;
         }
 
         .info-grid {
@@ -274,6 +275,13 @@
             .info-value .copy-button:hover {
                 opacity: 1;
             }
+
+            #show-user-agent:hover,
+            .theme-toggle:hover,
+            .github-toggle:hover {
+                opacity: 0.8;
+            }
+
         }
 
         .card-header {
@@ -336,7 +344,7 @@
         }
 
         #user-agent {
-            text-align: left;
+            text-align: center;
             max-width: 52%;
         }
 
@@ -417,6 +425,17 @@
 
         ::-webkit-scrollbar-thumb:hover {
             background: rgba(45, 45, 45, 0.9);
+        }
+
+        #show-user-agent {
+            background-color: var(--theme-toggle-background);
+            color: var(--text-color);
+            border: 1px solid var(--card-border);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: opacity 0.3s ease;
         }
 
         @media (max-width: 1024px) {
@@ -1019,7 +1038,20 @@
             setTextContent(elements.browser, browser);
             setTextContent(elements.browserVersion, version);
             setTextContent(elements.browserEngine, engine);
-            setTextContent(elements.userAgent, navigator.userAgent);
+
+
+            setInnerHTML(elements.userAgent, '<button id="show-user-agent">Show</button>');
+
+            const showButton = document.getElementById('show-user-agent');
+            if (showButton) {
+                showButton.addEventListener('click', () => {
+                    const userAgentString = navigator.userAgent;
+
+                    setTextContent(elements.userAgent, userAgentString);
+                    ('user-agent');
+                });
+            }
+
             setTextContent(elements.cookiesEnabled, navigator.cookieEnabled ? 'Yes' : 'No');
 
             setTextContent(elements.os, os);
