@@ -1,7 +1,7 @@
 :root {
     --background: #a8a8a8;
-    --card-background: rgba(230, 237, 245, 0.5);
-    --theme-toggle-background: rgba(45, 55, 72, 0.1);
+    --card-background: rgba(230, 230, 230, 0.5);
+    --theme-toggle-background: rgba(25, 25, 25, 0.1);
     --card-border: rgba(180, 187, 195, 0.8);
     --text-color: #333;
     --header-text: #333;
@@ -20,8 +20,8 @@
 
 body.dark-mode {
     --background: #151515;
-    --card-background: rgba(45, 55, 72, 0.7);
-    --theme-toggle-background: rgba(230, 237, 245, 0.1);
+    --card-background: rgba(25, 25, 25, 0.5);
+    --theme-toggle-background: rgba(230, 230, 230, 0.1);
     --card-border: rgba(63, 75, 96, 0.6);
     --text-color: #e2e8f0;
     --header-text: #edf2f7;
@@ -141,11 +141,11 @@ body {
     .info-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 20px 40px var(--shadow-color);
-        background: rgba(230, 237, 245, 0.7);
+        background: rgba(230, 230, 230, 0.7);
     }
 
     body.dark-mode .info-card:hover {
-        background: rgba(45, 55, 72, 0.9);
+        background: rgba(25, 25, 25, 0.7);
     }
 
     .info-value .copy-button:hover{
