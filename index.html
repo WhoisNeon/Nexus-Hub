@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>System Info Hub</title>
-    <link rel="icon" href="assets/favicon.png" type="image/x-icon">
+    <link rel="icon" href="https://whoisneon.github.io/System-Info-Hub/assets/favicon.png" type="image/x-icon">
+
     <meta name="description" content="Get detailed information about your system, browser, network, and more.">
     <meta name="keywords" content="system info, browser info, ip address, network details, device information">
     <meta property="og:title" content="System Info Hub">
@@ -21,16 +22,532 @@
         href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
     <link rel="stylesheet" type="text/css"
         href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css">
-    <link rel="stylesheet" href="style.css">
+
+    <style>
+        :root {
+            --background: #f0f2f5;
+            --card-background: rgba(255, 255, 255, 0.5);
+            --theme-toggle-background: rgba(25, 25, 25, 0.1);
+            --card-border: rgba(180, 187, 195, 0.8);
+            --text-color: #333;
+            --header-text: #333;
+            --label-opacity: 0.7;
+            --info-item-border: rgba(180, 180, 180, 0.5);
+            --loading-color: rgba(51, 51, 51, 0.3);
+            --loading-border-top: #333;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --video-filter: blur(.5rem) invert(80%);
+            --header-h1-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode {
+            --background: #151515;
+            --card-background: rgba(25, 25, 25, 0.5);
+            --theme-toggle-background: rgba(230, 230, 230, 0.1);
+            --card-border: rgba(63, 75, 96, 0.6);
+            --text-color: #e2e8f0;
+            --header-text: #edf2f7;
+            --label-opacity: 0.75;
+            --info-item-border: rgba(63, 75, 96, 0.4);
+            --loading-color: rgba(226, 232, 240, 0.4);
+            --loading-border-top: #e2e8f0;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --video-filter: blur(.75rem) invert(0%);
+            --header-h1-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background);
+            min-height: 100vh;
+            color: var(--text-color);
+            overflow-x: hidden;
+            transition: color 0.5s ease, background 0.5s ease;
+            position: relative;
+        }
+
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .preloader-door-top,
+        .preloader-door-bottom {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 50.5%;
+
+            background: var(--background);
+            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+            z-index: 4;
+        }
+
+        .preloader-door-top {
+            top: 0;
+        }
+
+        .preloader-door-bottom {
+            bottom: 0;
+        }
+
+        .preloader-spinner {
+            position: absolute;
+            z-index: 5;
+            transition: opacity 0.25s ease;
+            height: fit-content;
+            min-width: 3rem;
+            width: fit-content;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 0.25ch;
+            position: relative;
+            color: var(--text-color);
+        }
+
+        .invertbox {
+            position: absolute;
+            z-index: 6;
+            height: 100%;
+            aspect-ratio: 1/1;
+            left: 0;
+            top: 0;
+            border-radius: 20%;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: invert(100%);
+            animation: move 2s ease-in-out infinite;
+        }
+
+        @keyframes move {
+            50% {
+                left: calc(100% - 2.7rem);
+            }
+        }
+
+        .preloader.hidden .preloader-door-top {
+            transform: translateY(-100%);
+        }
+
+        .preloader.hidden .preloader-door-bottom {
+            transform: translateY(100%);
+        }
+
+        .preloader.hidden .preloader-spinner {
+            opacity: 0;
+        }
+
+        .preloader.finished {
+            display: none;
+        }
+
+
+        #video-background {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1;
+            background-size: cover;
+            transition: filter 0.5s ease;
+            object-fit: cover;
+            filter: var(--video-filter);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            padding: 0 1rem;
+        }
+
+        .container.loaded {
+            opacity: 1;
+        }
+
+        .header {
+            text-align: center;
+            position: sticky;
+            top: 1rem;
+            z-index: 2;
+            padding: 1rem;
+            background: var(--card-background);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--card-border);
+            border-top: 1px solid var(--card-border);
+            transition: all 0.5s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 1.25rem;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        body.scrolled .header {
+            border-radius: 0 0 1.25rem 1.25rem;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            top: 0;
+            border-top: 0px solid var(--card-border);
+        }
+
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--header-text);
+            margin: 0;
+            text-shadow: var(--header-h1-shadow);
+            white-space: nowrap;
+        }
+
+        .theme-toggle,
+        .github-toggle {
+            cursor: pointer;
+            font-size: 2rem;
+            color: var(--text-color);
+            transition: color 0.3s ease;
+            display: flex;
+            justify-content: center;
+            background: var(--theme-toggle-background);
+            padding: .5rem;
+            border-radius: 50%;
+            z-index: 2;
+            text-decoration: none;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .info-card {
+            background: var(--card-background);
+            backdrop-filter: blur(8px);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--card-border);
+            border-top: 1px solid var(--card-border);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(2rem);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .container.loaded .info-card {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (pointer: fine) {
+            .container.loaded .info-card:hover {
+                transform: translateY(-0.5rem);
+                background: rgba(230, 230, 230, 0.7);
+            }
+
+            body.dark-mode .container.loaded .info-card:hover {
+                background: rgba(25, 25, 25, 0.7);
+            }
+
+            .info-value .copy-button:hover {
+                opacity: 1;
+            }
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: var(--theme-toggle-background);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1.75rem;
+            color: var(--text-color);
+            flex-shrink: 0;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+            max-width: calc(100% - 60px);
+            word-break: break-word;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--info-item-border);
+            margin: 0.5rem 0 0.5rem 0;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            opacity: var(--label-opacity);
+        }
+
+        .info-value {
+            font-weight: 500;
+            text-align: right;
+            flex-basis: max-content;
+            max-width: 75%;
+            overflow-wrap: break-word;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 5px;
+        }
+
+        #user-agent {
+            text-align: left;
+            max-width: 52%;
+        }
+
+        #ipv6-address {
+            justify-content: flex-start;
+        }
+
+        .info-value .copy-button {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            justify-content: center;
+            opacity: 0.5;
+            transition: opacity .25s ease-in-out;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid var(--loading-color);
+            border-radius: 50%;
+            border-top-color: var(--loading-border-top);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .security-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .secure {
+            background: linear-gradient(45deg, #10b981, #059669);
+            color: white;
+        }
+
+        .insecure {
+            background: linear-gradient(45deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            font-size: 1rem;
+            border-top: 1px solid var(--info-item-border);
+            background-color: var(--card-background);
+            backdrop-filter: blur(8px);
+            border-radius: 20px 20px 0 0;
+        }
+
+        ::-webkit-scrollbar {
+            width: 0.65rem;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #9f9f9f;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(45, 45, 45, 1);
+            border-radius: 0.5rem;
+            border: 1px solid #9f9f9f;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(45, 45, 45, 0.9);
+        }
+
+        @media (max-width: 1024px) {
+            .info-grid {
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+                padding: 1.5rem 0;
+                gap: 1.5rem;
+            }
+
+            .card-title {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+                gap: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+                white-space: normal;
+                text-align: center;
+            }
+
+            .theme-toggle,
+            .github-toggle {
+                font-size: 1.5rem;
+                padding: .5rem;
+            }
+
+            .info-grid {
+                grid-template-columns: repeat(auto-fit, minmax(325px, 1fr));
+                gap: 1.25rem;
+            }
+
+            .info-card {
+                padding: 1.5rem;
+            }
+
+            .card-title {
+                font-size: 1.3rem;
+                max-width: calc(100% - 60px);
+            }
+
+            .card-icon {
+                width: 45px;
+                height: 45px;
+                font-size: 1.5rem;
+            }
+
+            .footer {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .card-title {
+                font-size: 1.25rem;
+            }
+
+            .info-card {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 425px) {
+
+            #user-agent,
+            #ipv6-address {
+                text-align: left;
+                justify-content: flex-start;
+            }
+        }
+
+        @media (max-width: 375px) {
+            .header h1 {
+                font-size: 1.6rem;
+            }
+
+            .info-grid {
+                gap: 1rem;
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 320px) {
+
+            .theme-toggle,
+            .github-toggle {
+                font-size: 1.25rem;
+            }
+
+            .footer {
+                font-size: 0.9rem;
+            }
+
+            .header h1 {
+                font-size: 1.4rem;
+            }
+
+            #user-agent {
+                flex-basis: 60%;
+            }
+        }
+    </style>
 </head>
 
-<body>
+<body class="dark-mode">
+    <div class="preloader">
+        <div class="preloader-door-top"></div>
+        <div class="preloader-door-bottom"></div>
+        <div class="preloader-spinner">
+            <p class="text">Loading...</p>
+            <div class="invertbox"></div>
+        </div>
+
+    </div>
+
     <video autoplay muted loop playsinline id="video-background">
-        <source src="assets/background.mp4" type="video/mp4">
+        <source src="https://whoisneon.github.io/System-Info-Hub/assets/background.mp4" type="video/mp4">
+        Your browser does not support the video tag.
     </video>
 
-    <div class="container">
-        <div class="header">
+    <div class="container" id="main-container">
+        <header class="header">
             <a href="https://github.com/WhoisNeon/System-Info-Hub" target="_blank" rel="noopener noreferrer"
                 class="github-toggle" aria-label="View on GitHub">
                 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor"
@@ -53,260 +570,557 @@
                     </g>
                 </svg>
             </button>
-        </div>
+        </header>
 
-        <div class="info-grid">
-            <div class="info-card">
+        <main class="info-grid">
+            <section class="info-card">
                 <div class="card-header">
                     <div class="card-icon"><i class="ph ph-globe"></i></div>
                     <h3 class="card-title">Network Information</h3>
                 </div>
                 <div class="info-item">
                     <span class="info-label">IP Address</span>
-                    <span class="info-value" id="ip-address">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="ip-address"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">IPv6 Address</span>
-                    <span class="info-value" id="ipv6-address">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="ipv6-address"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Location</span>
-                    <span class="info-value" id="location">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="location"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">ISP</span>
-                    <span class="info-value" id="isp">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="isp"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Connection Type</span>
-                    <span class="info-value" id="connection-type">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="connection-type"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Time Zone</span>
-                    <span class="info-value" id="ip-timezone">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="ip-timezone"><i class="loading"></i></span>
                 </div>
-            </div>
+            </section>
 
-            <div class="info-card">
+            <section class="info-card">
                 <div class="card-header">
-                    <div class="card-icon">
-                        <i class="ph ph-google-chrome-logo"></i>
-                    </div>
+                    <div class="card-icon"><i class="ph ph-google-chrome-logo"></i></div>
                     <h3 class="card-title">Browser Details</h3>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Browser</span>
-                    <span class="info-value" id="browser">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="browser"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Version</span>
-                    <span class="info-value" id="browser-version">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="browser-version"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Engine</span>
-                    <span class="info-value" id="browser-engine">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="browser-engine"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">User Agent</span>
-                    <span class="info-value" id="user-agent">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="user-agent"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Cookies Enabled</span>
-                    <span class="info-value" id="cookies-enabled">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="cookies-enabled"><i class="loading"></i></span>
                 </div>
-            </div>
+            </section>
 
-            <div class="info-card">
+            <section class="info-card">
                 <div class="card-header">
-                    <div class="card-icon" id="os-icon">
-                        <i class="loading"></i>
-                    </div>
+                    <div class="card-icon" id="os-icon"><i class="loading"></i></div>
                     <h3 class="card-title">System Information</h3>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Operating System</span>
-                    <span class="info-value" id="os">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="os"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Device Type</span>
-                    <span class="info-value" id="device-type">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="device-type"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Architecture</span>
-                    <span class="info-value" id="architecture">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="architecture"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">CPU Cores</span>
-                    <span class="info-value" id="cpu-cores">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="cpu-cores"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Memory</span>
-                    <span class="info-value" id="memory">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="memory"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Time Zone</span>
-                    <span class="info-value" id="system-timezone">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="system-timezone"><i class="loading"></i></span>
                 </div>
-            </div>
+            </section>
 
-            <div class="info-card">
+            <section class="info-card">
                 <div class="card-header">
-                    <div class="card-icon">
-                        <i class="ph ph-monitor"></i>
-                    </div>
+                    <div class="card-icon"><i class="ph ph-monitor"></i></div>
                     <h3 class="card-title">Display & Graphics</h3>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Screen Resolution</span>
-                    <span class="info-value" id="screen-resolution">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="screen-resolution"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Viewport Size</span>
-                    <span class="info-value" id="viewport-size">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="viewport-size"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Color Depth</span>
-                    <span class="info-value" id="color-depth">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="color-depth"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">GPU</span>
-                    <span class="info-value" id="gpu">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="gpu"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Pixel Ratio</span>
-                    <span class="info-value" id="pixel-ratio">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="pixel-ratio"><i class="loading"></i></span>
                 </div>
-            </div>
+            </section>
 
-            <div class="info-card">
+            <section class="info-card">
                 <div class="card-header">
-                    <div class="card-icon">
-                        <i class="ph ph-lock-key"></i>
-                    </div>
+                    <div class="card-icon"><i class="ph ph-lock-key"></i></div>
                     <h3 class="card-title">Security & Privacy</h3>
                 </div>
                 <div class="info-item">
                     <span class="info-label">HTTPS</span>
-                    <span class="info-value" id="https-status">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="https-status"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Do Not Track</span>
-                    <span class="info-value" id="dnt-status">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="dnt-status"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">WebRTC</span>
-                    <span class="info-value" id="webrtc-status">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="webrtc-status"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Local Storage</span>
-                    <span class="info-value" id="local-storage">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="local-storage"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Session Storage</span>
-                    <span class="info-value" id="session-storage">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="session-storage"><i class="loading"></i></span>
                 </div>
-            </div>
+            </section>
 
-            <div class="info-card">
+            <section class="info-card">
                 <div class="card-header">
-                    <div class="card-icon">
-                        <i class="ph ph-lightning"></i>
-                    </div>
+                    <div class="card-icon"><i class="ph ph-lightning"></i></div>
                     <h3 class="card-title">Web Features</h3>
                 </div>
                 <div class="info-item">
                     <span class="info-label">JavaScript</span>
-                    <span class="info-value" id="javascript-enabled">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="javascript-enabled"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">WebGL</span>
-                    <span class="info-value" id="webgl-support">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="webgl-support"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Geolocation</span>
-                    <span class="info-value" id="geolocation-support">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="geolocation-support"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Touch Support</span>
-                    <span class="info-value" id="touch-support">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="touch-support"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Online Status</span>
-                    <span class="info-value" id="online-status">
-                        <i class="loading"></i>
-                    </span>
+                    <span class="info-value" id="online-status"><i class="loading"></i></span>
                 </div>
-            </div>
-        </div>
+            </section>
+        </main>
 
         <footer class="footer">
             <p>&copy; 2025 WhoisNeon. All rights reserved.</p>
         </footer>
     </div>
 
-    <script src="script.js" defer></script>
+    <script>
+        const elements = {
+            preloader: document.querySelector('.preloader'),
+            mainContainer: document.getElementById('main-container'),
+            infoCards: document.querySelectorAll('.info-card'),
+            ipAddress: document.getElementById('ip-address'),
+            ipv6Address: document.getElementById('ipv6-address'),
+            location: document.getElementById('location'),
+            isp: document.getElementById('isp'),
+            connectionType: document.getElementById('connection-type'),
+            ipTimezone: document.getElementById('ip-timezone'),
+            browser: document.getElementById('browser'),
+            browserVersion: document.getElementById('browser-version'),
+            browserEngine: document.getElementById('browser-engine'),
+            userAgent: document.getElementById('user-agent'),
+            cookiesEnabled: document.getElementById('cookies-enabled'),
+            os: document.getElementById('os'),
+            deviceType: document.getElementById('device-type'),
+            architecture: document.getElementById('architecture'),
+            cpuCores: document.getElementById('cpu-cores'),
+            memory: document.getElementById('memory'),
+            systemTimezone: document.getElementById('system-timezone'),
+            screenResolution: document.getElementById('screen-resolution'),
+            viewportSize: document.getElementById('viewport-size'),
+            colorDepth: document.getElementById('color-depth'),
+            gpu: document.getElementById('gpu'),
+            pixelRatio: document.getElementById('pixel-ratio'),
+            httpsStatus: document.getElementById('https-status'),
+            dntStatus: document.getElementById('dnt-status'),
+            webrtcStatus: document.getElementById('webrtc-status'),
+            localStorage: document.getElementById('local-storage'),
+            sessionStorage: document.getElementById('session-storage'),
+            javascriptEnabled: document.getElementById('javascript-enabled'),
+            webglSupport: document.getElementById('webgl-support'),
+            geolocationSupport: document.getElementById('geolocation-support'),
+            touchSupport: document.getElementById('touch-support'),
+            onlineStatus: document.getElementById('online-status'),
+            themeToggle: document.getElementById('theme-toggle-button'),
+            body: document.body,
+            videoBackground: document.getElementById('video-background'),
+            osIcon: document.getElementById('os-icon'),
+        };
+
+        const setTextContent = (element, text) => {
+            if (element) {
+                element.textContent = text;
+            }
+        };
+
+        const setInnerHTML = (element, html) => {
+            if (element) {
+                element.innerHTML = html;
+            }
+        };
+
+        const addCopyFeature = (elementId) => {
+            const element = document.getElementById(elementId);
+            if (element && !element.dataset.copyAdded) {
+                const copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.innerHTML = '<i class="ph ph-clipboard"></i>';
+                copyButton.setAttribute('aria-label', `Copy ${element.id.replace(/-/g, ' ')}`);
+
+                copyButton.onclick = async (e) => {
+                    e.stopPropagation();
+                    const textToCopy = element.textContent.trim();
+
+                    try {
+                        await navigator.clipboard.writeText(textToCopy);
+
+                        copyButton.innerHTML = '<i class="ph ph-check"></i>';
+                        setTimeout(() => {
+                            copyButton.innerHTML = '<i class="ph ph-clipboard"></i>';
+                        }, 1500);
+
+                    } catch (err) {
+                        console.error('Failed to copy using Clipboard API, falling back:', err);
+
+                        const textArea = document.createElement("textarea");
+                        textArea.value = textToCopy;
+
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        textArea.style.top = '-9999px';
+
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+
+                        try {
+                            document.execCommand('copy');
+                            copyButton.innerHTML = '<i class="ph ph-check"></i>';
+                            setTimeout(() => {
+                                copyButton.innerHTML = '<i class="ph ph-clipboard"></i>';
+                            }, 1500);
+                        } catch (execErr) {
+                            console.error('Fallback copy failed:', execErr);
+                            copyButton.innerHTML = '<i class="ph ph-x"></i>';
+                            setTimeout(() => {
+                                copyButton.innerHTML = '<i class="ph ph-clipboard"></i>';
+                            }, 1500);
+                        } finally {
+                            document.body.removeChild(textArea);
+                        }
+                    }
+                };
+                element.appendChild(copyButton);
+                element.dataset.copyAdded = true;
+            }
+        };
+
+        function getBrowserInfo() {
+            const ua = navigator.userAgent;
+            let browser = 'Unknown';
+            let version = 'Unknown';
+            let engine = 'Unknown';
+            let browserIcon = 'ph ph-browser';
+
+            if (ua.includes('Chrome') && !ua.includes('Edg') && !ua.includes('OPR')) {
+                browser = 'Chrome';
+                version = ua.match(/Chrome\/([0-9.]+)/)?.[1] || 'Unknown';
+                engine = 'Blink';
+                browserIcon = 'ph ph-google-chrome-logo';
+            } else if (ua.includes('Firefox')) {
+                browser = 'Firefox';
+                version = ua.match(/Firefox\/([0-9.]+)/)?.[1] || 'Unknown';
+                engine = 'Gecko';
+                browserIcon = 'ph ph-firefox-logo';
+            } else if (ua.includes('Safari') && !ua.includes('Chrome') && !ua.includes('Edg') && !ua.includes('OPR')) {
+                browser = 'Safari';
+                version = ua.match(/Version\/([0-9.]+)/)?.[1] || 'Unknown';
+                engine = 'WebKit';
+                browserIcon = 'ph ph-safari-logo';
+            } else if (ua.includes('Edg')) {
+                browser = 'Edge';
+                version = ua.match(/Edg\/([0-9.]+)/)?.[1] || 'Unknown';
+                engine = 'Blink';
+                browserIcon = 'ph ph-edge-logo';
+            } else if (ua.includes('Opera') || ua.includes('OPR')) {
+                browser = 'Opera';
+                version = ua.match(/(Opera|OPR)\/([0-9.]+)/)?.[2] || 'Unknown';
+                engine = 'Blink';
+            } else if (ua.includes('MSIE') || ua.includes('Trident')) {
+                browser = 'Internet Explorer';
+                version = ua.match(/(MSIE |rv:)([0-9.]+)/)?.[2] || 'Unknown';
+                engine = 'Trident';
+            }
+
+            const browserCardIcon = document.querySelector('.info-card:nth-child(2) .card-icon');
+            if (browserCardIcon) {
+                setInnerHTML(browserCardIcon, `<i class="${browserIcon}"></i>`);
+            }
+
+            return { browser, version, engine };
+        }
+
+        function getOSInfo() {
+            const ua = navigator.userAgent;
+            let os = 'Unknown';
+            let deviceType = 'Desktop';
+            let osIconClass = 'ph ph-desktop';
+
+            if (ua.includes('Windows')) {
+                if (ua.includes('Windows NT 10.0')) os = 'Windows 10/11';
+                else if (ua.includes('Windows NT 6.3')) os = 'Windows 8.1';
+                else if (ua.includes('Windows NT 6.2')) os = 'Windows 8';
+                else if (ua.includes('Windows NT 6.1')) os = 'Windows 7';
+                else os = 'Windows';
+                osIconClass = 'ph ph-windows-logo';
+            } else if (ua.includes('Macintosh') || ua.includes('Mac OS X')) {
+                os = 'macOS';
+                osIconClass = 'ph ph-apple-logo';
+            } else if (ua.includes('Android')) {
+                os = 'Android';
+                deviceType = 'Mobile';
+                osIconClass = 'ph ph-android-logo';
+            } else if (ua.includes('iPhone')) {
+                os = 'iOS';
+                deviceType = 'Mobile';
+                osIconClass = 'ph ph-apple-logo';
+            } else if (ua.includes('iPad')) {
+                os = 'iOS';
+                deviceType = 'Tablet';
+                osIconClass = 'ph ph-apple-logo';
+            } else if (ua.includes('CrOS')) {
+                os = 'Chrome OS';
+                osIconClass = 'ph ph-linux-logo';
+            } else if (ua.includes('Linux')) {
+                os = 'Linux';
+                osIconClass = 'ph ph-linux-logo';
+            }
+
+            return { os, deviceType, osIconClass };
+        }
+
+        function getGPUInfo() {
+            try {
+                const canvas = document.createElement('canvas');
+                const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+                if (gl) {
+                    const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                    if (debugInfo) {
+                        const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+                        return renderer.replace(/\s+\(.*?$/, '').trim();
+                    }
+                }
+            } catch (e) {
+                console.error('GPU detection failed:', e);
+            }
+            return 'Not detected / Unknown';
+        }
+
+        async function fetchIPInfo() {
+            let ipv4 = 'Unavailable';
+            let ipv6 = 'Unavailable';
+
+            try {
+                const mainResponse = await fetch('https://api.my-ip.io/v2/ip.json');
+                if (!mainResponse.ok) throw new Error(`Primary API failed: ${mainResponse.status}`);
+                const data = await mainResponse.json();
+
+                setTextContent(elements.location, data.country ? `${data.city}, ${data.country.name}` : 'Unavailable');
+                setTextContent(elements.isp, data.asn ? data.asn.name : 'Unavailable');
+                setTextContent(elements.connectionType, data.asn ? `AS-${data.asn.number}` : 'Unknown');
+                setTextContent(elements.ipTimezone, data.timeZone || 'Unknown');
+
+                if (data.type === 'IPv4') {
+                    ipv4 = data.ip;
+                    try {
+                        const ipv6Response = await fetch('https://api6.ipify.org?format=json');
+                        if (ipv6Response.ok) ipv6 = (await ipv6Response.json()).ip;
+                    } catch (e) { console.warn('Could not fetch IPv6 address.'); }
+                } else if (data.type === 'IPv6') {
+                    ipv6 = data.ip;
+                    try {
+                        const ipv4Response = await fetch('https://api.ipify.org?format=json');
+                        if (ipv4Response.ok) ipv4 = (await ipv4Response.json()).ip;
+                    } catch (e) { console.warn('Could not fetch IPv4 address.'); }
+                }
+
+            } catch (error) {
+                console.error('IP info fetch failed:', error);
+                try {
+                    const [ipv4Res, ipv6Res] = await Promise.allSettled([
+                        fetch('https://api.ipify.org?format=json'),
+                    ]);
+                    if (ipv4Res.status === 'fulfilled' && ipv4Res.value.ok) ipv4 = (await ipv4Res.value.json()).ip;
+                    if (ipv6Res.status === 'fulfilled' && ipv6Res.value.ok) ipv6 = (await ipv6Res.value.json()).ip;
+                } catch (fallbackError) {
+                    console.error('Fallback IP fetch also failed:', fallbackError);
+                }
+                setTextContent(elements.location, 'Unavailable');
+                setTextContent(elements.isp, 'Unavailable');
+                setTextContent(elements.connectionType, 'Unknown');
+                setTextContent(elements.ipTimezone, 'Unknown');
+            }
+
+            setTextContent(elements.ipAddress, ipv4);
+            setTextContent(elements.ipv6Address, ipv6);
+            if (ipv4 !== 'Unavailable') addCopyFeature('ip-address');
+            if (ipv6 !== 'Unavailable') addCopyFeature('ipv6-address');
+        }
+
+        function loadBrowserAndSystemInfo() {
+            const { browser, version, engine } = getBrowserInfo();
+            const { os, deviceType, osIconClass } = getOSInfo();
+
+            setTextContent(elements.browser, browser);
+            setTextContent(elements.browserVersion, version);
+            setTextContent(elements.browserEngine, engine);
+            setTextContent(elements.userAgent, navigator.userAgent);
+            setTextContent(elements.cookiesEnabled, navigator.cookieEnabled ? 'Yes' : 'No');
+
+            setTextContent(elements.os, os);
+            setTextContent(elements.deviceType, deviceType);
+            if (elements.osIcon) {
+                setInnerHTML(elements.osIcon, `<i class="${osIconClass}"></i>`);
+            }
+
+            setTextContent(elements.architecture, navigator.platform || 'Unknown');
+            setTextContent(elements.cpuCores, navigator.hardwareConcurrency ? `${navigator.hardwareConcurrency}` : 'Unknown');
+            setTextContent(elements.memory, navigator.deviceMemory ? `${navigator.deviceMemory} GB` : 'Unknown');
+            setTextContent(elements.systemTimezone, Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown');
+
+            setTextContent(elements.screenResolution, `${screen.width}×${screen.height}`);
+            setTextContent(elements.viewportSize, `${window.innerWidth}×${window.innerHeight}`);
+            setTextContent(elements.colorDepth, `${screen.colorDepth}-bit`);
+            setTextContent(elements.gpu, getGPUInfo());
+            setTextContent(elements.pixelRatio, window.devicePixelRatio || '1');
+
+            setInnerHTML(elements.httpsStatus, location.protocol === 'https:' ?
+                '<span class="security-badge secure">Secure</span>' :
+                '<span class="security-badge insecure">Insecure</span>');
+            setTextContent(elements.dntStatus, navigator.doNotTrack === '1' ? 'Enabled' : (navigator.doNotTrack === '0' ? 'Disabled' : 'Not specified'));
+            setTextContent(elements.webrtcStatus, window.RTCPeerConnection ? 'Supported' : 'Not supported');
+            setTextContent(elements.localStorage, typeof (Storage) !== 'undefined' && localStorage ? 'Available' : 'Not available');
+            setTextContent(elements.sessionStorage, typeof (Storage) !== 'undefined' && sessionStorage ? 'Available' : 'Not available');
+
+            setTextContent(elements.javascriptEnabled, 'Enabled');
+            setTextContent(elements.webglSupport, (() => {
+                try {
+                    return !!(document.createElement('canvas').getContext('webgl'));
+                } catch (e) { return false; }
+            })() ? 'Supported' : 'Not supported');
+            setTextContent(elements.geolocationSupport, 'geolocation' in navigator ? 'Supported' : 'Not supported');
+            setTextContent(elements.touchSupport, ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) ? 'Yes' : 'No');
+            setTextContent(elements.onlineStatus, navigator.onLine ? 'Online' : 'Offline');
+        }
+
+        function applyTheme(isDarkMode) {
+            elements.body.classList.toggle('dark-mode', isDarkMode);
+            elements.themeToggle.classList.toggle('theme-toggle--toggled', !isDarkMode);
+            localStorage.setItem('darkMode', isDarkMode);
+        }
+
+        function toggleTheme() {
+            applyTheme(!elements.body.classList.contains('dark-mode'));
+        }
+
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                elements.preloader.classList.add('hidden');
+                window.scrollTo(0, 0);
+            }, 200);
+
+            setTimeout(() => {
+                elements.mainContainer.classList.add('loaded');
+                elements.infoCards.forEach((card, index) => {
+                    card.style.transitionDelay = `${index * 100}ms`;
+                });
+            }, 800);
+
+            setTimeout(() => {
+                elements.preloader.classList.add('finished');
+                elements.infoCards.forEach((card, index) => {
+                    card.style.transitionDelay = `0ms`;
+                });
+            }, 1200);
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const savedTheme = localStorage.getItem('darkMode');
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            applyTheme(savedTheme === 'true' || (savedTheme === null && prefersDark));
+
+            elements.themeToggle.addEventListener('click', toggleTheme);
+
+            fetchIPInfo();
+            loadBrowserAndSystemInfo();
+        });
+
+        const handleScroll = () => {
+            if (window.scrollY > 10) {
+                document.body.classList.add('scrolled');
+            } else {
+                document.body.classList.remove('scrolled');
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('online', () => setTextContent(elements.onlineStatus, 'Online'));
+        window.addEventListener('offline', () => setTextContent(elements.onlineStatus, 'Offline'));
+        window.addEventListener('resize', () => setTextContent(elements.viewportSize, `${window.innerWidth}×${window.innerHeight}`));
+
+        if (window.matchMedia) {
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+                if (localStorage.getItem('darkMode') === null) {
+                    applyTheme(event.matches);
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>
