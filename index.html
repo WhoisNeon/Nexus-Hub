@@ -349,6 +349,7 @@
         }
 
         #ipv6-address {
+            overflow-wrap: anywhere;
             justify-content: flex-start;
         }
 
@@ -981,44 +982,56 @@
         }
 
         async function fetchIPInfo() {
+            const FINDIP_TOKEN = 'eb2978e07c2e4a5e9bcb8c40e5f68292'; // Token provided by the user
             let ipv4 = 'Unavailable';
             let ipv6 = 'Unavailable';
 
             try {
-                const mainResponse = await fetch('https://api.my-ip.io/v2/ip.json');
-                if (!mainResponse.ok) throw new Error(`Primary API failed: ${mainResponse.status}`);
-                const data = await mainResponse.json();
+                // Fetch IPv4
+                const ipv4Response = await fetch('https://api.ipify.org?format=json');
+                if (ipv4Response.ok) {
+                    ipv4 = (await ipv4Response.json()).ip;
+                } else {
+                    console.warn('Could not fetch IPv4 address from ipify.org');
+                }
 
-                setTextContent(elements.location, data.country ? `${data.city}, ${data.country.name}` : 'Unavailable');
-                setTextContent(elements.isp, data.asn ? data.asn.name : 'Unavailable');
-                setTextContent(elements.connectionType, data.asn ? `AS-${data.asn.number}` : 'Unknown');
-                setTextContent(elements.ipTimezone, data.timeZone || 'Unknown');
+                // Fetch IPv6
+                try {
+                    const ipv6Response = await fetch('https://api6.ipify.org?format=json');
+                    if (ipv6Response.ok) {
+                        ipv6 = (await ipv6Response.json()).ip;
+                    }
+                } catch (e) {
+                    console.warn('Could not fetch IPv6 address from api6.ipify.org');
+                }
 
-                if (data.type === 'IPv4') {
-                    ipv4 = data.ip;
-                    try {
-                        const ipv6Response = await fetch('https://api6.ipify.org?format=json');
-                        if (ipv6Response.ok) ipv6 = (await ipv6Response.json()).ip;
-                    } catch (e) { console.warn('Could not fetch IPv6 address.'); }
-                } else if (data.type === 'IPv6') {
-                    ipv6 = data.ip;
-                    try {
-                        const ipv4Response = await fetch('https://api.ipify.org?format=json');
-                        if (ipv4Response.ok) ipv4 = (await ipv4Response.json()).ip;
-                    } catch (e) { console.warn('Could not fetch IPv4 address.'); }
+                // Fetch Geolocation using findip.net if IPv4 is available
+                if (ipv4 !== 'Unavailable') {
+                    const geoResponse = await fetch(`https://api.findip.net/${ipv4}/?token=${FINDIP_TOKEN}`);
+                    if (geoResponse.ok) {
+                        const geoData = await geoResponse.json();
+
+                        const location = (geoData.city?.names?.en || geoData.city?.names?.de || 'Unknown City') + ', ' +
+                            (geoData.country?.names?.en || geoData.country?.names?.de || 'Unknown Country');
+                        const isp = geoData.traits?.isp || 'Unavailable';
+                        const connectionType = geoData.traits?.connection_type || geoData.traits?.autonomous_system_organization || 'Unknown';
+                        const ipTimezone = geoData.location?.time_zone || 'Unknown';
+
+                        setTextContent(elements.location, location);
+                        setTextContent(elements.isp, isp);
+                        setTextContent(elements.connectionType, connectionType);
+                        setTextContent(elements.ipTimezone, ipTimezone);
+                    } else {
+                        console.error('Geolocation fetch failed:', geoResponse.status);
+                        setTextContent(elements.location, 'Unavailable');
+                        setTextContent(elements.isp, 'Unavailable');
+                        setTextContent(elements.connectionType, 'Unknown');
+                        setTextContent(elements.ipTimezone, 'Unknown');
+                    }
                 }
 
             } catch (error) {
-                console.error('IP info fetch failed:', error);
-                try {
-                    const [ipv4Res, ipv6Res] = await Promise.allSettled([
-                        fetch('https://api.ipify.org?format=json'),
-                    ]);
-                    if (ipv4Res.status === 'fulfilled' && ipv4Res.value.ok) ipv4 = (await ipv4Res.value.json()).ip;
-                    if (ipv6Res.status === 'fulfilled' && ipv6Res.value.ok) ipv6 = (await ipv6Res.value.json()).ip;
-                } catch (fallbackError) {
-                    console.error('Fallback IP fetch also failed:', fallbackError);
-                }
+                console.error('Error in fetchIPInfo:', error);
                 setTextContent(elements.location, 'Unavailable');
                 setTextContent(elements.isp, 'Unavailable');
                 setTextContent(elements.connectionType, 'Unknown');
