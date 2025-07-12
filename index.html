@@ -431,6 +431,22 @@
             opacity: 0.5;
         }
 
+        .flag-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-left: 5px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            vertical-align: middle;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .flag-icon {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+        }
+
         ::-webkit-scrollbar {
             width: 0.65rem;
         }
@@ -846,7 +862,7 @@
 
                 copyButton.onclick = async (e) => {
                     e.stopPropagation();
-                    const textToCopy = element.childNodes[0].textContent.trim() || element.textContent.trim();
+                    const textToCopy = element.textContent.trim();
 
                     try {
                         await navigator.clipboard.writeText(textToCopy);
@@ -1068,10 +1084,21 @@
                     if (geoResponse.ok) {
                         const geoData = await geoResponse.json();
 
-                        const countryName = geoData.country?.names?.en || 'Unknown Country';
-                        const isoCode = geoData.country?.iso_code?.toLowerCase();
+                        const country = geoData.country?.names?.en || 'Unknown Country';
+                        const countryIso = geoData.country?.iso_code?.toLowerCase();
+
+                        let countryDisplay = country;
+
+                        if (countryIso) {
+                            const flagUrl = `https://flagcdn.com/${countryIso}.svg`;
+                            const flagHtml = `<img src="${flagUrl}" class="flag-icon" />`;
+                            countryDisplay = `${country} ${flagHtml}`;
+                        }
+
                         const city = cleanCityName(geoData.city?.names?.en);
+
                         const isp = geoData.traits?.isp || 'Unavailable';
+
                         const organization = geoData.traits?.autonomous_system_organization || 'Unavailable';
 
                         let asn = geoData.traits?.autonomous_system_number;
@@ -1083,17 +1110,8 @@
 
                         const ipTimezone = geoData.location?.time_zone || 'Unknown';
 
-                        if (isoCode && countryName !== 'Unknown Country') {
-                            const flagUrl = `https://flagcdn.com/${isoCode}.svg`;
-                            const flagHtml = `<span style="display: flex; align-items: center; gap: 8px;">
-                                                ${countryName} 
-                                                <img src="${flagUrl}" style="height: 24px; width: 32px; border-radius: 2px;">
-                                              </span>`;
-                            setInnerHTML(elements.country, flagHtml);
-                        } else {
-                            setTextContent(elements.country, countryName);
-                        }
-
+                        // Use setInnerHTML for the country field to include the flag image
+                        setInnerHTML(elements.country, countryDisplay);
                         setTextContent(elements.city, city);
                         setTextContent(elements.isp, isp);
                         setTextContent(elements.organization, organization);
