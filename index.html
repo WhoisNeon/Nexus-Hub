@@ -285,7 +285,7 @@
 
             body.dark-mode .theme-toggle:hover,
             .github-toggle:hover,
-            .refresh-button:enabled:hover{
+            .refresh-button:enabled:hover {
                 background: rgba(230, 230, 230, 0.15);
             }
         }
@@ -846,7 +846,8 @@
 
                 copyButton.onclick = async (e) => {
                     e.stopPropagation();
-                    const textToCopy = element.textContent.trim();
+                    // Get the text content, excluding the image alt text if present
+                    const textToCopy = element.childNodes[0].textContent.trim() || element.textContent.trim();
 
                     try {
                         await navigator.clipboard.writeText(textToCopy);
@@ -1068,11 +1069,10 @@
                     if (geoResponse.ok) {
                         const geoData = await geoResponse.json();
 
-                        const country = geoData.country?.names?.en || 'Unknown Country';
+                        const countryName = geoData.country?.names?.en || 'Unknown Country';
+                        const isoCode = geoData.country?.iso_code?.toLowerCase();
                         const city = cleanCityName(geoData.city?.names?.en);
-
                         const isp = geoData.traits?.isp || 'Unavailable';
-
                         const organization = geoData.traits?.autonomous_system_organization || 'Unavailable';
 
                         let asn = geoData.traits?.autonomous_system_number;
@@ -1084,7 +1084,19 @@
 
                         const ipTimezone = geoData.location?.time_zone || 'Unknown';
 
-                        setTextContent(elements.country, country);
+                        // Check if ISO code is available and display country name with flag
+                        if (isoCode && countryName !== 'Unknown Country') {
+                            // Changed to use SVG format from flagcdn.com
+                            const flagUrl = `https://flagcdn.com/${isoCode}.svg`;
+                            const flagHtml = `<span style="display: flex; align-items: center; gap: 8px;">
+                                                ${countryName} 
+                                                <img src="${flagUrl}" alt="Flag of ${countryName}" style="height: 12px; width: 16px; border-radius: 2px;">
+                                              </span>`;
+                            setInnerHTML(elements.country, flagHtml);
+                        } else {
+                            setTextContent(elements.country, countryName);
+                        }
+
                         setTextContent(elements.city, city);
                         setTextContent(elements.isp, isp);
                         setTextContent(elements.organization, organization);
@@ -1114,6 +1126,10 @@
 
             if (ipv4 !== 'Unavailable') addCopyFeature('ip-address');
             if (ipv6 !== 'Unavailable') addCopyFeature('ipv6-address');
+            // Add copy feature for country, since it now might contain HTML
+            if (elements.country.textContent.trim() !== 'Unavailable' && elements.country.textContent.trim() !== 'Unknown Country') {
+                addCopyFeature('country');
+            }
 
             hidePreloader();
 
