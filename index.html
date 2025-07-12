@@ -11,7 +11,6 @@
     <meta name="keywords" content="system info, browser info, ip address, network details, device information">
     <meta property="og:title" content="System Info Hub">
     <meta property="og:description" content="Get detailed information about your system, browser, network, and more.">
-    <meta property="og:image" content="https://whoisneon.github.io/System-Info-Hub/assets/logo.png">
     <meta property="og:url" content="https://whoisneon.github.io/System-Info-Hub">
     <meta property="og:type" content="website">
 
@@ -163,10 +162,18 @@
             width: auto;
             height: auto;
             z-index: -1;
+            background-image: url('https://whoisneon.github.io/System-Info-Hub/assets/background.png');
             background-size: cover;
-            transition: filter 0.5s ease;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: filter 0.5s ease, opacity 0.5s ease;
             object-fit: cover;
             filter: var(--video-filter);
+            opacity: 0;
+        }
+
+        #video-background.loaded {
+            opacity: 1;
         }
 
         .container {
@@ -532,8 +539,8 @@
 
     </div>
 
-    <video autoplay muted loop playsinline id="video-background">
-        <source src="https://whoisneon.github.io/System-Info-Hub/assets/background.mp4" type="video/mp4">
+    <video muted loop playsinline id="video-background">
+        <source data-src="https://whoisneon.github.io/System-Info-Hub/assets/background.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
 
@@ -1139,6 +1146,26 @@
             applyTheme(!elements.body.classList.contains('dark-mode'));
         }
 
+        function lazyLoadVideo() {
+            const videoBackground = elements.videoBackground;
+            const videoSource = videoBackground.querySelector('source');
+
+            if (videoSource && videoSource.dataset.src) {
+                videoSource.src = videoSource.dataset.src;
+                videoBackground.load();
+
+                videoBackground.addEventListener('canplaythrough', function() {
+                    videoBackground.classList.add('loaded');
+
+                    videoBackground.play().catch(error => {
+                        console.error("Autoplay failed:", error);
+                    });
+                }, { once: true });
+
+                videoSource.removeAttribute('data-src');
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             const savedTheme = localStorage.getItem('darkMode');
             const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -1148,6 +1175,7 @@
 
             fetchIPInfo();
             loadBrowserAndSystemInfo();
+            lazyLoadVideo();
         });
 
         const handleScroll = () => {
