@@ -846,7 +846,6 @@
 
                 copyButton.onclick = async (e) => {
                     e.stopPropagation();
-                    // Get the text content, excluding the image alt text if present
                     const textToCopy = element.childNodes[0].textContent.trim() || element.textContent.trim();
 
                     try {
@@ -1084,13 +1083,11 @@
 
                         const ipTimezone = geoData.location?.time_zone || 'Unknown';
 
-                        // Check if ISO code is available and display country name with flag
                         if (isoCode && countryName !== 'Unknown Country') {
-                            // Changed to use SVG format from flagcdn.com
                             const flagUrl = `https://flagcdn.com/${isoCode}.svg`;
                             const flagHtml = `<span style="display: flex; align-items: center; gap: 8px;">
                                                 ${countryName} 
-                                                <img src="${flagUrl}" alt="Flag of ${countryName}" style="height: 12px; width: 16px; border-radius: 2px;">
+                                                <img src="${flagUrl}" style="height: 24px; width: 32px; border-radius: 2px;">
                                               </span>`;
                             setInnerHTML(elements.country, flagHtml);
                         } else {
@@ -1126,10 +1123,6 @@
 
             if (ipv4 !== 'Unavailable') addCopyFeature('ip-address');
             if (ipv6 !== 'Unavailable') addCopyFeature('ipv6-address');
-            // Add copy feature for country, since it now might contain HTML
-            if (elements.country.textContent.trim() !== 'Unavailable' && elements.country.textContent.trim() !== 'Unknown Country') {
-                addCopyFeature('country');
-            }
 
             hidePreloader();
 
