@@ -31,11 +31,6 @@ System Info Hub features a clean, responsive design with a focus on usability an
 * **Icons:** Utilizes `@phosphor-icons/web` for visual elements.
 * **Fonts:** Uses the `Inter` font family.
 
-## Usage 🚀
-
-Since System Info Hub is a single-page HTML application,
-you can simply open the `index.html` file in your web browser to view your system information.
-
 ## Credits 📜
 
 * Copyright © 2025 [WhoisNeon](https://github.com/WhoisNeon)
