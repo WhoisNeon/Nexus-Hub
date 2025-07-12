@@ -578,12 +578,12 @@
                     <span class="info-value" id="ipv6-address"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">City</span>
-                    <span class="info-value" id="city"><i class="loading"></i></span>
-                </div>
-                <div class="info-item">
                     <span class="info-label">Country</span>
                     <span class="info-value" id="country"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">City</span>
+                    <span class="info-value" id="city"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">ISP</span>
@@ -1029,8 +1029,8 @@
                     if (geoResponse.ok) {
                         const geoData = await geoResponse.json();
 
-                        const city = cleanCityName(geoData.city?.names?.en);
                         const country = geoData.country?.names?.en || 'Unknown Country';
+                        const city = cleanCityName(geoData.city?.names?.en);
 
                         const isp = geoData.traits?.isp || 'Unavailable';
 
@@ -1045,16 +1045,16 @@
 
                         const ipTimezone = geoData.location?.time_zone || 'Unknown';
 
-                        setTextContent(elements.city, city);
                         setTextContent(elements.country, country);
+                        setTextContent(elements.city, city);
                         setTextContent(elements.isp, isp);
                         setTextContent(elements.organization, organization);
                         setTextContent(elements.connectionType, asn);
                         setTextContent(elements.ipTimezone, ipTimezone);
                     } else {
                         console.error('Geolocation fetch failed:', geoResponse.status);
-                        setTextContent(elements.city, 'Unavailable');
                         setTextContent(elements.country, 'Unavailable');
+                        setTextContent(elements.city, 'Unavailable');
                         setTextContent(elements.isp, 'Unavailable');
                         setTextContent(elements.organization, 'Unavailable');
                         setTextContent(elements.connectionType, 'Unknown');
@@ -1064,8 +1064,8 @@
 
             } catch (error) {
                 console.error('Error in fetchIPInfo:', error);
-                setTextContent(elements.city, 'Unavailable');
                 setTextContent(elements.country, 'Unavailable');
+                setTextContent(elements.city, 'Unavailable');
                 setTextContent(elements.isp, 'Unavailable');
                 setTextContent(elements.organization, 'Unavailable');
                 setTextContent(elements.connectionType, 'Unknown');
