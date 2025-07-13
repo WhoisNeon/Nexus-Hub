@@ -1215,24 +1215,14 @@
                             region = geoData.subdivisions[0].names?.en || 'Unknown';
                         }
                         
-                        // Extract ISP and Organization
+                        // Extract ISP and Organization (always display if available, regardless of City or ISP match)
                         let isp = geoData.traits?.isp || 'Unavailable';
                         let organization = geoData.traits?.autonomous_system_organization || 'Unavailable';
 
-                        // Apply the rule: if Region/ISP/Organization is the same as City (case-sensitive, trimmed), do not display it.
-                        
-                        // Note: region.trim() is used for comparison, as region might have whitespace but we must respect casing.
-                        // cleanCityName() already trims the city.
+                        // Apply the rule: if Region is the same as City (case-sensitive, trimmed), do not display the region.
+                        // ISP and Organization are now displayed as provided by the API, regardless of City match.
                         if (region !== 'Unknown' && region.trim() === city) {
                             region = 'Unknown';
-                        }
-                        
-                        if (isp !== 'Unavailable' && isp.trim() === city) {
-                            isp = 'Unavailable';
-                        }
-                        
-                        if (organization !== 'Unavailable' && organization.trim() === city) {
-                            organization = 'Unavailable';
                         }
                         
                         // ASN and Time Zone
@@ -1265,7 +1255,7 @@
                             } else {
                                 elements.regionItem.style.display = '';
                                 setTextContent(elements.regionName, region);
-                                addCopyFeature('region-name');
+                                // Removed addCopyFeature('region-name') as requested
                             }
                         }
 
