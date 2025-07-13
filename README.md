@@ -6,7 +6,7 @@ This project serves as a centralized place to inspect key technical details abou
 
 ## Usage 🌐
 
-**Just Open [This Link](whoisneon.github.io/System-Info-Hub) On Your Browser!**
+**Just Open [This Link](https://whoisneon.github.io/System-Info-Hub) On Your Browser!**
 
 ## Features ⚙️
 
