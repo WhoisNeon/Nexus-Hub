@@ -652,6 +652,10 @@
                     <span class="info-label">Country</span>
                     <span class="info-value" id="country"><i class="loading"></i></span>
                 </div>
+                <div class="info-item" id="region-item" style="display: none;">
+                    <span class="info-label">Region</span>
+                    <span class="info-value" id="region-name"><i class="loading"></i></span>
+                </div>
                 <div class="info-item">
                     <span class="info-label">City</span>
                     <span class="info-value" id="city"><i class="loading"></i></span>
@@ -829,6 +833,9 @@
             ipv6Item: document.getElementById('ipv6-item'),
             city: document.getElementById('city'),
             country: document.getElementById('country'),
+            // Added Region elements
+            regionItem: document.getElementById('region-item'),
+            regionName: document.getElementById('region-name'),
             isp: document.getElementById('isp'),
             organization: document.getElementById('organization'),
             connectionType: document.getElementById('asn'),
@@ -881,6 +888,11 @@
         const addCopyFeature = (elementId) => {
             const element = document.getElementById(elementId);
             if (element) {
+                // Ensure we don't add the copy button twice if the function is called multiple times (e.g., on refresh)
+                if (element.querySelector('.copy-button')) {
+                    return;
+                }
+
                 const copyButton = document.createElement('button');
                 copyButton.className = 'copy-button';
                 copyButton.innerHTML = '<i class="ph ph-clipboard"></i>';
@@ -1107,6 +1119,7 @@
 
         function cleanCityName(cityName) {
             if (!cityName) return 'Unknown City';
+            // Trim and remove content within parentheses (e.g., "City (District)" -> "City")
             return cityName.replace(/\s*\(.*\)\s*/, '').trim();
         }
 
@@ -1139,6 +1152,11 @@
             setInnerHTML(elements.ipAddress, '<i class="loading"></i>');
             setInnerHTML(elements.ipv6Address, '<i class="loading"></i>');
             setInnerHTML(elements.country, '<i class="loading"></i>');
+            
+            // Resetting Region elements
+            setInnerHTML(elements.regionName, '<i class="loading"></i>');
+            if (elements.regionItem) elements.regionItem.style.display = 'none';
+
             setInnerHTML(elements.city, '<i class="loading"></i>');
             setInnerHTML(elements.isp, '<i class="loading"></i>');
             setInnerHTML(elements.organization, '<i class="loading"></i>');
@@ -1187,9 +1205,48 @@
 
                         const country = geoData.country?.names?.en || 'Unknown Country';
                         const countryIso = geoData.country?.iso_code?.toLowerCase();
+                        
+                        let region = 'Unknown';
+                        // Clean City Name (removes parentheses and trims)
+                        const city = cleanCityName(geoData.city?.names?.en);
+                        
+                        // Extract Region (Subdivision)
+                        if (geoData.subdivisions && geoData.subdivisions.length > 0) {
+                            region = geoData.subdivisions[0].names?.en || 'Unknown';
+                        }
+                        
+                        // Extract ISP and Organization
+                        let isp = geoData.traits?.isp || 'Unavailable';
+                        let organization = geoData.traits?.autonomous_system_organization || 'Unavailable';
 
+                        // Apply the rule: if Region/ISP/Organization is the same as City (case-sensitive, trimmed), do not display it.
+                        
+                        // Note: region.trim() is used for comparison, as region might have whitespace but we must respect casing.
+                        // cleanCityName() already trims the city.
+                        if (region !== 'Unknown' && region.trim() === city) {
+                            region = 'Unknown';
+                        }
+                        
+                        if (isp !== 'Unavailable' && isp.trim() === city) {
+                            isp = 'Unavailable';
+                        }
+                        
+                        if (organization !== 'Unavailable' && organization.trim() === city) {
+                            organization = 'Unavailable';
+                        }
+                        
+                        // ASN and Time Zone
+                        let asn = geoData.traits?.autonomous_system_number;
+                        if (asn !== undefined && asn !== null) {
+                            asn = `AS-${asn}`;
+                        } else {
+                            asn = 'Unknown';
+                        }
+                        
+                        const ipTimezone = geoData.location?.time_zone || 'Unknown';
+
+                        // Update Country display
                         let countryDisplay = country;
-
                         if (countryIso) {
                             let flagUrl;
                             if (countryIso === 'ir') {
@@ -1200,45 +1257,47 @@
                             const flagHtml = `<img src="${flagUrl}" class="flag-icon" width="20" />`;
                             countryDisplay = `${country} ${flagHtml}`;
                         }
-
-                        const city = cleanCityName(geoData.city?.names?.en);
-
-                        const isp = geoData.traits?.isp || 'Unavailable';
-
-                        const organization = geoData.traits?.autonomous_system_organization || 'Unavailable';
-
-                        let asn = geoData.traits?.autonomous_system_number;
-                        if (asn !== undefined && asn !== null) {
-                            asn = `AS-${asn}`;
-                        } else {
-                            asn = 'Unknown';
+                        
+                        // Update Region display
+                        if (elements.regionItem) {
+                            if (region === 'Unknown') {
+                                elements.regionItem.style.display = 'none';
+                            } else {
+                                elements.regionItem.style.display = '';
+                                setTextContent(elements.regionName, region);
+                                addCopyFeature('region-name');
+                            }
                         }
 
-                        const ipTimezone = geoData.location?.time_zone || 'Unknown';
-
+                        // Update remaining elements
+                        setTextContent(elements.city, city); // City is always displayed
                         setInnerHTML(elements.country, countryDisplay);
-                        setTextContent(elements.city, city);
                         setTextContent(elements.isp, isp);
                         setTextContent(elements.organization, organization);
                         setTextContent(elements.connectionType, asn);
                         setTextContent(elements.ipTimezone, ipTimezone);
+                        
                     } else {
+                        // Handle unsuccessful geolocation response
                         setTextContent(elements.country, 'Unavailable');
                         setTextContent(elements.city, 'Unavailable');
                         setTextContent(elements.isp, 'Unavailable');
                         setTextContent(elements.organization, 'Unavailable');
                         setTextContent(elements.connectionType, 'Unknown');
                         setTextContent(elements.ipTimezone, 'Unknown');
+                        if (elements.regionItem) elements.regionItem.style.display = 'none';
                     }
                 }
 
             } catch (error) {
+                // Handle fetch errors
                 setTextContent(elements.country, 'Unavailable');
                 setTextContent(elements.city, 'Unavailable');
                 setTextContent(elements.isp, 'Unavailable');
                 setTextContent(elements.organization, 'Unavailable');
                 setTextContent(elements.connectionType, 'Unknown');
                 setTextContent(elements.ipTimezone, 'Unknown');
+                if (elements.regionItem) elements.regionItem.style.display = 'none';
             }
 
             setTextContent(elements.ipAddress, ipv4);
