@@ -1083,8 +1083,13 @@
                         let countryDisplay = country;
 
                         if (countryIso) {
-                            const flagUrl = `https://hatscripts.github.io/circle-flags/flags/${countryIso}.svg" width="20"`;
-                            const flagHtml = `<img src="${flagUrl}" class="flag-icon" />`;
+                            let flagUrl;
+                            if (countryIso === 'ir') {
+                                flagUrl = `https://whoisneon.github.io/System-Info-Hub/assets/ir.svg`;
+                            } else {
+                                flagUrl = `https://hatscripts.github.io/circle-flags/flags/${countryIso}.svg`;
+                            }
+                            const flagHtml = `<img src="${flagUrl}" class="flag-icon" width="20" />`;
                             countryDisplay = `${country} ${flagHtml}`;
                         }
 
