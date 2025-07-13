@@ -1,10 +1,14 @@
-# System Info Hub ✨💻 - [![Live Demo](https://img.shields.io/badge/Demo-Live%20Demo-green?style=for-the-badge)](https://whoisneon.github.io/System-Info-Hub)
+# System Info Hub ✨
 
 Welcome to System Info Hub, a single-page web application designed to provide detailed information about the user's system, browser, network, and device.
 
 This project serves as a centralized place to inspect key technical details about your current environment.
 
-## Features 🌐
+## Usage 🌐
+
+**Just Open [This Link](whoisneon.github.io/System-Info-Hub/) On Your Browser!**
+
+## Features ⚙️
 
 System Info Hub gathers and presents a comprehensive overview of various aspects of your system and Browse session.
 
@@ -34,4 +38,3 @@ System Info Hub features a clean, responsive design with a focus on usability an
 ## Credits 📜
 
 * Copyright © 2025 [WhoisNeon](https://github.com/WhoisNeon)
-* **Project Link:** https://github.com/WhoisNeon/System-Info-Hub
