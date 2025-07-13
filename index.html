@@ -833,7 +833,6 @@
             ipv6Item: document.getElementById('ipv6-item'),
             city: document.getElementById('city'),
             country: document.getElementById('country'),
-            // Added Region elements
             regionItem: document.getElementById('region-item'),
             regionName: document.getElementById('region-name'),
             isp: document.getElementById('isp'),
@@ -888,7 +887,6 @@
         const addCopyFeature = (elementId) => {
             const element = document.getElementById(elementId);
             if (element) {
-                // Ensure we don't add the copy button twice if the function is called multiple times (e.g., on refresh)
                 if (element.querySelector('.copy-button')) {
                     return;
                 }
@@ -900,7 +898,6 @@
 
                 copyButton.onclick = async (e) => {
                     e.stopPropagation();
-                    // We need to exclude the status indicator span if present when copying the value
                     const textToCopy = element.childNodes[0].textContent.trim() || element.textContent.trim();
 
                     try {
@@ -1036,76 +1033,41 @@
                     if (debugInfo) {
                         const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
 
-                        // NVIDIA Professional/Data Center
-                        let match = renderer.match(/(NVIDIA (?:Tesla|A\d+|H\d+|L\d+)[A-Za-z0-9\s]*)/i);
-                        if (match && match[1]) {
-                            return match[1];
+                        if (renderer.match(/(NVIDIA (?:Tesla|A\d+|H\d+|L\d+)[A-Za-z0-9\s]*)/i)) {
+                            return renderer.match(/(NVIDIA (?:Tesla|A\d+|H\d+|L\d+)[A-Za-z0-9\s]*)/i)[1];
                         }
-
-                        // NVIDIA Consumer/Quadro
-                        match = renderer.match(/(NVIDIA GeForce (?:RTX|GTX|MX|Quadro) \d+[A-Za-z]*)/);
-                        if (match && match[1]) {
-                            return match[1];
+                        if (renderer.match(/(NVIDIA GeForce (?:RTX|GTX|MX|Quadro) \d+[A-Za-z]*)/)) {
+                            return renderer.match(/(NVIDIA GeForce (?:RTX|GTX|MX|Quadro) \d+[A-Za-z]*)/)[1];
                         }
-
-                        // AMD Instinct
-                        match = renderer.match(/(AMD Instinct (?:MI\d+))/i);
-                        if (match && match[1]) {
-                            return match[1];
+                        if (renderer.match(/(AMD Instinct (?:MI\d+))/i)) {
+                            return renderer.match(/(AMD Instinct (?:MI\d+))/i)[1];
                         }
-
-                        // AMD Radeon
-                        match = renderer.match(/(AMD Radeon(?:TM)?(?: Pro)?(?: \w+)?(?: Graphics)?(?: Mobile)?(?: Vega \d+)?(?: RX \d+)?(?: \d+M)?)/i);
-                        if (match && match[1]) {
-                            return match[1].replace(/\s*\(\w+\)$/, '').trim();
+                        if (renderer.match(/(AMD Radeon(?:TM)?(?: Pro)?(?: \w+)?(?: Graphics)?(?: Mobile)?(?: Vega \d+)?(?: RX \d+)?(?: \d+M)?)/i)) {
+                            return renderer.match(/(AMD Radeon(?:TM)?(?: Pro)?(?: \w+)?(?: Graphics)?(?: Mobile)?(?: Vega \d+)?(?: RX \d+)?(?: \d+M)?)/i)[1].replace(/\s*\(\w+\)$/, '').trim();
                         }
-
-                        // Intel Arc
-                        match = renderer.match(/(Intel\(R\) Arc(?:[A-Za-z0-9\s]*?) Graphics)/i);
-                        if (match && match[1]) {
-                            return match[1];
+                        if (renderer.match(/(Intel\(R\) Arc(?:[A-Za-z0-9\s]*?) Graphics)/i)) {
+                            return renderer.match(/(Intel\(R\) Arc(?:[A-Za-z0-9\s]*?) Graphics)/i)[1];
                         }
-
-                        // Intel Integrated
-                        match = renderer.match(/(Intel\(R\) (?:Iris\(R\) Xe|Iris\(R\) Plus|HD Graphics \d+|UHD Graphics \d+|Xe Graphics))/);
-                        if (match && match[1]) {
-                            return match[1];
+                        if (renderer.match(/(Intel\(R\) (?:Iris\(R\) Xe|Iris\(R\) Plus|HD Graphics \d+|UHD Graphics \d+|Xe Graphics))/)) {
+                            return renderer.match(/(Intel\(R\) (?:Iris\(R\) Xe|Iris\(R\) Plus|HD Graphics \d+|UHD Graphics \d+|Xe Graphics))/)[1];
                         }
-
-                        // Qualcomm Adreno
-                        match = renderer.match(/(Adreno(?:TM)? \d+)/i);
-                        if (match && match[1]) {
-                            return match[1];
+                        if (renderer.match(/(Adreno(?:TM)? \d+)/i)) {
+                            return renderer.match(/(Adreno(?:TM)? \d+)/i)[1];
                         }
-
-                        // ARM Mali / Apple
-                        match = renderer.match(/((?:Mali|Apple)[\w\d\s-]*?(?:GPU)?(?:(?:MP)?\d)?)/i);
-                        if (match && match[1]) {
-                            return match[1].replace(/\s+\(.*?$/, '').trim();
+                        if (renderer.match(/((?:Mali|Apple)[\w\d\s-]*?(?:GPU)?(?:(?:MP)?\d)?)/i)) {
+                            return renderer.match(/((?:Mali|Apple)[\w\d\s-]*?(?:GPU)?(?:(?:MP)?\d)?)/i)[1].replace(/\s+\(.*?$/, '').trim();
                         }
-
-                        // Imagination PowerVR
-                        match = renderer.match(/(PowerVR(?:TM)? [\w\d\s-]*)/i);
-                        if (match && match[1]) {
-                            return match[1];
+                        if (renderer.match(/(PowerVR(?:TM)? [\w\d\s-]*)/i)) {
+                            return renderer.match(/(PowerVR(?:TM)? [\w\d\s-]*)/i)[1];
                         }
-
-                        // Samsung Xclipse
-                        match = renderer.match(/(Samsung Xclipse \d+)/i);
-                        if (match && match[1]) {
-                            return match[1];
+                        if (renderer.match(/(Samsung Xclipse \d+)/i)) {
+                            return renderer.match(/(Samsung Xclipse \d+)/i)[1];
                         }
-
-                        // Microsoft Drivers (e.g., in virtualization/WSL)
-                        match = renderer.match(/(Microsoft Basic Render Driver|Microsoft Remote Desktop Graphics Adapter)/i);
-                        if (match && match[1]) {
-                            return match[1];
+                        if (renderer.match(/(Microsoft Basic Render Driver|Microsoft Remote Desktop Graphics Adapter)/i)) {
+                            return renderer.match(/(Microsoft Basic Render Driver|Microsoft Remote Desktop Graphics Adapter)/i)[1];
                         }
-
-                        // Broad fallback for other known vendors
-                        match = renderer.match(/(Qualcomm Adreno|ARM Mali|Imagination PowerVR|Apple A\d+ GPU)/i);
-                        if (match && match[1]) {
-                            return match[1];
+                        if (renderer.match(/(Qualcomm Adreno|ARM Mali|Imagination PowerVR|Apple A\d+ GPU)/i)) {
+                            return renderer.match(/(Qualcomm Adreno|ARM Mali|Imagination PowerVR|Apple A\d+ GPU)/i)[1];
                         }
 
                         return renderer;
@@ -1119,7 +1081,6 @@
 
         function cleanCityName(cityName) {
             if (!cityName) return 'Unknown City';
-            // Trim and remove content within parentheses (e.g., "City (District)" -> "City")
             return cityName.replace(/\s*\(.*\)\s*/, '').trim();
         }
 
@@ -1153,7 +1114,6 @@
             setInnerHTML(elements.ipv6Address, '<i class="loading"></i>');
             setInnerHTML(elements.country, '<i class="loading"></i>');
             
-            // Resetting Region elements
             setInnerHTML(elements.regionName, '<i class="loading"></i>');
             if (elements.regionItem) elements.regionItem.style.display = 'none';
 
@@ -1168,20 +1128,16 @@
 
         async function fetchIPInfo() {
             if (elements.refreshNetworkButton.disabled) return;
-
             elements.refreshNetworkButton.disabled = true;
             resetNetworkInfoState();
-
             const FINDIP_TOKEN = 'eb2978e07c2e4a5e9bcb8c40e5f68292';
             let ipv4 = 'Unavailable';
             let ipv6 = 'Unavailable';
-
             try {
                 const ipv4Response = await fetch('https://api.ipify.org?format=json');
                 if (ipv4Response.ok) {
                     ipv4 = (await ipv4Response.json()).ip;
                 }
-
                 try {
                     const ipv6Response = await fetch('https://api6.ipify.org?format=json');
                     if (ipv6Response.ok) {
@@ -1189,7 +1145,6 @@
                     }
                 } catch (e) {
                 }
-
                 if (elements.ipv6Item) {
                     if (ipv6 === 'Unavailable') {
                         elements.ipv6Item.style.display = 'none';
@@ -1197,45 +1152,35 @@
                         elements.ipv6Item.style.display = '';
                     }
                 }
-
                 if (ipv4 !== 'Unavailable') {
                     const geoResponse = await fetch(`https://api.findip.net/${ipv4}/?token=${FINDIP_TOKEN}`);
                     if (geoResponse.ok) {
                         const geoData = await geoResponse.json();
-
                         const country = geoData.country?.names?.en || 'Unknown Country';
                         const countryIso = geoData.country?.iso_code?.toLowerCase();
-                        
                         let region = 'Unknown';
-                        // Clean City Name (removes parentheses and trims)
                         const city = cleanCityName(geoData.city?.names?.en);
-                        
-                        // Extract Region (Subdivision)
                         if (geoData.subdivisions && geoData.subdivisions.length > 0) {
                             region = geoData.subdivisions[0].names?.en || 'Unknown';
                         }
-                        
-                        // Extract ISP and Organization (always display if available, regardless of City or ISP match)
                         let isp = geoData.traits?.isp || 'Unavailable';
                         let organization = geoData.traits?.autonomous_system_organization || 'Unavailable';
 
-                        // Apply the rule: if Region is the same as City (case-sensitive, trimmed), do not display the region.
-                        // ISP and Organization are now displayed as provided by the API, regardless of City match.
                         if (region !== 'Unknown' && region.trim() === city) {
                             region = 'Unknown';
                         }
+
+                        if (isp !== 'Unavailable' && organization !== 'Unavailable' && organization.trim() === isp.trim()) {
+                            organization = 'Unavailable';
+                        }
                         
-                        // ASN and Time Zone
                         let asn = geoData.traits?.autonomous_system_number;
                         if (asn !== undefined && asn !== null) {
                             asn = `AS-${asn}`;
                         } else {
                             asn = 'Unknown';
                         }
-                        
                         const ipTimezone = geoData.location?.time_zone || 'Unknown';
-
-                        // Update Country display
                         let countryDisplay = country;
                         if (countryIso) {
                             let flagUrl;
@@ -1247,28 +1192,21 @@
                             const flagHtml = `<img src="${flagUrl}" class="flag-icon" width="20" />`;
                             countryDisplay = `${country} ${flagHtml}`;
                         }
-                        
-                        // Update Region display
                         if (elements.regionItem) {
                             if (region === 'Unknown') {
                                 elements.regionItem.style.display = 'none';
                             } else {
                                 elements.regionItem.style.display = '';
                                 setTextContent(elements.regionName, region);
-                                // Removed addCopyFeature('region-name') as requested
                             }
                         }
-
-                        // Update remaining elements
-                        setTextContent(elements.city, city); // City is always displayed
+                        setTextContent(elements.city, city);
                         setInnerHTML(elements.country, countryDisplay);
                         setTextContent(elements.isp, isp);
                         setTextContent(elements.organization, organization);
                         setTextContent(elements.connectionType, asn);
                         setTextContent(elements.ipTimezone, ipTimezone);
-                        
                     } else {
-                        // Handle unsuccessful geolocation response
                         setTextContent(elements.country, 'Unavailable');
                         setTextContent(elements.city, 'Unavailable');
                         setTextContent(elements.isp, 'Unavailable');
@@ -1278,9 +1216,7 @@
                         if (elements.regionItem) elements.regionItem.style.display = 'none';
                     }
                 }
-
             } catch (error) {
-                // Handle fetch errors
                 setTextContent(elements.country, 'Unavailable');
                 setTextContent(elements.city, 'Unavailable');
                 setTextContent(elements.isp, 'Unavailable');
@@ -1289,15 +1225,11 @@
                 setTextContent(elements.ipTimezone, 'Unknown');
                 if (elements.regionItem) elements.regionItem.style.display = 'none';
             }
-
             setTextContent(elements.ipAddress, ipv4);
             setTextContent(elements.ipv6Address, ipv6);
-
             if (ipv4 !== 'Unavailable') addCopyFeature('ip-address');
             if (ipv6 !== 'Unavailable') addCopyFeature('ipv6-address');
-
             hidePreloader();
-
             setTimeout(() => {
                 elements.refreshNetworkButton.disabled = false;
             }, REFRESH_COOLDOWN);
