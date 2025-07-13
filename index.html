@@ -393,14 +393,48 @@
             text-transform: uppercase;
         }
 
-        .secure {
+        .secure,
+        .online {
             background: linear-gradient(45deg, #10b981, #059669);
             color: white;
         }
 
-        .insecure {
+        .insecure,
+        .offline {
             background: linear-gradient(45deg, #ef4444, #dc2626);
             color: white;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .online {
+            margin-left: 2px;
+        }
+
+        .ping::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: inherit;
+            right: 0;
+            animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes ping {
+
+            75%,
+            100% {
+                transform: scale(1.75);
+                opacity: 0;
+            }
         }
 
         .footer {
@@ -505,7 +539,6 @@
             .card-icon {
                 width: 45px;
                 height: 45px;
-                font-size: 1.5rem;
             }
 
             .footer {
@@ -855,7 +888,8 @@
 
                 copyButton.onclick = async (e) => {
                     e.stopPropagation();
-                    const textToCopy = element.textContent.trim();
+                    // We need to exclude the status indicator span if present when copying the value
+                    const textToCopy = element.childNodes[0].textContent.trim() || element.textContent.trim();
 
                     try {
                         await navigator.clipboard.writeText(textToCopy);
@@ -989,10 +1023,84 @@
                     const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
                     if (debugInfo) {
                         const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
-                        return renderer.replace(/\s+\(.*?$/, '').trim();
+
+                        // NVIDIA Professional/Data Center
+                        let match = renderer.match(/(NVIDIA (?:Tesla|A\d+|H\d+|L\d+)[A-Za-z0-9\s]*)/i);
+                        if (match && match[1]) {
+                            return match[1];
+                        }
+
+                        // NVIDIA Consumer/Quadro
+                        match = renderer.match(/(NVIDIA GeForce (?:RTX|GTX|MX|Quadro) \d+[A-Za-z]*)/);
+                        if (match && match[1]) {
+                            return match[1];
+                        }
+
+                        // AMD Instinct
+                        match = renderer.match(/(AMD Instinct (?:MI\d+))/i);
+                        if (match && match[1]) {
+                            return match[1];
+                        }
+
+                        // AMD Radeon
+                        match = renderer.match(/(AMD Radeon(?:TM)?(?: Pro)?(?: \w+)?(?: Graphics)?(?: Mobile)?(?: Vega \d+)?(?: RX \d+)?(?: \d+M)?)/i);
+                        if (match && match[1]) {
+                            return match[1].replace(/\s*\(\w+\)$/, '').trim();
+                        }
+
+                        // Intel Arc
+                        match = renderer.match(/(Intel\(R\) Arc(?:[A-Za-z0-9\s]*?) Graphics)/i);
+                        if (match && match[1]) {
+                            return match[1];
+                        }
+
+                        // Intel Integrated
+                        match = renderer.match(/(Intel\(R\) (?:Iris\(R\) Xe|Iris\(R\) Plus|HD Graphics \d+|UHD Graphics \d+|Xe Graphics))/);
+                        if (match && match[1]) {
+                            return match[1];
+                        }
+
+                        // Qualcomm Adreno
+                        match = renderer.match(/(Adreno(?:TM)? \d+)/i);
+                        if (match && match[1]) {
+                            return match[1];
+                        }
+
+                        // ARM Mali / Apple
+                        match = renderer.match(/((?:Mali|Apple)[\w\d\s-]*?(?:GPU)?(?:(?:MP)?\d)?)/i);
+                        if (match && match[1]) {
+                            return match[1].replace(/\s+\(.*?$/, '').trim();
+                        }
+
+                        // Imagination PowerVR
+                        match = renderer.match(/(PowerVR(?:TM)? [\w\d\s-]*)/i);
+                        if (match && match[1]) {
+                            return match[1];
+                        }
+
+                        // Samsung Xclipse
+                        match = renderer.match(/(Samsung Xclipse \d+)/i);
+                        if (match && match[1]) {
+                            return match[1];
+                        }
+
+                        // Microsoft Drivers (e.g., in virtualization/WSL)
+                        match = renderer.match(/(Microsoft Basic Render Driver|Microsoft Remote Desktop Graphics Adapter)/i);
+                        if (match && match[1]) {
+                            return match[1];
+                        }
+
+                        // Broad fallback for other known vendors
+                        match = renderer.match(/(Qualcomm Adreno|ARM Mali|Imagination PowerVR|Apple A\d+ GPU)/i);
+                        if (match && match[1]) {
+                            return match[1];
+                        }
+
+                        return renderer;
                     }
                 }
             } catch (e) {
+                console.error('GPU detection failed:', e);
             }
             return 'Not detected / Unknown';
         }
@@ -1146,6 +1254,19 @@
             }, REFRESH_COOLDOWN);
         }
 
+        function updateOnlineStatusIndicator(isOnline) {
+            const onlineStatusElement = elements.onlineStatus;
+            if (onlineStatusElement) {
+                const statusText = isOnline ? 'Online' : 'Offline';
+                const statusClass = isOnline ? 'online' : 'offline';
+
+                const pingClass = isOnline ? 'ping' : '';
+                const indicatorHtml = `<span class="status-indicator ${statusClass} ${pingClass}"></span>`;
+
+                onlineStatusElement.innerHTML = `${statusText} ${indicatorHtml}`;
+            }
+        }
+
         function loadBrowserAndSystemInfo() {
             const { browser, version, engine } = getBrowserInfo();
             const { os, deviceType, osIconClass } = getOSInfo();
@@ -1191,7 +1312,8 @@
             })() ? 'Supported' : 'Not supported');
             setTextContent(elements.geolocationSupport, 'geolocation' in navigator ? 'Supported' : 'Not supported');
             setTextContent(elements.touchSupport, ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) ? 'Yes' : 'No');
-            setTextContent(elements.onlineStatus, navigator.onLine ? 'Online' : 'Offline');
+
+            updateOnlineStatusIndicator(navigator.onLine);
         }
 
         function applyTheme(isDarkMode) {
@@ -1248,8 +1370,8 @@
         };
 
         window.addEventListener('scroll', handleScroll);
-        window.addEventListener('online', () => setTextContent(elements.onlineStatus, 'Online'));
-        window.addEventListener('offline', () => setTextContent(elements.onlineStatus, 'Offline'));
+        window.addEventListener('online', () => updateOnlineStatusIndicator(true));
+        window.addEventListener('offline', () => updateOnlineStatusIndicator(false));
         window.addEventListener('resize', () => setTextContent(elements.viewportSize, `${window.innerWidth}×${window.innerHeight}`));
 
         if (window.matchMedia) {
