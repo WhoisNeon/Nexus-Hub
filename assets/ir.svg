@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <mask id="a">
+  <circle cx="256" cy="256" fill="#fff" id="svg_1" r="256" style="--darkreader-inline-fill: var(--darkreader-text-ffffff, #ffffff);"/>
+ </mask>
+ <g class="layer" display="inline">
+  <title>Layer 1</title>
+  <g id="svg_2" mask="url(#a)">
+   <path d="m0,144.7l258.8,-105.1l253.2,105.1l0,222.6l-255,125.7l-257,-125.7l0,-222.6z" fill="#eee" id="svg_3"/>
+   <rect fill="#d80027" height="160" id="svg_8" width="512" x="0" y="352"/>
+   <rect fill="#6da544" height="160" id="svg_9" width="512" x="0" y="0"/>
+  </g>
+ </g>
+</svg>
