@@ -432,7 +432,7 @@
 
             75%,
             100% {
-                transform: scale(1.75);
+                transform: scale(2);
                 opacity: 0;
             }
         }
@@ -652,6 +652,10 @@
                     <span class="info-label">Country</span>
                     <span class="info-value" id="country"><i class="loading"></i></span>
                 </div>
+                <div class="info-item" id="region-item" style="display: none;">
+                    <span class="info-label">Region</span>
+                    <span class="info-value" id="region"><i class="loading"></i></span>
+                </div>
                 <div class="info-item">
                     <span class="info-label">City</span>
                     <span class="info-value" id="city"><i class="loading"></i></span>
@@ -829,6 +833,8 @@
             ipv6Item: document.getElementById('ipv6-item'),
             city: document.getElementById('city'),
             country: document.getElementById('country'),
+            region: document.getElementById('region'),
+            regionItem: document.getElementById('region-item'),
             isp: document.getElementById('isp'),
             organization: document.getElementById('organization'),
             connectionType: document.getElementById('asn'),
@@ -888,7 +894,6 @@
 
                 copyButton.onclick = async (e) => {
                     e.stopPropagation();
-                    // We need to exclude the status indicator span if present when copying the value
                     const textToCopy = element.childNodes[0].textContent.trim() || element.textContent.trim();
 
                     try {
@@ -1023,79 +1028,30 @@
                     const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
                     if (debugInfo) {
                         const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
-
-                        // NVIDIA Professional/Data Center
                         let match = renderer.match(/(NVIDIA (?:Tesla|A\d+|H\d+|L\d+)[A-Za-z0-9\s]*)/i);
-                        if (match && match[1]) {
-                            return match[1];
-                        }
-
-                        // NVIDIA Consumer/Quadro
+                        if (match && match[1]) { return match[1]; }
                         match = renderer.match(/(NVIDIA GeForce (?:RTX|GTX|MX|Quadro) \d+[A-Za-z]*)/);
-                        if (match && match[1]) {
-                            return match[1];
-                        }
-
-                        // AMD Instinct
+                        if (match && match[1]) { return match[1]; }
                         match = renderer.match(/(AMD Instinct (?:MI\d+))/i);
-                        if (match && match[1]) {
-                            return match[1];
-                        }
-
-                        // AMD Radeon
+                        if (match && match[1]) { return match[1]; }
                         match = renderer.match(/(AMD Radeon(?:TM)?(?: Pro)?(?: \w+)?(?: Graphics)?(?: Mobile)?(?: Vega \d+)?(?: RX \d+)?(?: \d+M)?)/i);
-                        if (match && match[1]) {
-                            return match[1].replace(/\s*\(\w+\)$/, '').trim();
-                        }
-
-                        // Intel Arc
+                        if (match && match[1]) { return match[1].replace(/\s*\(\w+\)$/, '').trim(); }
                         match = renderer.match(/(Intel\(R\) Arc(?:[A-Za-z0-9\s]*?) Graphics)/i);
-                        if (match && match[1]) {
-                            return match[1];
-                        }
-
-                        // Intel Integrated
+                        if (match && match[1]) { return match[1]; }
                         match = renderer.match(/(Intel\(R\) (?:Iris\(R\) Xe|Iris\(R\) Plus|HD Graphics \d+|UHD Graphics \d+|Xe Graphics))/);
-                        if (match && match[1]) {
-                            return match[1];
-                        }
-
-                        // Qualcomm Adreno
+                        if (match && match[1]) { return match[1]; }
                         match = renderer.match(/(Adreno(?:TM)? \d+)/i);
-                        if (match && match[1]) {
-                            return match[1];
-                        }
-
-                        // ARM Mali / Apple
+                        if (match && match[1]) { return match[1]; }
                         match = renderer.match(/((?:Mali|Apple)[\w\d\s-]*?(?:GPU)?(?:(?:MP)?\d)?)/i);
-                        if (match && match[1]) {
-                            return match[1].replace(/\s+\(.*?$/, '').trim();
-                        }
-
-                        // Imagination PowerVR
+                        if (match && match[1]) { return match[1].replace(/\s+\(.*?$/, '').trim(); }
                         match = renderer.match(/(PowerVR(?:TM)? [\w\d\s-]*)/i);
-                        if (match && match[1]) {
-                            return match[1];
-                        }
-
-                        // Samsung Xclipse
+                        if (match && match[1]) { return match[1]; }
                         match = renderer.match(/(Samsung Xclipse \d+)/i);
-                        if (match && match[1]) {
-                            return match[1];
-                        }
-
-                        // Microsoft Drivers (e.g., in virtualization/WSL)
+                        if (match && match[1]) { return match[1]; }
                         match = renderer.match(/(Microsoft Basic Render Driver|Microsoft Remote Desktop Graphics Adapter)/i);
-                        if (match && match[1]) {
-                            return match[1];
-                        }
-
-                        // Broad fallback for other known vendors
+                        if (match && match[1]) { return match[1]; }
                         match = renderer.match(/(Qualcomm Adreno|ARM Mali|Imagination PowerVR|Apple A\d+ GPU)/i);
-                        if (match && match[1]) {
-                            return match[1];
-                        }
-
+                        if (match && match[1]) { return match[1]; }
                         return renderer;
                     }
                 }
@@ -1139,6 +1095,8 @@
             setInnerHTML(elements.ipAddress, '<i class="loading"></i>');
             setInnerHTML(elements.ipv6Address, '<i class="loading"></i>');
             setInnerHTML(elements.country, '<i class="loading"></i>');
+            setInnerHTML(elements.region, '<i class="loading"></i>');
+            if (elements.regionItem) elements.regionItem.style.display = 'none';
             setInnerHTML(elements.city, '<i class="loading"></i>');
             setInnerHTML(elements.isp, '<i class="loading"></i>');
             setInnerHTML(elements.organization, '<i class="loading"></i>');
@@ -1176,7 +1134,7 @@
                     if (ipv6 === 'Unavailable') {
                         elements.ipv6Item.style.display = 'none';
                     } else {
-                        elements.ipv6Item.style.display = '';
+                        elements.ipv6Item.style.display = 'flex';
                     }
                 }
 
@@ -1187,21 +1145,8 @@
 
                         const country = geoData.country?.names?.en || 'Unknown Country';
                         const countryIso = geoData.country?.iso_code?.toLowerCase();
-                        const city = cleanCityName(geoData.city?.names?.en);
 
                         let countryDisplay = country;
-
-                        let region = null;
-                        if (geoData.subdivisions && geoData.subdivisions.length > 0) {
-                            const subdivision = geoData.subdivisions[0].names?.en;
-                            if (subdivision && subdivision.toLowerCase() !== city.toLowerCase()) {
-                                region = subdivision;
-                            }
-                        }
-
-                        if (region) {
-                            countryDisplay += `, ${region}`;
-                        }
 
                         if (countryIso) {
                             let flagUrl;
@@ -1211,21 +1156,22 @@
                                 flagUrl = `https://hatscripts.github.io/circle-flags/flags/${countryIso}.svg`;
                             }
                             const flagHtml = `<img src="${flagUrl}" class="flag-icon" width="20" />`;
-                            countryDisplay = `${countryDisplay} ${flagHtml}`;
+                            countryDisplay = `${country} ${flagHtml}`;
                         }
 
+                        const city = cleanCityName(geoData.city?.names?.en);
+                        const region = geoData.subdivisions?.[0]?.names?.en;
+                        
+                        if (elements.regionItem && region && region.toLowerCase() !== city.toLowerCase()) {
+                            setTextContent(elements.region, region);
+                            elements.regionItem.style.display = 'flex';
+                        } else if (elements.regionItem) {
+                            elements.regionItem.style.display = 'none';
+                        }
 
                         const isp = geoData.traits?.isp || 'Unavailable';
-
                         const organization = geoData.traits?.autonomous_system_organization || 'Unavailable';
-
-                        let asn = geoData.traits?.autonomous_system_number;
-                        if (asn !== undefined && asn !== null) {
-                            asn = `AS-${asn}`;
-                        } else {
-                            asn = 'Unknown';
-                        }
-
+                        const asn = geoData.traits?.autonomous_system_number ? `AS-${geoData.traits.autonomous_system_number}` : 'Unknown';
                         const ipTimezone = geoData.location?.time_zone || 'Unknown';
 
                         setInnerHTML(elements.country, countryDisplay);
@@ -1271,10 +1217,8 @@
             if (onlineStatusElement) {
                 const statusText = isOnline ? 'Online' : 'Offline';
                 const statusClass = isOnline ? 'online' : 'offline';
-
                 const pingClass = isOnline ? 'ping' : '';
                 const indicatorHtml = `<span class="status-indicator ${statusClass} ${pingClass}"></span>`;
-
                 onlineStatusElement.innerHTML = `${statusText} ${indicatorHtml}`;
             }
         }
@@ -1286,28 +1230,22 @@
             setTextContent(elements.browser, browser);
             setTextContent(elements.browserVersion, version);
             setTextContent(elements.browserEngine, engine);
-
             setTextContent(elements.userAgent, navigator.userAgent);
-
             setTextContent(elements.cookiesEnabled, navigator.cookieEnabled ? 'Yes' : 'No');
-
             setTextContent(elements.os, os);
             setTextContent(elements.deviceType, deviceType);
             if (elements.osIcon) {
                 setInnerHTML(elements.osIcon, `<i class="${osIconClass}"></i>`);
             }
-
             setTextContent(elements.architecture, navigator.platform || 'Unknown');
             setTextContent(elements.cpuCores, navigator.hardwareConcurrency ? `${navigator.hardwareConcurrency}` : 'Unknown');
             setTextContent(elements.memory, navigator.deviceMemory ? `${navigator.deviceMemory} GB` : 'Unknown');
             setTextContent(elements.systemTimezone, Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown');
-
             setTextContent(elements.screenResolution, `${screen.width}×${screen.height}`);
             setTextContent(elements.viewportSize, `${window.innerWidth}×${window.innerHeight}`);
             setTextContent(elements.colorDepth, `${screen.colorDepth}-bit`);
             setTextContent(elements.gpu, getGPUInfo());
             setTextContent(elements.pixelRatio, window.devicePixelRatio || '1');
-
             setInnerHTML(elements.httpsStatus, location.protocol === 'https:' ?
                 '<span class="security-badge secure">Secure</span>' :
                 '<span class="security-badge insecure">Insecure</span>');
@@ -1315,16 +1253,12 @@
             setTextContent(elements.webrtcStatus, window.RTCPeerConnection ? 'Supported' : 'Not supported');
             setTextContent(elements.localStorage, typeof (Storage) !== 'undefined' && localStorage ? 'Available' : 'Not available');
             setTextContent(elements.sessionStorage, typeof (Storage) !== 'undefined' && sessionStorage ? 'Available' : 'Not available');
-
             setTextContent(elements.javascriptEnabled, 'Enabled');
             setTextContent(elements.webglSupport, (() => {
-                try {
-                    return !!(document.createElement('canvas').getContext('webgl'));
-                } catch (e) { return false; }
+                try { return !!(document.createElement('canvas').getContext('webgl')); } catch (e) { return false; }
             })() ? 'Supported' : 'Not supported');
             setTextContent(elements.geolocationSupport, 'geolocation' in navigator ? 'Supported' : 'Not supported');
             setTextContent(elements.touchSupport, ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) ? 'Yes' : 'No');
-
             updateOnlineStatusIndicator(navigator.onLine);
         }
 
@@ -1341,18 +1275,13 @@
         function lazyLoadVideo() {
             const videoBackground = elements.videoBackground;
             const videoSource = videoBackground.querySelector('source');
-
             if (videoSource && videoSource.dataset.src) {
                 videoSource.src = videoSource.dataset.src;
                 videoBackground.load();
-
                 videoBackground.addEventListener('canplaythrough', function () {
                     videoBackground.classList.add('loaded');
-
-                    videoBackground.play().catch(error => {
-                    });
+                    videoBackground.play().catch(error => {});
                 }, { once: true });
-
                 videoSource.removeAttribute('data-src');
             }
         }
@@ -1361,13 +1290,10 @@
             const savedTheme = localStorage.getItem('darkMode');
             const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
             applyTheme(savedTheme === 'true' || (savedTheme === null && prefersDark));
-
             elements.themeToggle.addEventListener('click', toggleTheme);
-
             if (elements.refreshNetworkButton) {
                 elements.refreshNetworkButton.addEventListener('click', fetchIPInfo);
             }
-
             fetchIPInfo();
             loadBrowserAndSystemInfo();
             lazyLoadVideo();
