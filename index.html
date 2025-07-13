@@ -429,7 +429,6 @@
         }
 
         @keyframes ping {
-
             75%,
             100% {
                 transform: scale(2);
@@ -1170,7 +1169,7 @@
                             region = 'Unknown';
                         }
 
-                        if (isp !== 'Unavailable' && organization !== 'Unavailable' && organization.trim() === isp.trim()) {
+                        if (isp !== 'Unavailable' && organization !== 'Unavailable' && organization.toLowerCase().trim() === isp.toLowerCase().trim()) {
                             organization = 'Unavailable';
                         }
                         
