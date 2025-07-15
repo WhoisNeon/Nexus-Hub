@@ -12,11 +12,11 @@ This project serves as a centralized place to inspect key technical details abou
 
 System Info Hub gathers and presents a comprehensive overview of various aspects of your system and Browse session.
 
-* **Network Information:** Displays IP address, city, country, ISP, organization, ASN (Autonomous System Number), and time zone. 🏙️
+* **Network Information:** Displays IPv4 and IPv6 address, Country, Region, City, ISP, Organization, ASN, and Time Zone. 🏙️
   
 * **Browser Details:** Provides information on the browser, version, engine, user agent, and whether cookies are enabled. 🖥️
   
-* **System Information:** Gathers details on the operating system, device type, architecture, CPU cores, memory, and system time zone. ⚙️
+* **System Information:** Gathers details on the operating system, device type, architecture, CPU cores, Memory, and System Time Zone. ⚙️
   
 * **Display & Graphics:** Shows screen resolution, viewport size, color depth, GPU information, and pixel ratio. 🖼️
   
