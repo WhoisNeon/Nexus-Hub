@@ -634,7 +634,7 @@
         <main class="info-grid">
             <section class="info-card">
                 <div class="card-header">
-                    <div class="card-icon"><i class="ph ph-globe"></i></div>
+                    <div class="card-icon" id="network-card-icon"><i class="ph ph-globe"></i></div>
                     <h3 class="card-title">Network Details</h3>
                     <button class="refresh-button" id="refresh-network-button">
                         <i class="ph ph-arrow-clockwise"></i>
@@ -870,6 +870,7 @@
             videoBackground: document.getElementById('video-background'),
             osIcon: document.getElementById('os-icon'),
             refreshNetworkButton: document.getElementById('refresh-network-button'),
+            networkCardIcon: document.getElementById('network-card-icon'),
         };
 
         const setTextContent = (element, text) => {
@@ -1145,6 +1146,10 @@
 
                         const country = geoData.country?.names?.en || 'Unknown Country';
                         const countryIso = geoData.country?.iso_code?.toLowerCase();
+                        if (countryIso && elements.country) {
+                            elements.country.dataset.iso = countryIso;
+                        }
+
 
                         let countryDisplay = country;
 
@@ -1161,7 +1166,7 @@
 
                         const city = cleanCityName(geoData.city?.names?.en);
                         const region = geoData.subdivisions?.[0]?.names?.en;
-                        
+
                         if (elements.regionItem && region && region.toLowerCase() !== city.toLowerCase()) {
                             setTextContent(elements.region, region);
                             elements.regionItem.style.display = 'flex';
@@ -1280,7 +1285,7 @@
                 videoBackground.load();
                 videoBackground.addEventListener('canplaythrough', function () {
                     videoBackground.classList.add('loaded');
-                    videoBackground.play().catch(error => {});
+                    videoBackground.play().catch(error => { });
                 }, { once: true });
                 videoSource.removeAttribute('data-src');
             }
@@ -1319,6 +1324,32 @@
                 }
             });
         }
+
+        elements.networkCardIcon.addEventListener('dblclick', async () => {
+            const ip = elements.ipAddress.textContent.trim();
+            const countryIso = elements.country.dataset.iso;
+
+            if (ip && ip !== 'Unavailable' && countryIso) {
+                const flag = String.fromCodePoint(...[...countryIso.toUpperCase()].map(char => 0x1F1E6 + char.charCodeAt(0) - 'A'.charCodeAt(0)));
+                const textToCopy = `${flag}| \`${ip}\``;
+
+                try {
+                    await navigator.clipboard.writeText(textToCopy);
+                    const originalIcon = elements.networkCardIcon.innerHTML;
+                    elements.networkCardIcon.innerHTML = '<i class="ph ph-check"></i>';
+                    setTimeout(() => {
+                        elements.networkCardIcon.innerHTML = originalIcon;
+                    }, 1500);
+                } catch (err) {
+                    console.error('Failed to copy: ', err);
+                    const originalIcon = elements.networkCardIcon.innerHTML;
+                    elements.networkCardIcon.innerHTML = '<i class="ph ph-x"></i>';
+                    setTimeout(() => {
+                        elements.networkCardIcon.innerHTML = originalIcon;
+                    }, 1500);
+                }
+            }
+        });
     </script>
 </body>
 
