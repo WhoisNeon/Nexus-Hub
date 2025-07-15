@@ -519,7 +519,6 @@
             .theme-toggle,
             .github-toggle {
                 font-size: 1.5rem;
-                padding: .5rem;
             }
 
             .info-grid {
@@ -560,11 +559,22 @@
             }
         }
 
-        @media (max-width: 375px) {
-            .header h1 {
-                font-size: 1.6rem;
+        @media (max-width: 424px) {
+            .header {
+                justify-content: space-around;
             }
 
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .theme-toggle,
+            .github-toggle {
+                font-size: 1.75rem;
+            }
+        }
+
+        @media (max-width: 375px) {
             .info-grid {
                 gap: 1rem;
                 grid-template-columns: 1fr;
@@ -572,12 +582,6 @@
         }
 
         @media (max-width: 320px) {
-
-            .theme-toggle,
-            .github-toggle {
-                font-size: 1.25rem;
-            }
-
             .footer {
                 font-size: 0.9rem;
             }
@@ -602,7 +606,6 @@
 
     <video muted loop playsinline id="video-background">
         <source data-src="https://whoisneon.github.io/System-Info-Hub/assets/background.mp4" type="video/mp4">
-        Your browser does not support the video tag.
     </video>
 
     <div class="container" id="main-container">
@@ -1160,7 +1163,7 @@
                             } else {
                                 flagUrl = `https://hatscripts.github.io/circle-flags/flags/${countryIso}.svg`;
                             }
-                            const flagHtml = `<img src="${flagUrl}" class="flag-icon" width="20" />`;
+                            const flagHtml = `<img src="${flagUrl}" class="flag-icon" />`;
                             countryDisplay = `${country} ${flagHtml}`;
                         }
 
@@ -1174,8 +1177,8 @@
                             elements.regionItem.style.display = 'none';
                         }
 
-                        const isp = geoData.traits?.isp || 'Unavailable';
-                        const organization = geoData.traits?.autonomous_system_organization || 'Unavailable';
+                        const isp = geoData.traits?.isp || geoData.traits?.autonomous_system_organization || 'Unavailable';
+                        const organization = geoData.traits?.organization || 'Unavailable';
                         const asn = geoData.traits?.autonomous_system_number ? `AS-${geoData.traits.autonomous_system_number}` : 'Unknown';
                         const ipTimezone = geoData.location?.time_zone || 'Unknown';
 
@@ -1340,6 +1343,18 @@
                 }
             }
         });
+
+        function adjustHeaderContent() {
+            const headerH1 = document.querySelector('.header h1');
+            if (window.innerWidth < 425) {
+                headerH1.textContent = 'S.I.H';
+            } else {
+                headerH1.textContent = 'System Info Hub';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', adjustHeaderContent);
+        window.addEventListener('resize', adjustHeaderContent);
     </script>
 </body>
 
