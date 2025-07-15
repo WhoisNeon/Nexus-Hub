@@ -1057,7 +1057,7 @@
                     }
                 }
             } catch (e) {
-                console.error('GPU detection failed:', e);
+                // Fail silently
             }
             return 'Not detected / Unknown';
         }
@@ -1335,18 +1335,8 @@
 
                 try {
                     await navigator.clipboard.writeText(textToCopy);
-                    const originalIcon = elements.networkCardIcon.innerHTML;
-                    elements.networkCardIcon.innerHTML = '<i class="ph ph-check"></i>';
-                    setTimeout(() => {
-                        elements.networkCardIcon.innerHTML = originalIcon;
-                    }, 1500);
                 } catch (err) {
                     console.error('Failed to copy: ', err);
-                    const originalIcon = elements.networkCardIcon.innerHTML;
-                    elements.networkCardIcon.innerHTML = '<i class="ph ph-x"></i>';
-                    setTimeout(() => {
-                        elements.networkCardIcon.innerHTML = originalIcon;
-                    }, 1500);
                 }
             }
         });
