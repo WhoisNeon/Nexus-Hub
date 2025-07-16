@@ -819,6 +819,21 @@
                     <span class="info-value" id="online-status"><i class="loading"></i></span>
                 </div>
             </section>
+
+            <section class="info-card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="ph ph-gauge"></i></div>
+                    <h3 class="card-title">Speed Test</h3>
+                </div>
+                <div class="info-item">
+                    <div style="text-align:right;">
+                        <div style="min-height:360px;">
+                            <div style="width:100%;height:0;padding-bottom:50%;position:relative;"><iframe
+                                    style="border:none;position:absolute;top:0;left:0;width:100%;height:100%;min-height:360px;border:none;overflow:hidden !important;"
+                                    src="//openspeedtest.com/speedtest"></iframe>
+                            </div>
+                    </div>
+            </section>
         </main>
 
         <footer class="footer">
@@ -874,6 +889,9 @@
             osIcon: document.getElementById('os-icon'),
             refreshNetworkButton: document.getElementById('refresh-network-button'),
             networkCardIcon: document.getElementById('network-card-icon'),
+            pingSpeed: document.getElementById('ping-speed'),
+            downloadSpeed: document.getElementById('download-speed'),
+            uploadSpeed: document.getElementById('upload-speed'),
         };
 
         const setTextContent = (element, text) => {
@@ -1220,6 +1238,7 @@
             }, REFRESH_COOLDOWN);
         }
 
+
         function updateOnlineStatusIndicator(isOnline) {
             const onlineStatusElement = elements.onlineStatus;
             if (onlineStatusElement) {
@@ -1302,6 +1321,7 @@
             if (elements.refreshNetworkButton) {
                 elements.refreshNetworkButton.addEventListener('click', fetchIPInfo);
             }
+
             fetchIPInfo();
             loadBrowserAndSystemInfo();
             lazyLoadVideo();
