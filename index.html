@@ -644,7 +644,7 @@
                     </button>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">IP Address</span>
+                    <span class="info-label">IP Address</Address></span>
                     <span class="info-value" id="ip-address"><i class="loading"></i></span>
                 </div>
                 <div class="info-item" id="ipv6-item">
@@ -705,6 +705,10 @@
                 <div class="info-item">
                     <span class="info-label">Cookies Enabled</span>
                     <span class="info-value" id="cookies-enabled"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Preferred Theme</span>
+                    <span class="info-value" id="preferred-theme"><i class="loading"></i></span>
                 </div>
             </section>
 
@@ -819,21 +823,6 @@
                     <span class="info-value" id="online-status"><i class="loading"></i></span>
                 </div>
             </section>
-
-            <section class="info-card">
-                <div class="card-header">
-                    <div class="card-icon"><i class="ph ph-gauge"></i></div>
-                    <h3 class="card-title">Speed Test</h3>
-                </div>
-                <div class="info-item">
-                    <div style="text-align:right;">
-                        <div style="min-height:360px;">
-                            <div style="width:100%;height:0;padding-bottom:50%;position:relative;"><iframe
-                                    style="border:none;position:absolute;top:0;left:0;width:100%;height:100%;min-height:360px;border:none;overflow:hidden !important;"
-                                    src="//openspeedtest.com/speedtest"></iframe>
-                            </div>
-                    </div>
-            </section>
         </main>
 
         <footer class="footer">
@@ -862,11 +851,14 @@
             browserEngine: document.getElementById('browser-engine'),
             userAgent: document.getElementById('user-agent'),
             cookiesEnabled: document.getElementById('cookies-enabled'),
+            preferredTheme: document.getElementById('preferred-theme'), // Changed from preferredColorScheme
             os: document.getElementById('os'),
             deviceType: document.getElementById('device-type'),
+            // Removed batteryStatus, batteryStatusItem
             architecture: document.getElementById('architecture'),
             cpuCores: document.getElementById('cpu-cores'),
             memory: document.getElementById('memory'),
+            // Removed networkConnectionType, networkConnectionTypeItem, bluetoothAvailability, bluetoothAvailabilityItem
             systemTimezone: document.getElementById('system-timezone'),
             screenResolution: document.getElementById('screen-resolution'),
             viewportSize: document.getElementById('viewport-size'),
@@ -889,9 +881,6 @@
             osIcon: document.getElementById('os-icon'),
             refreshNetworkButton: document.getElementById('refresh-network-button'),
             networkCardIcon: document.getElementById('network-card-icon'),
-            pingSpeed: document.getElementById('ping-speed'),
-            downloadSpeed: document.getElementById('download-speed'),
-            uploadSpeed: document.getElementById('upload-speed'),
         };
 
         const setTextContent = (element, text) => {
@@ -1078,7 +1067,6 @@
                     }
                 }
             } catch (e) {
-                // Fail silently
             }
             return 'Not detected / Unknown';
         }
@@ -1238,7 +1226,6 @@
             }, REFRESH_COOLDOWN);
         }
 
-
         function updateOnlineStatusIndicator(isOnline) {
             const onlineStatusElement = elements.onlineStatus;
             if (onlineStatusElement) {
@@ -1250,7 +1237,20 @@
             }
         }
 
-        function loadBrowserAndSystemInfo() {
+        function getPreferredThemeString() {
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                return 'Dark Mode';
+            } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+                return 'Light Mode';
+            }
+            return 'System Preference';
+        }
+
+        function updatePreferredThemeDisplay() {
+            setTextContent(elements.preferredTheme, getPreferredThemeString());
+        }
+
+        async function loadBrowserAndSystemInfo() {
             const { browser, version, engine } = getBrowserInfo();
             const { os, deviceType, osIconClass } = getOSInfo();
 
@@ -1259,14 +1259,18 @@
             setTextContent(elements.browserEngine, engine);
             setTextContent(elements.userAgent, navigator.userAgent);
             setTextContent(elements.cookiesEnabled, navigator.cookieEnabled ? 'Yes' : 'No');
+            updatePreferredThemeDisplay(); // Update theme display
+
             setTextContent(elements.os, os);
             setTextContent(elements.deviceType, deviceType);
             if (elements.osIcon) {
                 setInnerHTML(elements.osIcon, `<i class="${osIconClass}"></i>`);
             }
+
             setTextContent(elements.architecture, navigator.platform || 'Unknown');
             setTextContent(elements.cpuCores, navigator.hardwareConcurrency ? `${navigator.hardwareConcurrency}` : 'Unknown');
-            setTextContent(elements.memory, navigator.deviceMemory ? `${navigator.deviceMemory} GB` : 'Unknown');
+            setTextContent(elements.memory, navigator.deviceMemory ? `${navigator.deviceMemory} GB` : 'Unknown'); // Rolled back memory function
+
             setTextContent(elements.systemTimezone, Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown');
             setTextContent(elements.screenResolution, `${screen.width}×${screen.height}`);
             setTextContent(elements.viewportSize, `${window.innerWidth}×${window.innerHeight}`);
@@ -1292,11 +1296,13 @@
         function applyTheme(isDarkMode) {
             elements.body.classList.toggle('dark-mode', isDarkMode);
             elements.themeToggle.classList.toggle('theme-toggle--toggled', !isDarkMode);
-            localStorage.setItem('darkMode', isDarkMode);
         }
 
         function toggleTheme() {
-            applyTheme(!elements.body.classList.contains('dark-mode'));
+            const currentIsDarkMode = elements.body.classList.contains('dark-mode');
+            const newIsDarkMode = !currentIsDarkMode;
+            applyTheme(newIsDarkMode);
+            localStorage.setItem('userThemePreference', newIsDarkMode ? 'dark' : 'light');
         }
 
         function lazyLoadVideo() {
@@ -1314,17 +1320,33 @@
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-            const savedTheme = localStorage.getItem('darkMode');
-            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-            applyTheme(savedTheme === 'true' || (savedTheme === null && prefersDark));
+            const userThemePreference = localStorage.getItem('userThemePreference');
+            const prefersDarkMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+            if (userThemePreference === 'dark') {
+                applyTheme(true);
+            } else if (userThemePreference === 'light') {
+                applyTheme(false);
+            } else {
+                applyTheme(prefersDarkMediaQuery.matches);
+            }
+
             elements.themeToggle.addEventListener('click', toggleTheme);
             if (elements.refreshNetworkButton) {
                 elements.refreshNetworkButton.addEventListener('click', fetchIPInfo);
             }
-
             fetchIPInfo();
             loadBrowserAndSystemInfo();
             lazyLoadVideo();
+
+            if (window.matchMedia) {
+                prefersDarkMediaQuery.addEventListener('change', (event) => {
+                    if (localStorage.getItem('userThemePreference') === null) {
+                        applyTheme(event.matches);
+                    }
+                    updatePreferredThemeDisplay();
+                });
+            }
         });
 
         const handleScroll = () => {
@@ -1340,14 +1362,6 @@
         window.addEventListener('offline', () => updateOnlineStatusIndicator(false));
         window.addEventListener('resize', () => setTextContent(elements.viewportSize, `${window.innerWidth}×${window.innerHeight}`));
 
-        if (window.matchMedia) {
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-                if (localStorage.getItem('darkMode') === null) {
-                    applyTheme(event.matches);
-                }
-            });
-        }
-
         elements.networkCardIcon.addEventListener('dblclick', async () => {
             const ip = elements.ipAddress.textContent.trim();
             const countryIso = elements.country.dataset.iso;
@@ -1359,7 +1373,6 @@
                 try {
                     await navigator.clipboard.writeText(textToCopy);
                 } catch (err) {
-                    console.error('Failed to copy: ', err);
                 }
             }
         });
