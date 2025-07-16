@@ -706,12 +706,8 @@
                     <span class="info-label">Cookies Enabled</span>
                     <span class="info-value" id="cookies-enabled"><i class="loading"></i></span>
                 </div>
-                <div class="info-item">
-                    <span class="info-label">Preferred Theme</span>
-                    <span class="info-value" id="preferred-theme"><i class="loading"></i></span>
-                </div>
             </section>
-
+            
             <section class="info-card">
                 <div class="card-header">
                     <div class="card-icon" id="os-icon"><i class="loading"></i></div>
@@ -741,8 +737,12 @@
                     <span class="info-label">Time Zone</span>
                     <span class="info-value" id="system-timezone"><i class="loading"></i></span>
                 </div>
+                <div class="info-item">
+                    <span class="info-label">Preferred Theme</span>
+                    <span class="info-value" id="preferred-theme"><i class="loading"></i></span>
+                </div>
             </section>
-
+            
             <section class="info-card">
                 <div class="card-header">
                     <div class="card-icon"><i class="ph ph-monitor"></i></div>
@@ -851,14 +851,12 @@
             browserEngine: document.getElementById('browser-engine'),
             userAgent: document.getElementById('user-agent'),
             cookiesEnabled: document.getElementById('cookies-enabled'),
-            preferredTheme: document.getElementById('preferred-theme'), // Changed from preferredColorScheme
+            preferredTheme: document.getElementById('preferred-theme'),
             os: document.getElementById('os'),
             deviceType: document.getElementById('device-type'),
-            // Removed batteryStatus, batteryStatusItem
             architecture: document.getElementById('architecture'),
             cpuCores: document.getElementById('cpu-cores'),
             memory: document.getElementById('memory'),
-            // Removed networkConnectionType, networkConnectionTypeItem, bluetoothAvailability, bluetoothAvailabilityItem
             systemTimezone: document.getElementById('system-timezone'),
             screenResolution: document.getElementById('screen-resolution'),
             viewportSize: document.getElementById('viewport-size'),
@@ -1040,77 +1038,39 @@
                     if (debugInfo) {
                         const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
 
-                        // Specific match for ANGLE (Qualcomm, Adreno (TM) XXX, OpenGL ES X.X)
-                        let match = renderer.match(/(ANGLE \(Qualcomm, Adreno \(TM\) \d+, OpenGL ES \d\.\d\))/i);
-                        if (match && match[1]) { return match[1]; }
 
-                        // NVIDIA GPUs
+                        match = renderer.match(/(ANGLE \(Qualcomm, Adreno \(TM\) \d+, OpenGL ES \d\.\d\))/i);
+                        if (match && match[1]) { return match[1]; }
                         match = renderer.match(/(NVIDIA (?:Tesla|A\d+|H\d+|L\d+)[A-Za-z0-9\s]*)/i);
                         if (match && match[1]) { return match[1]; }
                         match = renderer.match(/(NVIDIA GeForce (?:RTX|GTX|MX|Quadro) \d+[A-Za-z]*)/);
                         if (match && match[1]) { return match[1]; }
-                        match = renderer.match(/(NVIDIA GeForce Graphics Driver)/i); // Generic NVIDIA driver
-                        if (match && match[1]) { return "NVIDIA GeForce (Generic)"; }
-
-                        // AMD GPUs
                         match = renderer.match(/(AMD Instinct (?:MI\d+))/i);
                         if (match && match[1]) { return match[1]; }
                         match = renderer.match(/(AMD Radeon(?:TM)?(?: Pro)?(?: \w+)?(?: Graphics)?(?: Mobile)?(?: Vega \d+)?(?: RX \d+)?(?: \d+M)?)/i);
                         if (match && match[1]) { return match[1].replace(/\s*\(\w+\)$/, '').trim(); }
-                        match = renderer.match(/(AMD Custom GPU)/i); // For custom AMD GPUs like in consoles
-                        if (match && match[1]) { return match[1]; }
-
-                        // Intel GPUs
                         match = renderer.match(/(Intel\(R\) Arc(?:[A-Za-z0-9\s]*?) Graphics)/i);
                         if (match && match[1]) { return match[1]; }
                         match = renderer.match(/(Intel\(R\) (?:Iris\(R\) Xe|Iris\(R\) Plus|HD Graphics \d+|UHD Graphics \d+|Xe Graphics))/);
                         if (match && match[1]) { return match[1]; }
-                        match = renderer.match(/(Intel(?: Graphics)?(?: HD)?(?: Iris)?(?: Plus)? \w*)/i); // More generic Intel
-                        if (match && match[1]) { return match[1].replace(/\s*\(\w+\)$/, '').trim(); }
-
-                        // Qualcomm Adreno (more generic capture if specific not caught)
                         match = renderer.match(/(Adreno(?:TM)? \d+)/i);
                         if (match && match[1]) { return match[1]; }
-
-                        // ARM Mali GPUs
-                        match = renderer.match(/(ARM Mali(?:-G\d+)?(?: MC\d+)?)/i);
-                        if (match && match[1]) { return match[1]; }
-
-                        // Apple GPUs (M-series, A-series)
-                        match = renderer.match(/(Apple M\d+ Graphics)/i);
-                        if (match && match[1]) { return match[1]; }
-                        match = renderer.match(/(Apple A\d+ GPU)/i);
-                        if (match && match[1]) { return match[1]; }
-
-                        // Imagination PowerVR
+                        match = renderer.match(/((?:Mali|Apple)[\w\d\s-]*?(?:GPU)?(?:(?:MP)?\d)?)/i);
+                        if (match && match[1]) { return match[1].replace(/\s+\(.*?$/, '').trim(); }
                         match = renderer.match(/(PowerVR(?:TM)? [\w\d\s-]*)/i);
                         if (match && match[1]) { return match[1]; }
-
-                        // Samsung Xclipse (Exynos)
                         match = renderer.match(/(Samsung Xclipse \d+)/i);
                         if (match && match[1]) { return match[1]; }
-
-                        // Virtual/Remote Desktop Drivers
-                        match = renderer.match(/(Microsoft Basic Render Driver|Microsoft Remote Desktop Graphics Adapter|VMware SVGA|Parallels Display Adapter)/i);
+                        match = renderer.match(/(Microsoft Basic Render Driver|Microsoft Remote Desktop Graphics Adapter)/i);
                         if (match && match[1]) { return match[1]; }
-
-                        // Generic Fallback (if specific pattern not found)
-                        // This is a broad capture, order matters. Keep it lower to catch specifics first.
-                        match = renderer.match(/([A-Za-z0-9\s]*?(?:Graphics|GPU|Renderer|Video Card)[\s\w\d-]*)/i);
-                        if (match && match[1]) {
-                            // Clean up common extra phrases
-                            let cleaned = match[1].replace(/(\(R\)|\(TM\)|\(C\)| Corporation| Inc\.|\bOpenGL ES\b|\bDirect3D\b|\bMetal\b|\bVulkan\b|\bDriver\b|\bAdapter\b|\bIntegrated\b|\bMobile\b|\bFamily\b)/gi, '').trim();
-                            // Remove multiple spaces
-                            cleaned = cleaned.replace(/\s{2,}/g, ' ');
-                            return cleaned;
-                        }
-
+                        match = renderer.match(/(Qualcomm Adreno|ARM Mali|Imagination PowerVR|Apple A\d+ GPU)/i);
+                        if (match && match[1]) { return match[1]; }
                         return renderer;
                     }
                 }
             } catch (e) {
             }
-            return 'Not detected';
+            return 'Not detected / Unknown';
         }
 
         function cleanCityName(cityName) {
