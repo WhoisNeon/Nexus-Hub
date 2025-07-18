@@ -690,7 +690,7 @@
                 </div>
                 <div class="ip-search-container">
                     <input type="text" id="ip-domain-search" class="ip-search-input"
-                        placeholder="Enter IP or Domain to search">
+                        placeholder="Enter IP address to search">
                     <button id="search-button" class="search-button">
                         <i class="ph ph-magnifying-glass"></i>
                     </button>
@@ -1186,68 +1186,60 @@
             resetNetworkInfoState();
 
             const FINDIP_TOKEN = 'eb2978e07c2e4a5e9bcb8c40e5f68292';
-            let ipv4 = 'Unavailable';
-            let ipv6 = 'Unavailable';
-            let target = query || '';
-            let isIpSearch = false;
+            let currentIpv4 = 'Unavailable';
+            let currentIpv6 = 'Unavailable';
+            let targetIP = query.trim();
 
-            if (target === '') {
+            if (targetIP === '') {
                 try {
                     const ipv4Response = await fetch('https://api.ipify.org?format=json');
                     if (ipv4Response.ok) {
-                        ipv4 = (await ipv4Response.json()).ip;
-                        target = ipv4;
+                        currentIpv4 = (await ipv4Response.json()).ip;
+                        targetIP = currentIpv4;
                     }
 
                     try {
                         const ipv6Response = await fetch('https://api6.ipify.org?format=json');
                         if (ipv6Response.ok) {
-                            ipv6 = (await ipv6Response.json()).ip;
+                            currentIpv6 = (await ipv6Response.json()).ip;
                         }
                     } catch (e) {
                     }
                     elements.ipv4Item.style.display = 'flex';
-                    if (ipv6 !== 'Unavailable') {
+                    if (currentIpv6 !== 'Unavailable') {
                         elements.ipv6Item.style.display = 'flex';
                     } else {
                         elements.ipv6Item.style.display = 'none';
                     }
                 } catch (e) {
+                    currentIpv4 = 'Unavailable';
+                    currentIpv6 = 'Unavailable';
                 }
-            } else if (isValidIP(target)) {
-                isIpSearch = true;
-                elements.ipv4Item.style.display = 'flex';
-                elements.ipv6Item.style.display = 'flex';
-                ipv4 = target;
-                ipv6 = 'N/A (IP search)';
-            } else {
+            } else if (!isValidIP(targetIP)) {
+                setTextContent(elements.ipAddress, 'Invalid IP');
+                setTextContent(elements.ipv6Address, 'N/A');
                 elements.ipv4Item.style.display = 'flex';
                 elements.ipv6Item.style.display = 'none';
-                ipv6 = 'N/A (Domain search)';
-                try {
-                    const ipApiOrgResponse = await fetch(`https://ip-api.com/json/${target}`);
-                    if (ipApiOrgResponse.ok) {
-                        const ipApiData = await ipApiOrgResponse.json();
-                        if (ipApiData.query && isValidIP(ipApiData.query)) {
-                            target = ipApiData.query;
-                            ipv4 = target;
-                        } else {
-                            target = 'Unavailable';
-                            ipv4 = 'Unavailable';
-                        }
-                    } else {
-                        target = 'Unavailable';
-                        ipv4 = 'Unavailable';
-                    }
-                } catch (e) {
-                    target = 'Unavailable';
-                    ipv4 = 'Unavailable';
-                }
+                setTextContent(elements.country, 'Unavailable');
+                setTextContent(elements.city, 'Unavailable');
+                setTextContent(elements.isp, 'Unavailable');
+                setTextContent(elements.organization, 'Unavailable');
+                setTextContent(elements.connectionType, 'Unknown');
+                setTextContent(elements.ipTimezone, 'Unknown');
+                hidePreloader();
+                setTimeout(() => {
+                    elements.refreshNetworkButton.disabled = false;
+                }, REFRESH_COOLDOWN);
+                return;
+            } else {
+                currentIpv4 = targetIP;
+                elements.ipv4Item.style.display = 'flex';
+                elements.ipv6Item.style.display = 'none';
             }
 
-            if (target !== 'Unavailable' && target !== '') {
+            if (targetIP !== 'Unavailable' && targetIP !== '') {
                 try {
-                    const geoResponse = await fetch(`https://api.findip.net/${target}/?token=${FINDIP_TOKEN}`);
+                    const geoResponse = await fetch(`https://api.findip.net/${targetIP}/?token=${FINDIP_TOKEN}`);
                     if (geoResponse.ok) {
                         const geoData = await geoResponse.json();
 
@@ -1316,12 +1308,12 @@
                 setTextContent(elements.ipTimezone, 'Unknown');
             }
 
-            setTextContent(elements.ipAddress, ipv4);
-            setTextContent(elements.ipv6Address, ipv6);
+            setTextContent(elements.ipAddress, currentIpv4);
+            setTextContent(elements.ipv6Address, currentIpv6);
 
 
-            if (elements.ipAddress.textContent !== 'Unavailable') addCopyFeature('ip-address');
-            if (elements.ipv6Address.textContent !== 'Unavailable' && elements.ipv6Address.textContent !== 'N/A (IP search)' && elements.ipv6Address.textContent !== 'N/A (Domain search)') addCopyFeature('ipv6-address');
+            if (elements.ipAddress.textContent !== 'Unavailable' && elements.ipAddress.textContent !== 'Invalid IP') addCopyFeature('ip-address');
+            if (elements.ipv6Address.textContent !== 'Unavailable' && elements.ipv6Address.textContent !== 'N/A (Specific IP)') addCopyFeature('ipv6-address');
 
             hidePreloader();
 
