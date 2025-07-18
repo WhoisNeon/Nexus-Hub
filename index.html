@@ -695,7 +695,7 @@
                         <i class="ph ph-magnifying-glass"></i>
                     </button>
                 </div>
-                <div class="info-item">
+                <div class="info-item" id="ip-address-item">
                     <span class="info-label">IP Address</Address></span>
                     <span class="info-value" id="ip-address"><i class="loading"></i></span>
                 </div>
@@ -889,6 +889,7 @@
             infoCards: document.querySelectorAll('.info-card'),
             ipAddress: document.getElementById('ip-address'),
             ipv6Address: document.getElementById('ipv6-address'),
+            ipv4Item: document.getElementById('ip-address-item'),
             ipv6Item: document.getElementById('ipv6-item'),
             city: document.getElementById('city'),
             country: document.getElementById('country'),
@@ -1187,14 +1188,15 @@
             const FINDIP_TOKEN = 'eb2978e07c2e4a5e9bcb8c40e5f68292';
             let ipv4 = 'Unavailable';
             let ipv6 = 'Unavailable';
-            let targetIP = '';
+            let target = query || '';
+            let isIpSearch = false;
 
-            if (query === '') {
+            if (target === '') {
                 try {
                     const ipv4Response = await fetch('https://api.ipify.org?format=json');
                     if (ipv4Response.ok) {
                         ipv4 = (await ipv4Response.json()).ip;
-                        targetIP = ipv4;
+                        target = ipv4;
                     }
 
                     try {
@@ -1204,35 +1206,48 @@
                         }
                     } catch (e) {
                     }
+                    elements.ipv4Item.style.display = 'flex';
+                    if (ipv6 !== 'Unavailable') {
+                        elements.ipv6Item.style.display = 'flex';
+                    } else {
+                        elements.ipv6Item.style.display = 'none';
+                    }
                 } catch (e) {
                 }
-            } else if (isValidIP(query)) {
-                targetIP = query;
-                elements.ipv6Item.style.display = 'none';
-                elements.ipAddress.textContent = targetIP;
-                elements.ipv6Address.textContent = 'N/A (IP search)';
+            } else if (isValidIP(target)) {
+                isIpSearch = true;
+                elements.ipv4Item.style.display = 'flex';
+                elements.ipv6Item.style.display = 'flex';
+                ipv4 = target;
+                ipv6 = 'N/A (IP search)';
             } else {
+                elements.ipv4Item.style.display = 'flex';
                 elements.ipv6Item.style.display = 'none';
-                elements.ipv6Address.textContent = 'N/A (Domain search)';
+                ipv6 = 'N/A (Domain search)';
                 try {
-                    const ipApiOrgResponse = await fetch(`http://ip-api.com/json/${query}`);
+                    const ipApiOrgResponse = await fetch(`https://ip-api.com/json/${target}`);
                     if (ipApiOrgResponse.ok) {
                         const ipApiData = await ipApiOrgResponse.json();
                         if (ipApiData.query && isValidIP(ipApiData.query)) {
-                            targetIP = ipApiData.query;
+                            target = ipApiData.query;
+                            ipv4 = target;
                         } else {
-                            targetIP = 'Unavailable';
+                            target = 'Unavailable';
+                            ipv4 = 'Unavailable';
                         }
+                    } else {
+                        target = 'Unavailable';
+                        ipv4 = 'Unavailable';
                     }
                 } catch (e) {
-                    targetIP = 'Unavailable';
+                    target = 'Unavailable';
+                    ipv4 = 'Unavailable';
                 }
-                elements.ipAddress.textContent = targetIP;
             }
 
-            if (targetIP !== 'Unavailable' && targetIP !== '') {
+            if (target !== 'Unavailable' && target !== '') {
                 try {
-                    const geoResponse = await fetch(`https://api.findip.net/${targetIP}/?token=${FINDIP_TOKEN}`);
+                    const geoResponse = await fetch(`https://api.findip.net/${target}/?token=${FINDIP_TOKEN}`);
                     if (geoResponse.ok) {
                         const geoData = await geoResponse.json();
 
@@ -1301,18 +1316,8 @@
                 setTextContent(elements.ipTimezone, 'Unknown');
             }
 
-            if (query === '' || isValidIP(query)) {
-                setTextContent(elements.ipAddress, ipv4);
-                if (ipv6 !== 'Unavailable' && query === '') {
-                    setTextContent(elements.ipv6Address, ipv6);
-                    elements.ipv6Item.style.display = 'flex';
-                } else {
-                    elements.ipv6Item.style.display = 'none';
-                }
-            } else {
-                setTextContent(elements.ipAddress, targetIP);
-                elements.ipv6Item.style.display = 'none';
-            }
+            setTextContent(elements.ipAddress, ipv4);
+            setTextContent(elements.ipv6Address, ipv6);
 
 
             if (elements.ipAddress.textContent !== 'Unavailable') addCopyFeature('ip-address');
