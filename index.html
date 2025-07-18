@@ -355,7 +355,6 @@
             max-width: 52%;
         }
 
-
         .info-value .copy-button {
             background: none;
             border: none;
@@ -491,6 +490,48 @@
         ::-webkit-scrollbar-thumb:hover {
             background: rgba(45, 45, 45, 0.9);
         }
+
+        .ip-search-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .ip-search-input {
+            flex-grow: 1;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--card-border);
+            background: var(--card-background);
+            color: var(--text-color);
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        .ip-search-input:focus {
+            outline: none;
+            border-color: var(--header-text);
+        }
+
+        .search-button {
+            width: 44px;
+            border-radius: 0.5rem;
+            border: 1px solid var(--card-border);
+            background: var(--theme-toggle-background);
+            color: var(--text-color);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .search-button:hover {
+            background: rgba(25, 25, 25, 0.15);
+        }
+
+        body.dark-mode .search-button:hover {
+            background: rgba(230, 230, 230, 0.15);
+        }
+
 
         @media (max-width: 1024px) {
             .info-grid {
@@ -643,6 +684,13 @@
                         <i class="ph ph-arrow-clockwise"></i>
                     </button>
                 </div>
+                <div class="ip-search-container">
+                    <input type="text" id="ip-domain-search" class="ip-search-input"
+                        placeholder="Enter IP or Domain to search">
+                    <button id="search-button" class="search-button">
+                        <i class="ph ph-magnifying-glass"></i>
+                    </button>
+                </div>
                 <div class="info-item">
                     <span class="info-label">IP Address</Address></span>
                     <span class="info-value" id="ip-address"><i class="loading"></i></span>
@@ -707,7 +755,7 @@
                     <span class="info-value" id="cookies-enabled"><i class="loading"></i></span>
                 </div>
             </section>
-            
+
             <section class="info-card">
                 <div class="card-header">
                     <div class="card-icon" id="os-icon"><i class="loading"></i></div>
@@ -742,7 +790,7 @@
                     <span class="info-value" id="preferred-theme"><i class="loading"></i></span>
                 </div>
             </section>
-            
+
             <section class="info-card">
                 <div class="card-header">
                     <div class="card-icon"><i class="ph ph-monitor"></i></div>
@@ -879,6 +927,8 @@
             osIcon: document.getElementById('os-icon'),
             refreshNetworkButton: document.getElementById('refresh-network-button'),
             networkCardIcon: document.getElementById('network-card-icon'),
+            ipDomainSearch: document.getElementById('ip-domain-search'),
+            searchButton: document.getElementById('search-button'),
         };
 
         const setTextContent = (element, text) => {
@@ -1118,7 +1168,7 @@
 
         const REFRESH_COOLDOWN = 5000;
 
-        async function fetchIPInfo() {
+        async function fetchIPInfo(query = '') {
             if (elements.refreshNetworkButton.disabled) return;
 
             elements.refreshNetworkButton.disabled = true;
@@ -1127,31 +1177,39 @@
             const FINDIP_TOKEN = 'eb2978e07c2e4a5e9bcb8c40e5f68292';
             let ipv4 = 'Unavailable';
             let ipv6 = 'Unavailable';
+            let target = query || '';
 
-            try {
-                const ipv4Response = await fetch('https://api.ipify.org?format=json');
-                if (ipv4Response.ok) {
-                    ipv4 = (await ipv4Response.json()).ip;
-                }
-
+            if (target === '') {
                 try {
-                    const ipv6Response = await fetch('https://api6.ipify.org?format=json');
-                    if (ipv6Response.ok) {
-                        ipv6 = (await ipv6Response.json()).ip;
+                    const ipv4Response = await fetch('https://api.ipify.org?format=json');
+                    if (ipv4Response.ok) {
+                        ipv4 = (await ipv4Response.json()).ip;
+                        target = ipv4;
+                    }
+
+                    try {
+                        const ipv6Response = await fetch('https://api6.ipify.org?format=json');
+                        if (ipv6Response.ok) {
+                            ipv6 = (await ipv6Response.json()).ip;
+                        }
+                    } catch (e) {
                     }
                 } catch (e) {
                 }
+            }
 
-                if (elements.ipv6Item) {
-                    if (ipv6 === 'Unavailable') {
-                        elements.ipv6Item.style.display = 'none';
-                    } else {
-                        elements.ipv6Item.style.display = 'flex';
-                    }
+
+            if (elements.ipv6Item) {
+                if (ipv6 === 'Unavailable' && query === '') {
+                    elements.ipv6Item.style.display = 'none';
+                } else {
+                    elements.ipv6Item.style.display = 'flex';
                 }
+            }
 
-                if (ipv4 !== 'Unavailable') {
-                    const geoResponse = await fetch(`https://api.findip.net/${ipv4}/?token=${FINDIP_TOKEN}`);
+            if (target !== 'Unavailable' && target !== '') {
+                try {
+                    const geoResponse = await fetch(`https://api.findip.net/${target}/?token=${FINDIP_TOKEN}`);
                     if (geoResponse.ok) {
                         const geoData = await geoResponse.json();
 
@@ -1196,6 +1254,10 @@
                         setTextContent(elements.organization, organization);
                         setTextContent(elements.connectionType, asn);
                         setTextContent(elements.ipTimezone, ipTimezone);
+
+                        ipv4 = geoData.ip_address || ipv4;
+                        ipv6 = geoData.ipv6_address || ipv6;
+
                     } else {
                         setTextContent(elements.country, 'Unavailable');
                         setTextContent(elements.city, 'Unavailable');
@@ -1204,9 +1266,15 @@
                         setTextContent(elements.connectionType, 'Unknown');
                         setTextContent(elements.ipTimezone, 'Unknown');
                     }
+                } catch (error) {
+                    setTextContent(elements.country, 'Unavailable');
+                    setTextContent(elements.city, 'Unavailable');
+                    setTextContent(elements.isp, 'Unavailable');
+                    setTextContent(elements.organization, 'Unavailable');
+                    setTextContent(elements.connectionType, 'Unknown');
+                    setTextContent(elements.ipTimezone, 'Unknown');
                 }
-
-            } catch (error) {
+            } else {
                 setTextContent(elements.country, 'Unavailable');
                 setTextContent(elements.city, 'Unavailable');
                 setTextContent(elements.isp, 'Unavailable');
@@ -1261,7 +1329,7 @@
             setTextContent(elements.browserEngine, engine);
             setTextContent(elements.userAgent, navigator.userAgent);
             setTextContent(elements.cookiesEnabled, navigator.cookieEnabled ? 'Yes' : 'No');
-            updatePreferredThemeDisplay(); // Update theme display
+            updatePreferredThemeDisplay();
 
             setTextContent(elements.os, os);
             setTextContent(elements.deviceType, deviceType);
@@ -1271,7 +1339,7 @@
 
             setTextContent(elements.architecture, navigator.platform || 'Unknown');
             setTextContent(elements.cpuCores, navigator.hardwareConcurrency ? `${navigator.hardwareConcurrency}` : 'Unknown');
-            setTextContent(elements.memory, navigator.deviceMemory ? `${navigator.deviceMemory} GB` : 'Unknown'); // Rolled back memory function
+            setTextContent(elements.memory, navigator.deviceMemory ? `${navigator.deviceMemory} GB` : 'Unknown');
 
             setTextContent(elements.systemTimezone, Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown');
             setTextContent(elements.screenResolution, `${screen.width}×${screen.height}`);
@@ -1335,8 +1403,17 @@
 
             elements.themeToggle.addEventListener('click', toggleTheme);
             if (elements.refreshNetworkButton) {
-                elements.refreshNetworkButton.addEventListener('click', fetchIPInfo);
+                elements.refreshNetworkButton.addEventListener('click', () => fetchIPInfo(elements.ipDomainSearch.value));
             }
+            elements.ipDomainSearch.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    fetchIPInfo(elements.ipDomainSearch.value);
+                }
+            });
+            if (elements.searchButton) {
+                elements.searchButton.addEventListener('click', () => fetchIPInfo(elements.ipDomainSearch.value));
+            }
+
             fetchIPInfo();
             loadBrowserAndSystemInfo();
             lazyLoadVideo();
