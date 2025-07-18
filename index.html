@@ -1215,7 +1215,7 @@
                 elements.ipv6Item.style.display = 'none';
                 elements.ipv6Address.textContent = 'N/A (Domain search)';
                 try {
-                    const ipApiOrgResponse = await fetch(`http://ip-api.com/json/${query}?fields=query`);
+                    const ipApiOrgResponse = await fetch(`http://ip-api.com/json/${query}`);
                     if (ipApiOrgResponse.ok) {
                         const ipApiData = await ipApiOrgResponse.json();
                         if (ipApiData.query && isValidIP(ipApiData.query)) {
