@@ -1315,8 +1315,6 @@
             if (elements.ipAddress.textContent !== 'Unavailable' && elements.ipAddress.textContent !== 'Invalid IP') addCopyFeature('ip-address');
             if (elements.ipv6Address.textContent !== 'Unavailable' && elements.ipv6Address.textContent !== 'N/A (Specific IP)') addCopyFeature('ipv6-address');
 
-            hidePreloader();
-
             setTimeout(() => {
                 elements.refreshNetworkButton.disabled = false;
             }, REFRESH_COOLDOWN);
@@ -1452,6 +1450,7 @@
                     updatePreferredThemeDisplay();
                 });
             }
+            hidePreloader();
         });
 
         const handleScroll = () => {
