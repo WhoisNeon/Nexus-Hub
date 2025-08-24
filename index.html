@@ -1468,15 +1468,17 @@
 
         elements.networkCardIcon.addEventListener('dblclick', async () => {
             const ip = elements.ipAddress.textContent.trim();
-            const countryIso = elements.country.dataset.iso;
-
-            if (ip && ip !== 'Unavailable' && countryIso) {
-                const flag = String.fromCodePoint(...[...countryIso.toUpperCase()].map(char => 0x1F1E6 + char.charCodeAt(0) - 'A'.charCodeAt(0)));
-                const textToCopy = `${flag}| \`${ip}\``;
-
+             const countryIso = elements.country.dataset.iso;
+             if (ip && ip !== 'Unavailable' && countryIso) {
+                 const flag = String.fromCodePoint(
+                    ...[...countryIso.toUpperCase()]
+                        .map(char => 0x1F1E6 + char.charCodeAt(0) - 'A'.charCodeAt(0))
+                );
+                const textToCopy = `${flag}| \`${ip}\`\n`;
                 try {
                     await navigator.clipboard.writeText(textToCopy);
                 } catch (err) {
+                    console.error("Clipboard write failed", err);
                 }
             }
         });
