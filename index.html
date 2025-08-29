@@ -23,9 +23,15 @@
         href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css">
 
     <style>
+        @font-face {
+          font-family: "IranSans";
+          src: url("https://raw.githubusercontent.com/WhoisNeon/Persian-font-theme/main/IranSans-Regular.ttf") format("truetype");
+        }
+        
         :root {
             --background: #f0f2f5;
             --card-background: rgba(255, 255, 255, 0.5);
+            --dropdown-background: rgba(255, 255, 255, 0.9);
             --theme-toggle-background: rgba(25, 25, 25, 0.1);
             --card-border: rgba(180, 187, 195, 0.8);
             --text-color: #333;
@@ -42,6 +48,7 @@
         body.dark-mode {
             --background: #151515;
             --card-background: rgba(25, 25, 25, 0.5);
+            --dropdown-background: rgba(25, 25, 25, 0.9);
             --theme-toggle-background: rgba(230, 230, 230, 0.1);
             --card-border: rgba(63, 75, 96, 0.6);
             --text-color: #e2e8f0;
@@ -55,6 +62,11 @@
             --header-h1-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
         }
 
+
+        html[dir="rtl"] body, html[dir="rtl"] #selected-lang-text, a[data-lang-name="پارسی"] {
+            font-family: 'IranSans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -219,12 +231,14 @@
             margin: 0;
             text-shadow: var(--header-h1-shadow);
             white-space: nowrap;
+            font-family: fantasy;
+            letter-spacing: .125rem;
         }
 
         .theme-toggle,
         .github-toggle {
             cursor: pointer;
-            font-size: 2rem;
+            font-size: 1.75rem;
             color: var(--text-color);
             transition: color 0.3s ease;
             display: flex;
@@ -279,13 +293,15 @@
 
             .theme-toggle:hover,
             .github-toggle:hover,
-            .refresh-button:enabled:hover {
+            .refresh-button:enabled:hover,
+            .language-button:hover {
                 background: rgba(25, 25, 25, 0.15);
             }
 
             body.dark-mode .theme-toggle:hover,
             .github-toggle:hover,
-            .refresh-button:enabled:hover {
+            .refresh-button:enabled:hover,
+            .language-button:hover {
                 background: rgba(230, 230, 230, 0.15);
             }
         }
@@ -304,7 +320,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 1rem;
+            margin-inline-end: 1rem;
             font-size: 1.75rem;
             color: var(--text-color);
             flex-shrink: 0;
@@ -352,7 +368,7 @@
 
         #user-agent {
             text-align: center;
-            max-width: 52%;
+            max-width: 53%;
         }
 
         .info-value .copy-button {
@@ -413,7 +429,7 @@
         }
 
         .online {
-            margin-left: 2px;
+           margin-inline-start: 2px;
         }
 
         .ping::before {
@@ -446,6 +462,15 @@
             border-radius: 20px 20px 0 0;
         }
 
+        .footer a{
+            color: inherit;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer a:hover {
+            opacity: 0.75;
+        }
+
         .refresh-button {
             display: flex;
             background: var(--theme-toggle-background);
@@ -454,7 +479,7 @@
             cursor: pointer;
             font-size: 1.25rem;
             color: var(--text-color);
-            margin-left: auto;
+            margin-inline-start: auto;
             padding: 0.5rem;
             transition: opacity 0.3s ease, background 0.4s ease;
         }
@@ -536,6 +561,77 @@
             background: rgba(230, 230, 230, 0.15);
         }
 
+        /* Language Selector Styles */
+        .language-selector {
+            position: relative;
+        }
+
+        .language-button {
+            background: var(--theme-toggle-background);
+            color: var(--text-color);
+            padding: .5rem 1rem;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            border-radius: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.3s ease;
+            border-top: 1px solid var(--card-border);
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .language-button img {
+            width: 1.75rem;
+            height: 1.75rem;
+        }
+
+        .language-dropdown {
+            display: none;
+            position: absolute;
+            background: var(--dropdown-background);
+            min-width: 100%;
+            box-shadow: 0 8px 16px var(--shadow-color);
+            z-index: 10;
+            border-radius: 1rem;
+            padding: 0.5rem 0;
+            margin-top: 0.5rem;
+            border: 1px solid var(--card-border);
+        }
+
+        .language-selector.active .language-dropdown {
+            display: block;
+        }
+
+        .language-selector.active .ph-caret-down {
+            transform: rotate(180deg);
+            transition: transform 0.3s ease;
+        }
+
+        .ph-caret-down {
+            transition: transform 0.3s ease;
+        }
+
+        .language-dropdown a {
+            color: var(--text-color);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.2s ease;
+        }
+
+        .language-dropdown a:hover {
+            background: var(--theme-toggle-background);
+        }
+
+        .language-dropdown img {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+
 
         @media (max-width: 1024px) {
             .info-grid {
@@ -553,8 +649,13 @@
             .header {
                 padding: 1rem;
                 gap: 1rem;
+                flex-wrap: wrap;
             }
 
+            .language-dropdown {
+                right: 0;
+            }
+            
             .header h1 {
                 font-size: 2rem;
                 white-space: normal;
@@ -564,6 +665,20 @@
             .theme-toggle,
             .github-toggle {
                 font-size: 1.5rem;
+            }
+
+            #selected-lang-text, .language-button .ph-caret-down{
+                display: none;
+            }
+
+            .language-button img {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+
+            .language-button {
+                padding: .5rem;
+                border: none;
             }
 
             .info-grid {
@@ -612,11 +727,6 @@
             .header h1 {
                 font-size: 2rem;
             }
-
-            .theme-toggle,
-            .github-toggle {
-                font-size: 1.75rem;
-            }
         }
 
         @media (max-width: 375px) {
@@ -643,10 +753,9 @@
         <div class="preloader-door-top"></div>
         <div class="preloader-door-bottom"></div>
         <div class="preloader-spinner">
-            <p class="text">Loading...</p>
+            <p class="text" data-translate="loading">Loading...</p>
             <div class="invertbox"></div>
         </div>
-
     </div>
 
     <video muted loop playsinline id="video-background">
@@ -655,15 +764,6 @@
 
     <div class="container" id="main-container">
         <header class="header">
-            <a href="https://github.com/WhoisNeon/System-Info-Hub" target="_blank" rel="noopener noreferrer"
-                class="github-toggle" aria-label="View on GitHub">
-                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor"
-                    viewBox="0 0 24 24">
-                    <path
-                        d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.42 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.73.084-.73 1.205.084 1.838 1.238 1.838 1.238 1.07 1.835 2.809 1.305 3.49.998.108-.775.418-1.305.762-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.89-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-                </svg>
-            </a>
-            <h1>System Info Hub</h1>
             <button class="theme-toggle" id="theme-toggle-button" type="button" aria-label="Toggle theme">
                 <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="1em" height="1em" fill="currentColor"
                     class="theme-toggle__expand" viewBox="0 0 32 32">
@@ -677,13 +777,33 @@
                     </g>
                 </svg>
             </button>
+            <h1>System Info Hub</h1>
+            <div class="language-selector">
+                <button class="language-button">
+                    <img src="https://hatscripts.github.io/circle-flags/flags/us.svg" id="selected-flag">
+                    <span id="selected-lang-text">English</span>
+                    <i class="ph-fill ph-caret-down"></i> </button>
+                </button>
+                <div class="language-dropdown">
+                    <a href="#" data-lang="en" data-lang-name="English" data-flag-code="us"><img src="https://hatscripts.github.io/circle-flags/flags/us.svg"> English</a>
+                    <a href="#" data-lang="fa" data-lang-name="پارسی" data-flag-code="ir"><img src="https://whoisneon.github.io/System-Info-Hub/assets/ir.svg">پارسی</a>
+                    <a href="#" data-lang="de" data-lang-name="Deutsch" data-flag-code="de"><img src="https://hatscripts.github.io/circle-flags/flags/de.svg"> Deutsch</a>
+                    <a href="#" data-lang="es" data-lang-name="Español" data-flag-code="es"><img src="https://hatscripts.github.io/circle-flags/flags/es.svg"> Español</a>
+                    <a href="#" data-lang="fr" data-lang-name="Français" data-flag-code="fr"><img src="https://hatscripts.github.io/circle-flags/flags/fr.svg"> Français</a>
+                    <a href="#" data-lang="pt" data-lang-name="Português" data-flag-code="pt"><img src="https://hatscripts.github.io/circle-flags/flags/pt.svg">Português</a>
+                    <a href="#" data-lang="ru" data-lang-name="Русский" data-flag-code="ru"><img src="https://hatscripts.github.io/circle-flags/flags/ru.svg"> Русский</a>
+                    <a href="#" data-lang="ja" data-lang-name="日本語" data-flag-code="jp"><img src="https://hatscripts.github.io/circle-flags/flags/jp.svg"> 日本語</a>
+                    <a href="#" data-lang="ko" data-lang-name="한국어" data-flag-code="kr"><img src="https://hatscripts.github.io/circle-flags/flags/kr.svg"> 한국어</a>
+                    <a href="#" data-lang="zh" data-lang-name="中文" data-flag-code="cn"><img src="https://hatscripts.github.io/circle-flags/flags/cn.svg"> 中文</a>
+                </div>
+            </div>
         </header>
 
         <main class="info-grid">
             <section class="info-card">
                 <div class="card-header">
                     <div class="card-icon" id="network-card-icon"><i class="ph ph-globe"></i></div>
-                    <h3 class="card-title">Network Details</h3>
+                    <h3 class="card-title" data-translate="networkDetails">Network Details</h3>
                     <button class="refresh-button" id="refresh-network-button">
                         <i class="ph ph-arrow-clockwise"></i>
                     </button>
@@ -696,39 +816,39 @@
                     </button>
                 </div>
                 <div class="info-item" id="ip-address-item">
-                    <span class="info-label">IP Address</Address></span>
+                    <span class="info-label" data-translate="ipAddress">IP Address</span>
                     <span class="info-value" id="ip-address"><i class="loading"></i></span>
                 </div>
                 <div class="info-item" id="ipv6-item">
-                    <span class="info-label">IPv6</span>
+                    <span class="info-label" data-translate="ipv6">IPv6</span>
                     <span class="info-value" id="ipv6-address"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Country</span>
+                    <span class="info-label" data-translate="country">Country</span>
                     <span class="info-value" id="country"><i class="loading"></i></span>
                 </div>
                 <div class="info-item" id="region-item" style="display: none;">
-                    <span class="info-label">Region</span>
+                    <span class="info-label" data-translate="region">Region</span>
                     <span class="info-value" id="region"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">City</span>
+                    <span class="info-label" data-translate="city">City</span>
                     <span class="info-value" id="city"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">ISP</span>
+                    <span class="info-label" data-translate="isp">ISP</span>
                     <span class="info-value" id="isp"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Organization</span>
+                    <span class="info-label" data-translate="organization">Organization</span>
                     <span class="info-value" id="organization"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">ASN</span>
+                    <span class="info-label" data-translate="asn">ASN</span>
                     <span class="info-value" id="asn"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Time Zone</span>
+                    <span class="info-label" data-translate="ipTimezone">Time Zone</span>
                     <span class="info-value" id="ip-timezone"><i class="loading"></i></span>
                 </div>
             </section>
@@ -736,61 +856,61 @@
             <section class="info-card">
                 <div class="card-header">
                     <div class="card-icon"><i class="ph ph-google-chrome-logo"></i></div>
-                    <h3 class="card-title">Browser Details</h3>
+                    <h3 class="card-title" data-translate="browserDetails">Browser Details</h3>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Browser</span>
+                    <span class="info-label" data-translate="browser">Browser</span>
                     <span class="info-value" id="browser"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Version</span>
+                    <span class="info-label" data-translate="version">Version</span>
                     <span class="info-value" id="browser-version"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Engine</span>
+                    <span class="info-label" data-translate="engine">Engine</span>
                     <span class="info-value" id="browser-engine"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">User Agent</span>
-                    <span class="info-value" id="user-agent"><i class="loading"></i></span>
+                    <span class="info-label" data-translate="cookiesEnabled">Cookies Enabled</span>
+                    <span class="info-value" id="cookies-enabled"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Cookies Enabled</span>
-                    <span class="info-value" id="cookies-enabled"><i class="loading"></i></span>
+                    <span class="info-label" data-translate="userAgent">User Agent</span>
+                    <span class="info-value" id="user-agent"><i class="loading"></i></span>
                 </div>
             </section>
 
             <section class="info-card">
                 <div class="card-header">
                     <div class="card-icon" id="os-icon"><i class="loading"></i></div>
-                    <h3 class="card-title">System Information</h3>
+                    <h3 class="card-title" data-translate="systemInfo">System Information</h3>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Operating System</span>
+                    <span class="info-label" data-translate="os">Operating System</span>
                     <span class="info-value" id="os"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Device Type</span>
+                    <span class="info-label" data-translate="deviceType">Device Type</span>
                     <span class="info-value" id="device-type"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Architecture</span>
+                    <span class="info-label" data-translate="architecture">Architecture</span>
                     <span class="info-value" id="architecture"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">CPU Cores</span>
+                    <span class="info-label" data-translate="cpuCores">CPU Cores</span>
                     <span class="info-value" id="cpu-cores"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Memory</span>
+                    <span class="info-label" data-translate="memory">Memory</span>
                     <span class="info-value" id="memory"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Time Zone</span>
+                    <span class="info-label" data-translate="systemTimezone">Time Zone</span>
                     <span class="info-value" id="system-timezone"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Preferred Theme</span>
+                    <span class="info-label" data-translate="preferredTheme">Preferred Theme</span>
                     <span class="info-value" id="preferred-theme"><i class="loading"></i></span>
                 </div>
             </section>
@@ -798,26 +918,26 @@
             <section class="info-card">
                 <div class="card-header">
                     <div class="card-icon"><i class="ph ph-monitor"></i></div>
-                    <h3 class="card-title">Display & Graphics</h3>
+                    <h3 class="card-title" data-translate="displayGraphics">Display & Graphics</h3>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Screen Resolution</span>
+                    <span class="info-label" data-translate="screenResolution">Screen Resolution</span>
                     <span class="info-value" id="screen-resolution"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Viewport Size</span>
+                    <span class="info-label" data-translate="viewportSize">Viewport Size</span>
                     <span class="info-value" id="viewport-size"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Color Depth</span>
+                    <span class="info-label" data-translate="colorDepth">Color Depth</span>
                     <span class="info-value" id="color-depth"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">GPU</span>
+                    <span class="info-label" data-translate="gpu">GPU</span>
                     <span class="info-value" id="gpu"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Pixel Ratio</span>
+                    <span class="info-label" data-translate="pixelRatio">Pixel Ratio</span>
                     <span class="info-value" id="pixel-ratio"><i class="loading"></i></span>
                 </div>
             </section>
@@ -825,26 +945,26 @@
             <section class="info-card">
                 <div class="card-header">
                     <div class="card-icon"><i class="ph ph-lock-key"></i></div>
-                    <h3 class="card-title">Security & Privacy</h3>
+                    <h3 class="card-title" data-translate="securityPrivacy">Security & Privacy</h3>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">HTTPS</span>
+                    <span class="info-label" data-translate="https">HTTPS</span>
                     <span class="info-value" id="https-status"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Do Not Track</span>
+                    <span class="info-label" data-translate="dnt">Do Not Track</span>
                     <span class="info-value" id="dnt-status"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">WebRTC</span>
+                    <span class="info-label" data-translate="webrtc">WebRTC</span>
                     <span class="info-value" id="webrtc-status"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Local Storage</span>
+                    <span class="info-label" data-translate="localStorage">Local Storage</span>
                     <span class="info-value" id="local-storage"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Session Storage</span>
+                    <span class="info-label" data-translate="sessionStorage">Session Storage</span>
                     <span class="info-value" id="session-storage"><i class="loading"></i></span>
                 </div>
             </section>
@@ -852,37 +972,143 @@
             <section class="info-card">
                 <div class="card-header">
                     <div class="card-icon"><i class="ph ph-lightning"></i></div>
-                    <h3 class="card-title">Web Features</h3>
+                    <h3 class="card-title" data-translate="webFeatures">Web Features</h3>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">JavaScript</span>
+                    <span class="info-label" data-translate="javascript">JavaScript</span>
                     <span class="info-value" id="javascript-enabled"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">WebGL</span>
+                    <span class="info-label" data-translate="webgl">WebGL</span>
                     <span class="info-value" id="webgl-support"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Geolocation</span>
+                    <span class="info-label" data-translate="geolocation">Geolocation</span>
                     <span class="info-value" id="geolocation-support"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Touch Support</span>
+                    <span class="info-label" data-translate="touchSupport">Touch Support</span>
                     <span class="info-value" id="touch-support"><i class="loading"></i></span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Online Status</span>
+                    <span class="info-label" data-translate="onlineStatus">Online Status</span>
                     <span class="info-value" id="online-status"><i class="loading"></i></span>
                 </div>
             </section>
         </main>
 
         <footer class="footer">
-            <p>&copy; 2025 WhoisNeon. All rights reserved.</p>
+            <p>&copy; 2025 <a href="https://github.com/WhoisNeon" target="_blank">WhoisNeon</a>. <span data-translate="copyright">All rights reserved.</span></p>
         </footer>
     </div>
 
     <script>
+        const translations = {
+            'en': {
+                loading: 'Loading...', ipSearchPlaceholder: 'Enter IP address to search', copyright: 'All rights reserved.',
+                networkDetails: 'Network Details', ipAddress: 'IP Address', ipv6: 'IPv6', country: 'Country', region: 'Region', city: 'City', isp: 'ISP', organization: 'Organization', asn: 'ASN', ipTimezone: 'Time Zone',
+                browserDetails: 'Browser Details', browser: 'Browser', version: 'Version', engine: 'Engine', userAgent: 'User Agent', cookiesEnabled: 'Cookies',
+                systemInfo: 'System Information', os: 'Operating System', deviceType: 'Device Type', architecture: 'Architecture', cpuCores: 'CPU Cores', memory: 'Memory', systemTimezone: 'Time Zone', preferredTheme: 'Preferred Theme',
+                displayGraphics: 'Display & Graphics', screenResolution: 'Screen Resolution', viewportSize: 'Viewport Size', colorDepth: 'Color Depth', gpu: 'GPU', pixelRatio: 'Pixel Ratio',
+                securityPrivacy: 'Security & Privacy', https: 'HTTPS', dnt: 'Do Not Track', webrtc: 'WebRTC', localStorage: 'Local Storage', sessionStorage: 'Session Storage',
+                webFeatures: 'Web Features', javascript: 'JavaScript', webgl: 'WebGL', geolocation: 'Geolocation', touchSupport: 'Touch Support', onlineStatus: 'Online Status',
+                enabled: 'Enabled', disabled: 'Disabled', notSpecified: 'Not specified', supported: 'Supported', notSupported: 'Not supported', available: 'Available', notAvailable: 'Not available', secure: 'Secure', insecure: 'Insecure', online: 'Online', offline: 'Offline', darkMode: 'Dark Mode', lightMode: 'Light Mode', systemPreference: 'System Preference', notDetected: 'Not detected / Unknown', unknown: 'Unknown', unavailable: 'Unavailable', invalidIP: 'Invalid IP'
+            },
+            'fa': {
+                loading: 'در حال بارگذاری...', ipSearchPlaceholder: 'آدرس آی‌پی را برای جستجو وارد کنید', copyright: 'تمامی حقوق محفوظ است.',
+                networkDetails: 'جزئیات شبکه', ipAddress: 'آدرس آی‌پی', ipv6: 'آی‌پی ورژن ۶', country: 'کشور', region: 'منطقه', city: 'شهر', isp: 'ارائه دهنده', organization: 'سازمان', asn: 'شماره سیستم خودمختار', ipTimezone: 'منطقه زمانی',
+                browserDetails: 'جزئیات مرورگر', browser: 'مرورگر', version: 'نسخه', engine: 'موتور', userAgent: 'User Agent', cookiesEnabled: 'کوکی‌ها',
+                systemInfo: 'اطلاعات سیستم', os: 'سیستم عامل', deviceType: 'نوع دستگاه', architecture: 'معماری', cpuCores: 'هسته‌های CPU', memory: 'حافظه', systemTimezone: 'منطقه زمانی', preferredTheme: 'تم ترجیحی',
+                displayGraphics: 'نمایشگر و گرافیک', screenResolution: 'وضوح صفحه', viewportSize: 'اندازه Viewport', colorDepth: 'عمق رنگ', gpu: 'GPU', pixelRatio: 'نسبت پیکسل',
+                securityPrivacy: 'امنیت و حریم خصوصی', https: 'HTTPS', dnt: 'Do Not Track', webrtc: 'WebRTC', localStorage: 'حافظه محلی', sessionStorage: 'حافظه جلسه',
+                webFeatures: 'ویژگی‌های وب', javascript: 'جاوا اسکریپت', webgl: 'WebGL', geolocation: 'موقعیت جغرافیایی', touchSupport: 'پشتیبانی از لمس', onlineStatus: 'وضعیت آنلاین',
+                enabled: 'فعال', disabled: 'غیرفعال', notSpecified: 'مشخص نشده', supported: 'پشتیبانی می‌شود', notSupported: 'پشتیبانی نمی‌شود', available: 'در دسترس', notAvailable: 'در دسترس نیست', secure: 'امن', insecure: 'نا امن', online: 'آنلاین', offline: 'آفلاین', darkMode: 'حالت تاریک', lightMode: 'حالت روشن', systemPreference: 'تنظیمات سیستم', notDetected: 'شناسایی نشد / ناشناخته', unknown: 'ناشناخته', unavailable: 'در دسترس نیست', invalidIP: 'آی‌پی نامعتبر'
+            },
+            'de': {
+                loading: 'Wird geladen...', ipSearchPlaceholder: 'IP Adresse zur Suche eingeben', copyright: 'Alle Rechte vorbehalten.',
+                networkDetails: 'Netzwerkdetails', ipAddress: 'IP Adresse', ipv6: 'IPv6', country: 'Land', region: 'Region', city: 'Stadt', isp: 'ISP', organization: 'Organisation', asn: 'ASN', ipTimezone: 'Zeitzone',
+                browserDetails: 'Browserdetails', browser: 'Browser', version: 'Version', engine: 'Engine', userAgent: 'User Agent', cookiesEnabled: 'Cookies',
+                systemInfo: 'Systeminformationen', os: 'Betriebssystem', deviceType: 'Gerätetyp', architecture: 'Architektur', cpuCores: 'CPU-Kerne', memory: 'Speicher', systemTimezone: 'Zeitzone', preferredTheme: 'Bevorzugtes Thema',
+                displayGraphics: 'Anzeige & Grafik', screenResolution: 'Bildschirmauflösung', viewportSize: 'Viewport-Größe', colorDepth: 'Farbtiefe', gpu: 'GPU', pixelRatio: 'Pixel-Verhältnis',
+                securityPrivacy: 'Sicherheit & Datenschutz', https: 'HTTPS', dnt: 'Do Not Track', webrtc: 'WebRTC', localStorage: 'Lokaler Speicher', sessionStorage: 'Sitzungsspeicher',
+                webFeatures: 'Web-Funktionen', javascript: 'JavaScript', webgl: 'WebGL', geolocation: 'Geolokalisierung', touchSupport: 'Touch-Unterstützung', onlineStatus: 'Online-Status',
+                enabled: 'Aktiviert', disabled: 'Deaktiviert', notSpecified: 'Nicht angegeben', supported: 'Unterstützt', notSupported: 'Nicht unterstützt', available: 'Verfügbar', notAvailable: 'Nicht verfügbar', secure: 'Sicher', insecure: 'Unsicher', online: 'Online', offline: 'Offline', darkMode: 'Dunkelmodus', lightMode: 'Heller Modus', systemPreference: 'Systempräferenz', notDetected: 'Nicht erkannt / Unbekannt', unknown: 'Unbekannt', unavailable: 'Nicht verfügbar', invalidIP: 'Ungültige IP'
+            },
+            'es': {
+                loading: 'Cargando...', ipSearchPlaceholder: 'Ingrese la dirección IP para buscar', copyright: 'Todos los derechos reservados.',
+                networkDetails: 'Detalles de la red', ipAddress: 'Dirección IP', ipv6: 'IPv6', country: 'País', region: 'Región', city: 'Ciudad', isp: 'ISP', organization: 'Organización', asn: 'ASN', ipTimezone: 'Zona horaria',
+                browserDetails: 'Detalles del navegador', browser: 'Navegador', version: 'Versión', engine: 'Motor', userAgent: 'User Agent', cookiesEnabled: 'Cookies',
+                systemInfo: 'Información del sistema', os: 'Sistema operativo', deviceType: 'Tipo de dispositivo', architecture: 'Arquitectura', cpuCores: 'Núcleos de CPU', memory: 'Memoria', systemTimezone: 'Zona horaria', preferredTheme: 'Tema preferido',
+                displayGraphics: 'Pantalla y gráficos', screenResolution: 'Resolución de pantalla', viewportSize: 'Tamaño de viewport', colorDepth: 'Profundidad de color', gpu: 'GPU', pixelRatio: 'Relación de píxeles',
+                securityPrivacy: 'Seguridad y privacidad', https: 'HTTPS', dnt: 'Do Not Track', webrtc: 'WebRTC', localStorage: 'Almacenamiento local', sessionStorage: 'Almacenamiento de sesión',
+                webFeatures: 'Características web', javascript: 'JavaScript', webgl: 'WebGL', geolocation: 'Geolocalización', touchSupport: 'Soporte táctil', onlineStatus: 'Estado en línea',
+                enabled: 'Habilitado', disabled: 'Deshabilitado', notSpecified: 'No especificado', supported: 'Soportado', notSupported: 'No soportado', available: 'Disponible', notAvailable: 'No disponible', secure: 'Seguro', insecure: 'Inseguro', online: 'En línea', offline: 'Fuera de línea', darkMode: 'Modo oscuro', lightMode: 'Modo claro', systemPreference: 'Preferencia del sistema', notDetected: 'No detectado / Desconocido', unknown: 'Desconocido', unavailable: 'No disponible', invalidIP: 'IP inválida'
+            },
+            'fr': {
+                loading: 'Chargement...', ipSearchPlaceholder: 'Entrez l\'adresse IP à rechercher', copyright: 'Tous droits réservés.',
+                networkDetails: 'Détails du réseau', ipAddress: 'Adresse IP', ipv6: 'IPv6', country: 'Pays', region: 'Région', city: 'Ville', isp: 'FAI', organization: 'Organisation', asn: 'ASN', ipTimezone: 'Fuseau horaire',
+                browserDetails: 'Détails du navigateur', browser: 'Navigateur', version: 'Version', engine: 'Moteur', userAgent: 'User Agent', cookiesEnabled: 'Cookies',
+                systemInfo: 'Informations système', os: 'Système d\'exploitation', deviceType: 'Type d\'appareil', architecture: 'Architecture', cpuCores: 'Cœurs CPU', memory: 'Mémoire', systemTimezone: 'Fuseau horaire', preferredTheme: 'Thème préféré',
+                displayGraphics: 'Affichage et graphiques', screenResolution: 'Résolution de l\'écran', viewportSize: 'Taille du viewport', colorDepth: 'Profondeur de couleur', gpu: 'GPU', pixelRatio: 'Ratio de pixels',
+                securityPrivacy: 'Sécurité et confidentialité', https: 'HTTPS', dnt: 'Do Not Track', webrtc: 'WebRTC', localStorage: 'Stockage local', sessionStorage: 'Stockage de session',
+                webFeatures: 'Fonctionnalités Web', javascript: 'JavaScript', webgl: 'WebGL', geolocation: 'Géolocalisation', touchSupport: 'Support tactile', onlineStatus: 'Statut en ligne',
+                enabled: 'Activé', disabled: 'Désactivé', notSpecified: 'Non spécifié', supported: 'Supporté', notSupported: 'Non supporté', available: 'Disponible', notAvailable: 'Non disponible', secure: 'Sécurisé', insecure: 'Non sécurisé', online: 'En ligne', offline: 'Hors ligne', darkMode: 'Mode sombre', lightMode: 'Mode clair', systemPreference: 'Préférence système', notDetected: 'Non détecté / Inconnu', unknown: 'Inconnu', unavailable: 'Indisponible', invalidIP: 'IP invalide'
+            },
+            'pt': {
+                loading: 'Carregando...', ipSearchPlaceholder: 'Digite o endereço IP para pesquisar', copyright: 'Todos os direitos reservados.',
+                networkDetails: 'Detalhes da Rede', ipAddress: 'Endereço IP', ipv6: 'IPv6', country: 'País', region: 'Região', city: 'Cidade', isp: 'ISP', organization: 'Organização', asn: 'ASN', ipTimezone: 'Fuso Horário',
+                browserDetails: 'Detalhes do Navegador', browser: 'Navegador', version: 'Versão', engine: 'Motor', userAgent: 'User Agent', cookiesEnabled: 'Cookies',
+                systemInfo: 'Informações do Sistema', os: 'Sistema Operacional', deviceType: 'Tipo de Dispositivo', architecture: 'Arquitetura', cpuCores: 'Núcleos da CPU', memory: 'Memória', systemTimezone: 'Fuso Horário', preferredTheme: 'Tema Preferido',
+                displayGraphics: 'Tela e Gráficos', screenResolution: 'Resolução da Tela', viewportSize: 'Tamanho da Janela', colorDepth: 'Profundidade de Cor', gpu: 'GPU', pixelRatio: 'Taxa de Pixels',
+                securityPrivacy: 'Segurança e Privacidade', https: 'HTTPS', dnt: 'Do Not Track', webrtc: 'WebRTC', localStorage: 'Armazenamento Local', sessionStorage: 'Armazenamento de Sessão',
+                webFeatures: 'Recursos da Web', javascript: 'JavaScript', webgl: 'WebGL', geolocation: 'Geolocalização', touchSupport: 'Suporte a Toque', onlineStatus: 'Status Online',
+                enabled: 'Ativado', disabled: 'Desativado', notSpecified: 'Não especificado', supported: 'Suportado', notSupported: 'Não suportado', available: 'Disponível', notAvailable: 'Indisponível', secure: 'Seguro', insecure: 'Inseguro', online: 'Online', offline: 'Offline', darkMode: 'Modo Escuro', lightMode: 'Modo Claro', systemPreference: 'Preferência do Sistema', notDetected: 'Não detectado / Desconhecido', unknown: 'Desconhecido', unavailable: 'Indisponível', invalidIP: 'IP Inválido'
+            },
+            'ru': {
+                loading: 'Загрузка...', ipSearchPlaceholder: 'Введите IP-адрес для поиска', copyright: 'Все права защищены.',
+                networkDetails: 'Сетевые данные', ipAddress: 'IP-адрес', ipv6: 'IPv6', country: 'Страна', region: 'Регион', city: 'Город', isp: 'Провайдер', organization: 'Организация', asn: 'ASN', ipTimezone: 'Часовой пояс',
+                browserDetails: 'Данные браузера', browser: 'Браузер', version: 'Версия', engine: 'Движок', userAgent: 'User Agent', cookiesEnabled: 'Cookies',
+                systemInfo: 'Информация о системе', os: 'Операционная система', deviceType: 'Тип устройства', architecture: 'Архитектура', cpuCores: 'Ядра ЦП', memory: 'Память', systemTimezone: 'Часовой пояс', preferredTheme: 'Предпочтительная тема',
+                displayGraphics: 'Дисплей и графика', screenResolution: 'Разрешение экрана', viewportSize: 'Размер окна', colorDepth: 'Глубина цвета', gpu: 'GPU', pixelRatio: 'Соотношение пикселей',
+                securityPrivacy: 'Безопасность и конфиденциальность', https: 'HTTPS', dnt: 'Do Not Track', webrtc: 'WebRTC', localStorage: 'Локальное хранилище', sessionStorage: 'Сессионное хранилище',
+                webFeatures: 'Веб-функции', javascript: 'JavaScript', webgl: 'WebGL', geolocation: 'Геолокация', touchSupport: 'Сенсорная поддержка', onlineStatus: 'Статус в сети',
+                enabled: 'Включено', disabled: 'Отключено', notSpecified: 'Не указано', supported: 'Поддерживается', notSupported: 'Не поддерживается', available: 'Доступно', notAvailable: 'Недоступно', secure: 'Безопасно', insecure: 'Небезопасно', online: 'В сети', offline: 'Не в сети', darkMode: 'Темный режим', lightMode: 'Светлый режим', systemPreference: 'Системные настройки', notDetected: 'Не определено / Неизвестно', unknown: 'Неизвестно', unavailable: 'Недоступно', invalidIP: 'Неверный IP'
+            },
+            'ja': {
+                loading: '読み込み中...', ipSearchPlaceholder: '検索するIPアドレスを入力', copyright: 'All rights reserved.',
+                networkDetails: 'ネットワーク詳細', ipAddress: 'IPアドレス', ipv6: 'IPv6', country: '国', region: '地域', city: '都市', isp: 'ISP', organization: '組織', asn: 'ASN', ipTimezone: 'タイムゾーン',
+                browserDetails: 'ブラウザ詳細', browser: 'ブラウザ', version: 'バージョン', engine: 'エンジン', userAgent: 'ユーザーエージェント', cookiesEnabled: 'クッキー',
+                systemInfo: 'システム情報', os: 'オペレーティングシステム', deviceType: 'デバイスタイプ', architecture: 'アーキテクチャ', cpuCores: 'CPUコア数', memory: 'メモリ', systemTimezone: 'タイムゾーン', preferredTheme: '優先テーマ',
+                displayGraphics: 'ディスプレイとグラフィックス', screenResolution: '画面解像度', viewportSize: 'ビューポートサイズ', colorDepth: '色深度', gpu: 'GPU', pixelRatio: 'ピクセル比',
+                securityPrivacy: 'セキュリティとプライバシー', https: 'HTTPS', dnt: 'Do Not Track', webrtc: 'WebRTC', localStorage: 'ローカルストレージ', sessionStorage: 'セッションストレージ',
+                webFeatures: 'Web機能', javascript: 'JavaScript', webgl: 'WebGL', geolocation: '地理位置情報', touchSupport: 'タッチサポート', onlineStatus: 'オンラインステータス',
+                enabled: '有効', disabled: '無効', notSpecified: '指定なし', supported: '対応', notSupported: '非対応', available: '利用可能', notAvailable: '利用不可', secure: '安全', insecure: '危険', online: 'オンライン', offline: 'オフライン', darkMode: 'ダークモード', lightMode: 'ライトモード', systemPreference: 'システム設定', notDetected: '未検出/不明', unknown: '不明', unavailable: '利用不可', invalidIP: '無効なIP'
+            },
+            'ko': {
+                loading: '로드 중...', ipSearchPlaceholder: '검색할 IP 주소 입력', copyright: 'All rights reserved.',
+                networkDetails: '네트워크 정보', ipAddress: 'IP 주소', ipv6: 'IPv6', country: '국가', region: '지역', city: '도시', isp: 'ISP', organization: '조직', asn: 'ASN', ipTimezone: '시간대',
+                browserDetails: '브라우저 정보', browser: '브라우저', version: '버전', engine: '엔진', userAgent: '사용자 에이전트', cookiesEnabled: '쿠키',
+                systemInfo: '시스템 정보', os: '운영 체제', deviceType: '기기 종류', architecture: '아키텍처', cpuCores: 'CPU 코어', memory: '메모리', systemTimezone: '시간대', preferredTheme: '선호 테마',
+                displayGraphics: '디스플레이 및 그래픽', screenResolution: '화면 해상도', viewportSize: '뷰포트 크기', colorDepth: '색 농도', gpu: 'GPU', pixelRatio: '픽셀 비율',
+                securityPrivacy: '보안 및 개인 정보', https: 'HTTPS', dnt: 'Do Not Track', webrtc: 'WebRTC', localStorage: '로컬 스토리지', sessionStorage: '세션 스토리지',
+                webFeatures: '웹 기능', javascript: '자바스크립트', webgl: 'WebGL', geolocation: '지리적 위치', touchSupport: '터치 지원', onlineStatus: '온라인 상태',
+                enabled: '활성화됨', disabled: '비활성화됨', notSpecified: '지정되지 않음', supported: '지원됨', notSupported: '지원되지 않음', available: '사용 가능', notAvailable: '사용 불가', secure: '안전함', insecure: '안전하지 않음', online: '온라인', offline: '오프라인', darkMode: '다크 모드', lightMode: '라이트 모드', systemPreference: '시스템 환경설정', notDetected: '감지되지 않음 / 알 수 없음', unknown: '알 수 없음', unavailable: '사용 불가', invalidIP: '잘못된 IP'
+            },
+            'zh': {
+                loading: '加载中...', ipSearchPlaceholder: '输入IP地址进行搜索', copyright: '版权所有。',
+                networkDetails: '网络详情', ipAddress: 'IP地址', ipv6: 'IPv6', country: '国家', region: '地区', city: '城市', isp: 'ISP', organization: '组织', asn: 'ASN', ipTimezone: '时区',
+                browserDetails: '浏览器详情', browser: '浏览器', version: '版本', engine: '引擎', userAgent: '用户代理', cookiesEnabled: 'Cookie',
+                systemInfo: '系统信息', os: '操作系统', deviceType: '设备类型', architecture: '架构', cpuCores: 'CPU核心数', memory: '内存', systemTimezone: '时区', preferredTheme: '首选主题',
+                displayGraphics: '显示与图形', screenResolution: '屏幕分辨率', viewportSize: '视口大小', colorDepth: '颜色深度', gpu: 'GPU', pixelRatio: '像素比',
+                securityPrivacy: '安全与隐私', https: 'HTTPS', dnt: '请勿跟踪', webrtc: 'WebRTC', localStorage: '本地存储', sessionStorage: '会话存储',
+                webFeatures: 'Web功能', javascript: 'JavaScript', webgl: 'WebGL', geolocation: '地理位置', touchSupport: '触摸支持', onlineStatus: '在线状态',
+                enabled: '已启用', disabled: '已禁用', notSpecified: '未指定', supported: '支持', notSupported: '不支持', available: '可用', notAvailable: '不可用', secure: '安全', insecure: '不安全', online: '在线', offline: '离线', darkMode: '深色模式', lightMode: '浅色模式', systemPreference: '系统偏好', notDetected: '未检测到/未知', unknown: '未知', unavailable: '不可用', invalidIP: '无效IP'
+            }
+        };
+
+        let currentLang = localStorage.getItem('userLanguage') || 'en';
+        let lastGeoData = null;
+
         const elements = {
             preloader: document.querySelector('.preloader'),
             mainContainer: document.getElementById('main-container'),
@@ -934,23 +1160,89 @@
             networkCardIcon: document.getElementById('network-card-icon'),
             ipDomainSearch: document.getElementById('ip-domain-search'),
             searchButton: document.getElementById('search-button'),
+            selectedFlag: document.getElementById('selected-flag'),
+            selectedLangText: document.getElementById('selected-lang-text'),
+            languageDropdown: document.querySelector('.language-dropdown'),
+            languageSelector: document.querySelector('.language-selector'),
+            languageButton: document.querySelector('.language-button')
         };
 
-        const setTextContent = (element, text) => {
+        function translatePage() {
+                const lang = currentLang;
+                const translationSet = translations[lang] || translations['en'];
+
+                document.querySelectorAll('[data-translate]').forEach(el => {
+                    const key = el.dataset.translate;
+                    if (translationSet[key]) {
+                        el.textContent = translationSet[key];
+                    }
+                });
+
+                if (elements.ipDomainSearch) {
+                    elements.ipDomainSearch.placeholder = translationSet.ipSearchPlaceholder;
+                }
+
+                loadBrowserAndSystemInfo(true);
+                updateOnlineStatusIndicator(navigator.onLine);
+
+                if (elements.ipDomainSearch) {
+                    elements.ipDomainSearch.value = '';
+                }
+
+                elements.refreshNetworkButton.disabled = false;
+                fetchIPInfo();
+            }
+
+        function setLanguage(lang, langName, flagCode) {
+            currentLang = lang;
+            localStorage.setItem('userLanguage', lang);
+
+            if (elements.selectedFlag) {
+                if (flagCode === 'ir') {
+                    elements.selectedFlag.src = 'https://whoisneon.github.io/System-Info-Hub/assets/ir.svg';
+                } else {
+                    elements.selectedFlag.src = `https://hatscripts.github.io/circle-flags/flags/${flagCode}.svg`;
+                }
+            }
+            if (elements.selectedLangText) {
+                elements.selectedLangText.textContent = langName;
+            }
+
+            if (lang === 'fa') {
+                document.documentElement.setAttribute('dir', 'rtl');
+            } else {
+                document.documentElement.setAttribute('dir', 'ltr');
+            }
+
+            translatePage();
+        }
+
+        const setTextContent = (element, text, translationKey = null) => {
             if (element) {
-                element.textContent = text;
+                if (translationKey) {
+                    const translationSet = translations[currentLang] || translations['en'];
+                    element.textContent = translationSet[translationKey] || text;
+                } else {
+                    element.textContent = text;
+                }
             }
         };
 
-        const setInnerHTML = (element, html) => {
+        const setInnerHTML = (element, html, translationKey = null) => {
             if (element) {
-                element.innerHTML = html;
+                if (translationKey) {
+                    const translationSet = translations[currentLang] || translations['en'];
+                    const statusText = translationSet[translationKey] || '';
+                    element.innerHTML = html.replace('STATUS_TEXT', statusText);
+                } else {
+                    element.innerHTML = html;
+                }
             }
         };
 
         const addCopyFeature = (elementId) => {
             const element = document.getElementById(elementId);
-            if (element) {
+            if (element && !element.querySelector('.copy-button')) {
                 const copyButton = document.createElement('button');
                 copyButton.className = 'copy-button';
                 copyButton.innerHTML = '<i class="ph ph-clipboard"></i>';
@@ -968,33 +1260,7 @@
                             copyButton.innerHTML = '<i class="ph ph-clipboard"></i>';
                         }, 1500);
 
-                    } catch (err) {
-                        const textArea = document.createElement("textarea");
-                        textArea.value = textToCopy;
-
-                        textArea.style.position = 'fixed';
-                        textArea.style.left = '-9999px';
-                        textArea.style.top = '-9999px';
-
-                        document.body.appendChild(textArea);
-                        textArea.focus();
-                        textArea.select();
-
-                        try {
-                            document.execCommand('copy');
-                            copyButton.innerHTML = '<i class="ph ph-check"></i>';
-                            setTimeout(() => {
-                                copyButton.innerHTML = '<i class="ph ph-clipboard"></i>';
-                            }, 1500);
-                        } catch (execErr) {
-                            copyButton.innerHTML = '<i class="ph ph-x"></i>';
-                            setTimeout(() => {
-                                copyButton.innerHTML = '<i class="ph ph-clipboard"></i>';
-                            }, 1500);
-                        } finally {
-                            document.body.removeChild(textArea);
-                        }
-                    }
+                    } catch (err) {}
                 };
                 element.appendChild(copyButton);
             }
@@ -1054,8 +1320,6 @@
             if (ua.includes('Windows')) {
                 if (ua.includes('Windows NT 10.0')) os = 'Windows 10/11';
                 else if (ua.includes('Windows NT 6.3')) os = 'Windows 8.1';
-                else if (ua.includes('Windows NT 6.2')) os = 'Windows 8';
-                else if (ua.includes('Windows NT 6.1')) os = 'Windows 7';
                 else os = 'Windows';
                 osIconClass = 'ph ph-windows-logo';
             } else if (ua.includes('Macintosh') || ua.includes('Mac OS X')) {
@@ -1091,46 +1355,26 @@
                 if (gl) {
                     const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
                     if (debugInfo) {
-                        const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
-
-
-                        match = renderer.match(/(ANGLE \(Qualcomm, Adreno \(TM\) \d+, OpenGL ES \d\.\d\))/i);
-                        if (match && match[1]) { return match[1]; }
-                        match = renderer.match(/(NVIDIA (?:Tesla|A\d+|H\d+|L\d+)[A-Za-z0-9\s]*)/i);
-                        if (match && match[1]) { return match[1]; }
-                        match = renderer.match(/(NVIDIA GeForce (?:RTX|GTX|MX|Quadro) \d+[A-Za-z]*)/);
-                        if (match && match[1]) { return match[1]; }
-                        match = renderer.match(/(AMD Instinct (?:MI\d+))/i);
-                        if (match && match[1]) { return match[1]; }
-                        match = renderer.match(/(AMD Radeon(?:TM)?(?: Pro)?(?: \w+)?(?: Graphics)?(?: Mobile)?(?: Vega \d+)?(?: RX \d+)?(?: \d+M)?)/i);
-                        if (match && match[1]) { return match[1].replace(/\s*\(\w+\)$/, '').trim(); }
-                        match = renderer.match(/(Intel\(R\) Arc(?:[A-Za-z0-9\s]*?) Graphics)/i);
-                        if (match && match[1]) { return match[1]; }
-                        match = renderer.match(/(Intel\(R\) (?:Iris\(R\) Xe|Iris\(R\) Plus|HD Graphics \d+|UHD Graphics \d+|Xe Graphics))/);
-                        if (match && match[1]) { return match[1]; }
-                        match = renderer.match(/(Adreno(?:TM)? \d+)/i);
-                        if (match && match[1]) { return match[1]; }
-                        match = renderer.match(/((?:Mali|Apple)[\w\d\s-]*?(?:GPU)?(?:(?:MP)?\d)?)/i);
-                        if (match && match[1]) { return match[1].replace(/\s+\(.*?$/, '').trim(); }
-                        match = renderer.match(/(PowerVR(?:TM)? [\w\d\s-]*)/i);
-                        if (match && match[1]) { return match[1]; }
-                        match = renderer.match(/(Samsung Xclipse \d+)/i);
-                        if (match && match[1]) { return match[1]; }
-                        match = renderer.match(/(Microsoft Basic Render Driver|Microsoft Remote Desktop Graphics Adapter)/i);
-                        if (match && match[1]) { return match[1]; }
-                        match = renderer.match(/(Qualcomm Adreno|ARM Mali|Imagination PowerVR|Apple A\d+ GPU)/i);
-                        if (match && match[1]) { return match[1]; }
-                        return renderer;
+                        return gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
                     }
                 }
-            } catch (e) {
-            }
-            return 'Not detected / Unknown';
+            } catch (e) { }
+            const translationSet = translations[currentLang] || translations['en'];
+            return translationSet.notDetected;
         }
 
         function cleanCityName(cityName) {
-            if (!cityName) return 'Unknown City';
+            if (!cityName) {
+                const translationSet = translations[currentLang] || translations['en'];
+                return translationSet.unknown;
+            }
             return cityName.replace(/\s*\(.*\)\s*/, '').trim();
+        }
+
+        function getTranslatedName(namesObject, lang) {
+            if (!namesObject) return undefined;
+            const baseLang = lang.split('-')[0];
+            return namesObject[lang] || namesObject[baseLang] || namesObject['en'];
         }
 
         let preloaderHidden = false;
@@ -1140,8 +1384,6 @@
 
             if (elements.preloader && elements.mainContainer) {
                 elements.preloader.classList.add('hidden');
-                window.scrollTo(0, 0);
-
                 setTimeout(() => {
                     elements.mainContainer.classList.add('loaded');
                     elements.infoCards.forEach((card, index) => {
@@ -1179,57 +1421,83 @@
             return ipv4Regex.test(str) || ipv6Regex.test(str);
         }
 
+        function displayGeoData(geoData) {
+            const translationSet = translations[currentLang] || translations['en'];
+            const country = getTranslatedName(geoData.country?.names, currentLang) || translationSet.unknown;
+            const countryIso = geoData.country?.iso_code?.toLowerCase();
+
+            if (countryIso && elements.country) {
+                elements.country.dataset.iso = countryIso;
+            }
+
+            let countryDisplay = country;
+            if (countryIso) {
+                let flagUrl;
+                if (countryIso === 'ir') {
+                    flagUrl = `https://whoisneon.github.io/System-Info-Hub/assets/ir.svg`;
+                } else {
+                    flagUrl = `https://hatscripts.github.io/circle-flags/flags/${countryIso}.svg`;
+                }
+                const flagHtml = `<img src="${flagUrl}" class="flag-icon" />`;
+                countryDisplay = `${country} ${flagHtml}`;
+            }
+
+            const city = cleanCityName(getTranslatedName(geoData.city?.names, currentLang));
+            const region = getTranslatedName(geoData.subdivisions?.[0]?.names, currentLang);
+
+            if (elements.regionItem && region && region.toLowerCase() !== city.toLowerCase()) {
+                setTextContent(elements.region, region);
+                elements.regionItem.style.display = 'flex';
+            } else if (elements.regionItem) {
+                elements.regionItem.style.display = 'none';
+            }
+
+            const isp = geoData.traits?.isp || geoData.traits?.autonomous_system_organization || translationSet.unavailable;
+            const organization = geoData.traits?.organization || translationSet.unavailable;
+            const asn = geoData.traits?.autonomous_system_number ? `AS${geoData.traits.autonomous_system_number}` : translationSet.unknown;
+            const ipTimezone = geoData.location?.time_zone || translationSet.unknown;
+
+            setInnerHTML(elements.country, countryDisplay);
+            setTextContent(elements.city, city);
+            setTextContent(elements.isp, isp);
+            setTextContent(elements.organization, organization);
+            setTextContent(elements.connectionType, asn);
+            setTextContent(elements.ipTimezone, ipTimezone);
+        }
+
         async function fetchIPInfo(query = '') {
             if (elements.refreshNetworkButton.disabled) return;
 
             elements.refreshNetworkButton.disabled = true;
             resetNetworkInfoState();
+            const translationSet = translations[currentLang] || translations['en'];
 
             const FINDIP_TOKEN = 'eb2978e07c2e4a5e9bcb8c40e5f68292';
-            let currentIpv4 = 'Unavailable';
-            let currentIpv6 = 'Unavailable';
+            let currentIpv4 = translationSet.unavailable;
+            let currentIpv6 = translationSet.unavailable;
             let targetIP = query.trim();
 
             if (targetIP === '') {
                 try {
                     const ipv4Response = await fetch('https://api.ipify.org?format=json');
-                    if (ipv4Response.ok) {
-                        currentIpv4 = (await ipv4Response.json()).ip;
-                        targetIP = currentIpv4;
-                    }
+                    if (ipv4Response.ok) currentIpv4 = (await ipv4Response.json()).ip;
+                    targetIP = currentIpv4;
 
-                    try {
-                        const ipv6Response = await fetch('https://api6.ipify.org?format=json');
-                        if (ipv6Response.ok) {
-                            currentIpv6 = (await ipv6Response.json()).ip;
-                        }
-                    } catch (e) {
-                    }
+                    const ipv6Response = await fetch('https://api6.ipify.org?format=json');
+                    if (ipv6Response.ok) currentIpv6 = (await ipv6Response.json()).ip;
+
                     elements.ipv4Item.style.display = 'flex';
-                    if (currentIpv6 !== 'Unavailable') {
+                    if (currentIpv6 !== translationSet.unavailable) {
                         elements.ipv6Item.style.display = 'flex';
                     } else {
                         elements.ipv6Item.style.display = 'none';
                     }
-                } catch (e) {
-                    currentIpv4 = 'Unavailable';
-                    currentIpv6 = 'Unavailable';
-                }
+                } catch (e) {}
             } else if (!isValidIP(targetIP)) {
-                setTextContent(elements.ipAddress, 'Invalid IP');
+                setTextContent(elements.ipAddress, '', 'invalidIP');
                 setTextContent(elements.ipv6Address, 'N/A');
-                elements.ipv4Item.style.display = 'flex';
-                elements.ipv6Item.style.display = 'none';
-                setTextContent(elements.country, 'Unavailable');
-                setTextContent(elements.city, 'Unavailable');
-                setTextContent(elements.isp, 'Unavailable');
-                setTextContent(elements.organization, 'Unavailable');
-                setTextContent(elements.connectionType, 'Unknown');
-                setTextContent(elements.ipTimezone, 'Unknown');
                 hidePreloader();
-                setTimeout(() => {
-                    elements.refreshNetworkButton.disabled = false;
-                }, REFRESH_COOLDOWN);
+                setTimeout(() => { elements.refreshNetworkButton.disabled = false; }, REFRESH_COOLDOWN);
                 return;
             } else {
                 currentIpv4 = targetIP;
@@ -1237,93 +1505,38 @@
                 elements.ipv6Item.style.display = 'none';
             }
 
-            if (targetIP !== 'Unavailable' && targetIP !== '') {
+            if (targetIP !== translationSet.unavailable && targetIP !== '') {
                 try {
                     const geoResponse = await fetch(`https://api.findip.net/${targetIP}/?token=${FINDIP_TOKEN}`);
                     if (geoResponse.ok) {
-                        const geoData = await geoResponse.json();
-
-                        const country = geoData.country?.names?.en || 'Unknown Country';
-                        const countryIso = geoData.country?.iso_code?.toLowerCase();
-                        if (countryIso && elements.country) {
-                            elements.country.dataset.iso = countryIso;
-                        }
-
-                        let countryDisplay = country;
-                        if (countryIso) {
-                            let flagUrl;
-                            if (countryIso === 'ir') {
-                                flagUrl = `https://whoisneon.github.io/System-Info-Hub/assets/ir.svg`;
-                            } else {
-                                flagUrl = `https://hatscripts.github.io/circle-flags/flags/${countryIso}.svg`;
-                            }
-                            const flagHtml = `<img src="${flagUrl}" class="flag-icon" />`;
-                            countryDisplay = `${country} ${flagHtml}`;
-                        }
-
-                        const city = cleanCityName(geoData.city?.names?.en);
-                        const region = geoData.subdivisions?.[0]?.names?.en;
-
-                        if (elements.regionItem && region && region.toLowerCase() !== city.toLowerCase()) {
-                            setTextContent(elements.region, region);
-                            elements.regionItem.style.display = 'flex';
-                        } else if (elements.regionItem) {
-                            elements.regionItem.style.display = 'none';
-                        }
-
-                        const isp = geoData.traits?.isp || geoData.traits?.autonomous_system_organization || 'Unavailable';
-                        const organization = geoData.traits?.organization || 'Unavailable';
-                        const asn = geoData.traits?.autonomous_system_number ? `AS-${geoData.traits.autonomous_system_number}` : 'Unknown';
-                        const ipTimezone = geoData.location?.time_zone || 'Unknown';
-
-                        setInnerHTML(elements.country, countryDisplay);
-                        setTextContent(elements.city, city);
-                        setTextContent(elements.isp, isp);
-                        setTextContent(elements.organization, organization);
-                        setTextContent(elements.connectionType, asn);
-                        setTextContent(elements.ipTimezone, ipTimezone);
-
+                        lastGeoData = await geoResponse.json();
+                        displayGeoData(lastGeoData);
                     } else {
-                        setTextContent(elements.country, 'Unavailable');
-                        setTextContent(elements.city, 'Unavailable');
-                        setTextContent(elements.isp, 'Unavailable');
-                        setTextContent(elements.organization, 'Unavailable');
-                        setTextContent(elements.connectionType, 'Unknown');
-                        setTextContent(elements.ipTimezone, 'Unknown');
+                        lastGeoData = null;
                     }
                 } catch (error) {
-                    setTextContent(elements.country, 'Unavailable');
-                    setTextContent(elements.city, 'Unavailable');
-                    setTextContent(elements.isp, 'Unavailable');
-                    setTextContent(elements.organization, 'Unavailable');
-                    setTextContent(elements.connectionType, 'Unknown');
-                    setTextContent(elements.ipTimezone, 'Unknown');
+                    lastGeoData = null;
                 }
             } else {
-                setTextContent(elements.country, 'Unavailable');
-                setTextContent(elements.city, 'Unavailable');
-                setTextContent(elements.isp, 'Unavailable');
-                setTextContent(elements.organization, 'Unavailable');
-                setTextContent(elements.connectionType, 'Unknown');
-                setTextContent(elements.ipTimezone, 'Unknown');
+                lastGeoData = null;
             }
 
             setTextContent(elements.ipAddress, currentIpv4);
             setTextContent(elements.ipv6Address, currentIpv6);
 
 
-            if (elements.ipAddress.textContent !== 'Unavailable' && elements.ipAddress.textContent !== 'Invalid IP') addCopyFeature('ip-address');
-            if (elements.ipv6Address.textContent !== 'Unavailable' && elements.ipv6Address.textContent !== 'N/A (Specific IP)') addCopyFeature('ipv6-address');
+            if (elements.ipAddress.textContent !== translationSet.unavailable && elements.ipAddress.textContent !== translationSet.invalidIP) addCopyFeature('ip-address');
+            if (elements.ipv6Address.textContent !== translationSet.unavailable) addCopyFeature('ipv6-address');
+            if (elements.asn.textContent !== translationSet.unknown) addCopyFeature('asn');
 
-            setTimeout(() => {
-                elements.refreshNetworkButton.disabled = false;
-            }, REFRESH_COOLDOWN);
+            setTimeout(() => { elements.refreshNetworkButton.disabled = false; }, REFRESH_COOLDOWN);
         }
 
         function updateOnlineStatusIndicator(isOnline) {
             const onlineStatusElement = elements.onlineStatus;
             if (onlineStatusElement) {
-                const statusText = isOnline ? 'Online' : 'Offline';
+                const translationSet = translations[currentLang] || translations['en'];
+                const statusText = isOnline ? translationSet.online : translationSet.offline;
                 const statusClass = isOnline ? 'online' : 'offline';
                 const pingClass = isOnline ? 'ping' : '';
                 const indicatorHtml = `<span class="status-indicator ${statusClass} ${pingClass}"></span>`;
@@ -1332,27 +1545,25 @@
         }
 
         function getPreferredThemeString() {
-            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                return 'Dark Mode';
-            } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-                return 'Light Mode';
-            }
-            return 'System Preference';
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'darkMode';
+            if (window.matchMedia('(prefers-color-scheme: light)').matches) return 'lightMode';
+            return 'systemPreference';
         }
 
         function updatePreferredThemeDisplay() {
-            setTextContent(elements.preferredTheme, getPreferredThemeString());
+            setTextContent(elements.preferredTheme, '', getPreferredThemeString());
         }
 
-        async function loadBrowserAndSystemInfo() {
+        async function loadBrowserAndSystemInfo(isLanguageUpdate = false) {
             const { browser, version, engine } = getBrowserInfo();
             const { os, deviceType, osIconClass } = getOSInfo();
+            const translationSet = translations[currentLang] || translations['en'];
 
             setTextContent(elements.browser, browser);
             setTextContent(elements.browserVersion, version);
             setTextContent(elements.browserEngine, engine);
             setTextContent(elements.userAgent, navigator.userAgent);
-            setTextContent(elements.cookiesEnabled, navigator.cookieEnabled ? 'Yes' : 'No');
+            setTextContent(elements.cookiesEnabled, navigator.cookieEnabled ? translationSet.enabled : translationSet.disabled);
             updatePreferredThemeDisplay();
 
             setTextContent(elements.os, os);
@@ -1361,30 +1572,27 @@
                 setInnerHTML(elements.osIcon, `<i class="${osIconClass}"></i>`);
             }
 
-            setTextContent(elements.architecture, navigator.platform || 'Unknown');
-            setTextContent(elements.cpuCores, navigator.hardwareConcurrency ? `${navigator.hardwareConcurrency}` : 'Unknown');
-            setTextContent(elements.memory, navigator.deviceMemory ? `${navigator.deviceMemory} GB` : 'Unknown');
+            setTextContent(elements.architecture, navigator.platform || translationSet.unknown);
+            setTextContent(elements.cpuCores, navigator.hardwareConcurrency ? `${navigator.hardwareConcurrency}` : translationSet.unknown);
+            setTextContent(elements.memory, navigator.deviceMemory ? `${navigator.deviceMemory} GB` : translationSet.unknown);
 
-            setTextContent(elements.systemTimezone, Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown');
+            setTextContent(elements.systemTimezone, Intl.DateTimeFormat().resolvedOptions().timeZone || translationSet.unknown);
             setTextContent(elements.screenResolution, `${screen.width}×${screen.height}`);
             setTextContent(elements.viewportSize, `${window.innerWidth}×${window.innerHeight}`);
             setTextContent(elements.colorDepth, `${screen.colorDepth}-bit`);
-            setTextContent(elements.gpu, getGPUInfo());
+            if (!isLanguageUpdate) setTextContent(elements.gpu, getGPUInfo());
             setTextContent(elements.pixelRatio, window.devicePixelRatio || '1');
             setInnerHTML(elements.httpsStatus, location.protocol === 'https:' ?
-                '<span class="security-badge secure">Secure</span>' :
-                '<span class="security-badge insecure">Insecure</span>');
-            setTextContent(elements.dntStatus, navigator.doNotTrack === '1' ? 'Enabled' : (navigator.doNotTrack === '0' ? 'Disabled' : 'Not specified'));
-            setTextContent(elements.webrtcStatus, window.RTCPeerConnection ? 'Supported' : 'Not supported');
-            setTextContent(elements.localStorage, typeof (Storage) !== 'undefined' && localStorage ? 'Available' : 'Not available');
-            setTextContent(elements.sessionStorage, typeof (Storage) !== 'undefined' && sessionStorage ? 'Available' : 'Not available');
-            setTextContent(elements.javascriptEnabled, 'Enabled');
-            setTextContent(elements.webglSupport, (() => {
-                try { return !!(document.createElement('canvas').getContext('webgl')); } catch (e) { return false; }
-            })() ? 'Supported' : 'Not supported');
-            setTextContent(elements.geolocationSupport, 'geolocation' in navigator ? 'Supported' : 'Not supported');
-            setTextContent(elements.touchSupport, ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) ? 'Yes' : 'No');
-            updateOnlineStatusIndicator(navigator.onLine);
+                '<span class="security-badge secure">STATUS_TEXT</span>' :
+                '<span class="security-badge insecure">STATUS_TEXT</span>', location.protocol === 'https:' ? 'secure' : 'insecure');
+            setTextContent(elements.dntStatus, navigator.doNotTrack === '1' ? translationSet.enabled : (navigator.doNotTrack === '0' ? translationSet.disabled : translationSet.notSpecified));
+            setTextContent(elements.webrtcStatus, window.RTCPeerConnection ? translationSet.supported : translationSet.notSupported);
+            setTextContent(elements.localStorage, typeof (Storage) !== 'undefined' && localStorage ? translationSet.available : translationSet.notAvailable);
+            setTextContent(elements.sessionStorage, typeof (Storage) !== 'undefined' && sessionStorage ? translationSet.available : translationSet.notAvailable);
+            setTextContent(elements.javascriptEnabled, translationSet.enabled);
+            setTextContent(elements.webglSupport, (() => { try { return !!(document.createElement('canvas').getContext('webgl')); } catch (e) { return false; } })() ? translationSet.supported : translationSet.notSupported);
+            setTextContent(elements.geolocationSupport, 'geolocation' in navigator ? translationSet.supported : translationSet.notSupported);
+            setTextContent(elements.touchSupport, ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) ? translationSet.enabled : translationSet.disabled);
         }
 
         function applyTheme(isDarkMode) {
@@ -1407,60 +1615,63 @@
                 videoBackground.load();
                 videoBackground.addEventListener('canplaythrough', function () {
                     videoBackground.classList.add('loaded');
-                    videoBackground.play().catch(error => { });
+                    videoBackground.play().catch(error => {});
                 }, { once: true });
                 videoSource.removeAttribute('data-src');
             }
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-            const userThemePreference = localStorage.getItem('userThemePreference');
-            const prefersDarkMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
-            if (userThemePreference === 'dark') {
-                applyTheme(true);
-            } else if (userThemePreference === 'light') {
-                applyTheme(false);
+            const initialLangLink = elements.languageDropdown.querySelector(`[data-lang="${currentLang}"]`);
+            if (initialLangLink) {
+                setLanguage(currentLang, initialLangLink.dataset.langName, initialLangLink.dataset.flagCode);
             } else {
-                applyTheme(prefersDarkMediaQuery.matches);
+                setLanguage('en', 'English', 'us');
             }
 
-            elements.themeToggle.addEventListener('click', toggleTheme);
-            if (elements.refreshNetworkButton) {
-                elements.refreshNetworkButton.addEventListener('click', () => fetchIPInfo(elements.ipDomainSearch.value));
-            }
-            elements.ipDomainSearch.addEventListener('keypress', (event) => {
-                if (event.key === 'Enter') {
-                    fetchIPInfo(elements.ipDomainSearch.value);
+            elements.languageDropdown.addEventListener('click', (e) => {
+                const link = e.target.closest('a[data-lang]');
+                if (link) {
+                    e.preventDefault();
+                    setLanguage(link.dataset.lang, link.dataset.langName, link.dataset.flagCode);
+                    elements.languageSelector.classList.remove('active'); 
                 }
             });
-            if (elements.searchButton) {
-                elements.searchButton.addEventListener('click', () => fetchIPInfo(elements.ipDomainSearch.value));
-            }
 
-            fetchIPInfo();
-            loadBrowserAndSystemInfo();
+                elements.languageButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                elements.languageSelector.classList.toggle('active');
+            });
+
+            window.addEventListener('click', (e) => {
+                if (!elements.languageSelector.contains(e.target)) {
+                    elements.languageSelector.classList.remove('active');
+                }
+            });
+
+            const userThemePreference = localStorage.getItem('userThemePreference');
+            const prefersDarkMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+            if (userThemePreference === 'dark') applyTheme(true);
+            else if (userThemePreference === 'light') applyTheme(false);
+            else applyTheme(prefersDarkMediaQuery.matches);
+
+            elements.themeToggle.addEventListener('click', toggleTheme);
+            elements.refreshNetworkButton?.addEventListener('click', () => fetchIPInfo(elements.ipDomainSearch.value));
+            elements.ipDomainSearch.addEventListener('keypress', (event) => { if (event.key === 'Enter') fetchIPInfo(elements.ipDomainSearch.value); });
+            elements.searchButton?.addEventListener('click', () => fetchIPInfo(elements.ipDomainSearch.value));
+
             lazyLoadVideo();
 
             if (window.matchMedia) {
                 prefersDarkMediaQuery.addEventListener('change', (event) => {
-                    if (localStorage.getItem('userThemePreference') === null) {
-                        applyTheme(event.matches);
-                    }
+                    if (localStorage.getItem('userThemePreference') === null) applyTheme(event.matches);
                     updatePreferredThemeDisplay();
                 });
             }
             hidePreloader();
         });
 
-        const handleScroll = () => {
-            if (window.scrollY > 10) {
-                document.body.classList.add('scrolled');
-            } else {
-                document.body.classList.remove('scrolled');
-            }
-        };
-
+        const handleScroll = () => { document.body.classList.toggle('scrolled', window.scrollY > 10); };
         window.addEventListener('scroll', handleScroll);
         window.addEventListener('online', () => updateOnlineStatusIndicator(true));
         window.addEventListener('offline', () => updateOnlineStatusIndicator(false));
@@ -1468,32 +1679,22 @@
 
         elements.networkCardIcon.addEventListener('dblclick', async () => {
             const ip = elements.ipAddress.textContent.trim();
-             const countryIso = elements.country.dataset.iso;
-             if (ip && ip !== 'Unavailable' && countryIso) {
-                 const flag = String.fromCodePoint(
-                    ...[...countryIso.toUpperCase()]
-                        .map(char => 0x1F1E6 + char.charCodeAt(0) - 'A'.charCodeAt(0))
-                );
+            const countryIso = elements.country.dataset.iso;
+            if (ip && ip !== 'Unavailable' && countryIso) {
+                const flag = String.fromCodePoint(...[...countryIso.toUpperCase()].map(char => 0x1F1E6 + char.charCodeAt(0) - 'A'.charCodeAt(0)));
                 const textToCopy = `${flag}| \`${ip}\`\n`;
-                try {
-                    await navigator.clipboard.writeText(textToCopy);
-                } catch (err) {
-                    console.error("Clipboard write failed", err);
-                }
+                try { await navigator.clipboard.writeText(textToCopy); } catch (err) { }
             }
         });
 
         function adjustHeaderContent() {
             const headerH1 = document.querySelector('.header h1');
-            if (window.innerWidth < 425) {
-                headerH1.textContent = 'S.I.H';
-            } else {
-                headerH1.textContent = 'System Info Hub';
-            }
+            if (window.innerWidth < 425) { headerH1.textContent = 'S.I.H'; }
+            else { headerH1.textContent = 'System Info Hub'; }
         }
-
         document.addEventListener('DOMContentLoaded', adjustHeaderContent);
         window.addEventListener('resize', adjustHeaderContent);
+        history.scrollRestoration = 'manual';
     </script>
 </body>
 
