@@ -196,6 +196,20 @@
             opacity: 1;
         }
 
+        .flag-container {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.25rem;
+            height: 1.25rem;
+            vertical-align: middle;
+        }
+
+        .flag-loader {
+            width: 1rem;
+            height: 1rem;
+        }
+
         .header {
             direction: ltr;
             text-align: center;
@@ -214,6 +228,10 @@
             border-radius: 1.25rem;
             gap: 1.5rem;
             margin-bottom: 1rem;
+        }
+
+        .header.hidden {
+            display: none;
         }
 
         body.scrolled .header {
@@ -897,7 +915,7 @@
 
             <section class="info-card">
                 <div class="card-header">
-                    <div class="card-icon"><i class="ph ph-google-chrome-logo"></i></div>
+                    <div class="card-icon" id="browser-card-icon"><i class="ph ph-google-chrome-logo"></i></div>
                     <h3 class="card-title" data-translate="browserDetails">Browser Details</h3>
                 </div>
                 <div class="info-item">
@@ -1154,6 +1172,8 @@
         const elements = {
             preloader: document.querySelector('.preloader'),
             mainContainer: document.getElementById('main-container'),
+            header: document.querySelector('.header'),
+            browserCardIcon: document.getElementById('browser-card-icon'),
             infoCards: document.querySelectorAll('.info-card'),
             ipAddress: document.getElementById('ip-address'),
             ipv6Address: document.getElementById('ipv6-address'),
@@ -1520,13 +1540,19 @@
                 } else {
                     flagUrl = `https://hatscripts.github.io/circle-flags/flags/${countryIso}.svg`;
                 }
-                const flagHtml = `<img src="${flagUrl}" class="flag-icon" />`;
+                const flagHtml = `
+                    <span class="flag-container">
+                        <i class="loading flag-loader"></i>
+                        <img src="${flagUrl}" class="flag-icon" style="display: none;"
+                             onload="this.style.display='inline-block'; this.previousElementSibling.style.display='none';"
+                             onerror="this.parentElement.style.display='none';" />
+                    </span>`;
                 countryDisplay = `${country} ${flagHtml}`;
             }
 
             const city = cleanCityName(getTranslatedName(geoData.city?.names, currentLang));
             const region = getTranslatedName(geoData.subdivisions?.[0]?.names, currentLang);
-
+        
             if (elements.regionItem && region && region.toLowerCase() !== city.toLowerCase()) {
                 setTextContent(elements.region, region);
                 elements.regionItem.style.display = 'flex';
@@ -1539,10 +1565,17 @@
             const asn = geoData.traits?.autonomous_system_number ? `AS${geoData.traits.autonomous_system_number}` : translationSet.unknown;
             const ipTimezone = geoData.location?.time_zone || translationSet.unknown;
 
+            const organizationItem = elements.organization.parentElement;
+            if (organization === isp) { 
+                organizationItem.style.display = 'none';
+            } else {
+                organizationItem.style.display = 'flex';
+                setTextContent(elements.organization, organization);
+            }
+
             setInnerHTML(elements.country, countryDisplay);
             setTextContent(elements.city, city);
             setTextContent(elements.isp, isp);
-            setTextContent(elements.organization, organization);
             setTextContent(elements.connectionType, asn);
             setTextContent(elements.ipTimezone, ipTimezone);
         }
@@ -1622,6 +1655,7 @@
 
             if (elements.ipAddress.textContent !== translationSet.unavailable && elements.ipAddress.textContent !== translationSet.invalidIP) addCopyFeature('ip-address');
             if (elements.ipv6Address.textContent !== translationSet.unavailable) addCopyFeature('ipv6-address');
+            if (elements.connectionType.textContent !== translationSet.unknown && elements.connectionType.textContent !== translationSet.unavailable) {addCopyFeature('asn');}
             setTimeout(() => {
                 elements.refreshNetworkButton.disabled = false;
             }, REFRESH_COOLDOWN);
@@ -1806,6 +1840,10 @@
                 const textToCopy = `${flag}| \`${ip}\`\n`;
                 try { await navigator.clipboard.writeText(textToCopy); } catch (err) { }
             }
+        });
+
+        elements.browserCardIcon.addEventListener('dblclick', async () => {
+            elements.header.classList.toggle("hidden");
         });
 
         function adjustHeaderContent() {
