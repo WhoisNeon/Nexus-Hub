@@ -1595,39 +1595,82 @@
             resetNetworkInfoState();
             const translationSet = translations[currentLang] || translations['en'];
             const FINDIP_TOKEN = 'eb2978e07c2e4a5e9bcb8c40e5f68292';
+
+            const setAllNetworkFieldsUnavailable = () => {
+                const unavailableText = translationSet.unavailable;
+                setTextContent(elements.ipAddress, unavailableText);
+                setTextContent(elements.ipv6Address, unavailableText);
+                setTextContent(elements.country, unavailableText);
+                setTextContent(elements.city, unavailableText);
+                setTextContent(elements.isp, unavailableText);
+                setTextContent(elements.organization, unavailableText);
+                setTextContent(elements.connectionType, unavailableText);
+                setTextContent(elements.ipTimezone, unavailableText);
+                if (elements.regionItem) elements.regionItem.style.display = 'none';
+                if (elements.ipv6Item) elements.ipv6Item.style.display = 'none';
+            };
+
             let currentIpv4 = translationSet.unavailable;
             let currentIpv6 = translationSet.unavailable;
             let targetIP = query.trim();
 
             if (targetIP === '') {
-                try {
-                    const ipv4Response = await fetch('https://api.ipify.org?format=json');
-                    if (ipv4Response.ok) currentIpv4 = (await ipv4Response.json()).ip;
-                    targetIP = currentIpv4;
-                    const ipv6Response = await fetch('https://api6.ipify.org?format=json');
-                    if (ipv6Response.ok) currentIpv6 = (await ipv6Response.json()).ip;
-                    elements.ipv4Item.style.display = 'flex';
-                    if (currentIpv6 !== translationSet.unavailable) {
-                        elements.ipv6Item.style.display = 'flex';
-                    } else {
-                        elements.ipv6Item.style.display = 'none';
+                const ipv4Endpoints = [
+                    'https://api.ipify.org?format=json',
+                    'https://api.seeip.org/jsonip'
+                ];
+                let ipv4Success = false;
+
+                for (const endpoint of ipv4Endpoints) {
+                    try {
+                        const response = await fetch(endpoint);
+                        if (!response.ok) throw new Error(`Response not OK from ${endpoint}`);
+                        const data = await response.json();
+                        if (data.ip) {
+                            currentIpv4 = data.ip;
+                            targetIP = currentIpv4;
+                            ipv4Success = true;
+                            break; 
+                        }
+                    } catch (error) {
+                        console.warn(`Failed to fetch IP from ${endpoint}:`, error);
                     }
-                } catch (e) {
-                    setTextContent(elements.ipAddress, translationSet.unavailable);
-                    setTextContent(elements.ipv6Address, translationSet.unavailable);
+                }
+
+                if (!ipv4Success) {
+                    setAllNetworkFieldsUnavailable();
                     hidePreloader();
-                    setTimeout(() => {
-                        elements.refreshNetworkButton.disabled = false;
-                    }, REFRESH_COOLDOWN);
+                    setTimeout(() => { elements.refreshNetworkButton.disabled = false; }, REFRESH_COOLDOWN);
                     return;
                 }
+
+                try {
+                    const ipv6Response = await fetch('https://api6.ipify.org?format=json');
+                    if (ipv6Response.ok) currentIpv6 = (await ipv6Response.json()).ip;
+                } catch (e) {
+                    console.warn('Could not fetch IPv6 address.');
+                }
+                
+                elements.ipv4Item.style.display = 'flex';
+                if (currentIpv6 !== translationSet.unavailable) {
+                    elements.ipv6Item.style.display = 'flex';
+                } else {
+                    elements.ipv6Item.style.display = 'none';
+                }
+
             } else if (!isValidIP(targetIP)) {
                 setTextContent(elements.ipAddress, '', 'invalidIP');
-                setTextContent(elements.ipv6Address, 'N/A');
+                const notApplicable = 'N/A';
+                setTextContent(elements.country, notApplicable);
+                setTextContent(elements.city, notApplicable);
+                setTextContent(elements.isp, notApplicable);
+                setTextContent(elements.organization, notApplicable);
+                setTextContent(elements.connectionType, notApplicable);
+                setTextContent(elements.ipTimezone, notApplicable);
+                if (elements.ipv6Item) elements.ipv6Item.style.display = 'none';
+                if (elements.regionItem) elements.regionItem.style.display = 'none';
                 hidePreloader();
-                setTimeout(() => {
-                    elements.refreshNetworkButton.disabled = false;
-                }, REFRESH_COOLDOWN);
+                setTimeout(() => { elements.refreshNetworkButton.disabled = false; }, REFRESH_COOLDOWN);
                 return;
             } else {
                 currentIpv4 = targetIP;
@@ -1642,21 +1685,19 @@
                         lastGeoData = await geoResponse.json();
                         displayGeoData(lastGeoData);
                     } else {
-                        lastGeoData = null;
-                        throw new Error('API request failed');
+                        throw new Error('Geo API request failed');
                     }
                 } catch (error) {
                     lastGeoData = null;
-                    setTextContent(elements.country, translationSet.unavailable);
-                    setTextContent(elements.city, translationSet.unavailable);
-                    setTextContent(elements.isp, translationSet.unavailable);
-                    setTextContent(elements.organization, translationSet.unavailable);
-                    setTextContent(elements.connectionType, translationSet.unavailable);
-                    setTextContent(elements.ipTimezone, translationSet.unavailable);
+                    const unavailableText = translationSet.unavailable;
+                    setTextContent(elements.country, unavailableText);
+                    setTextContent(elements.city, unavailableText);
+                    setTextContent(elements.isp, unavailableText);
+                    setTextContent(elements.organization, unavailableText);
+                    setTextContent(elements.connectionType, unavailableText);
+                    setTextContent(elements.ipTimezone, unavailableText);
                     if (elements.regionItem) elements.regionItem.style.display = 'none';
                 }
-            } else {
-                lastGeoData = null;
             }
 
             setTextContent(elements.ipAddress, currentIpv4);
@@ -1665,6 +1706,7 @@
             if (elements.ipAddress.textContent !== translationSet.unavailable && elements.ipAddress.textContent !== translationSet.invalidIP) addCopyFeature('ip-address');
             if (elements.ipv6Address.textContent !== translationSet.unavailable) addCopyFeature('ipv6-address');
             if (elements.connectionType.textContent !== translationSet.unknown && elements.connectionType.textContent !== translationSet.unavailable) {addCopyFeature('asn');}
+            
             setTimeout(() => {
                 elements.refreshNetworkButton.disabled = false;
             }, REFRESH_COOLDOWN);
