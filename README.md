@@ -2,9 +2,9 @@
 
 Nexus Hub is a sleek, modern web-based utility that provides a detailed dashboard of your system, browser, and network information. It's designed with a clean, responsive, and user-friendly interface, offering comprehensive insights at a glance.
 
-<div style="display: flex; justify-content: center; align-items: center;">
-  [![Live Demo](https://img.shields.io/badge/Demo-Live%20Demo-green?style=for-the-badge)](https://whoisneon.github.io/Nexus-Hub)
-</div>
+<a href="https://whoisneon.github.io/Nexus-Hub">
+  <img src="https://img.shields.io/badge/Demo-Live%20Demo-green?style=for-the-badge" alt="Live Demo">
+</a>
 
 ![Nexus Hub Screenshot](https://raw.githubusercontent.com/WhoisNeon/Nexus-Hub/main/assets/screenshot.png)
 
