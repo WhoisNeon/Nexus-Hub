@@ -4,7 +4,7 @@ Nexus Hub is a sleek, modern web-based utility that provides a detailed dashboar
 
 **[Live Demo](https://whoisneon.github.io/Nexus-Hub/)**
 
-![Nexus Hub Screenshot](https://raw.githubusercontent.com/WhoisNeon/Nexus-Hub/main/screenshot.png)
+![Nexus Hub Screenshot](https://raw.githubusercontent.com/WhoisNeon/Nexus-Hub/main/assets/screenshot.png)
 
 ---
 
