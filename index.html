@@ -1868,6 +1868,7 @@
             elements.searchButton?.addEventListener('click', () => fetchIPInfo(elements.ipDomainSearch.value));
 
             lazyLoadVideo();
+            hidePreloader();
 
             if (window.matchMedia) {
                 prefersDarkMediaQuery.addEventListener('change', (event) => {
