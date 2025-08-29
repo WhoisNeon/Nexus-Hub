@@ -61,8 +61,16 @@
         }
 
 
-        html[dir="rtl"] body, html[dir="rtl"] #selected-lang-text, a[data-lang-name="پارسی"] {
+        html[dir="rtl"] body,
+        html[dir="rtl"] #selected-lang-text,
+        a[data-lang-name="پارسی"],
+        html[dir="rtl"] .ip-search-input {
             font-family: 'IranSans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        html[dir="rtl"] #ipv6-address {
+            direction: ltr;
+            flex-direction: row-reverse;
         }
         
         * {
@@ -550,6 +558,7 @@
         }
 
         .ip-search-input {
+            line-height: 1.125rem;
             flex-grow: 1;
             padding: 0.75rem;
             border-radius: 0.5rem;
