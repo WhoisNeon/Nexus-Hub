@@ -532,11 +532,7 @@ function displayGeoData(geoData) {
     const ipTimezone = geoData.location?.time_zone || translationSet.unknown;
 
     const organizationItem = elements.organization.parentElement;
-    const translationSet = translations[currentLang] || translations['en'];
-    const unavailableText = translationSet.unavailable;
-    const unknownText = translationSet.unknown;
-
-    if (organization === isp || organization === unavailableText || organization === unknownText) {
+    if (organization === isp) {
         organizationItem.style.display = 'none';
     } else {
         organizationItem.style.display = 'flex';
