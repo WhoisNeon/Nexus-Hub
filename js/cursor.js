@@ -88,16 +88,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         cursor.style.transform = `translate(${centeredX}px, ${centeredY}px)`;
 
-        let currentTrailX = centeredX;
-        let currentTrailY = centeredY;
+        let leaderX = mouse.x;
+        let leaderY = mouse.y;
+
         points.forEach((p, index) => {
-            p.x = currentTrailX;
-            p.y = currentTrailY;
-            let nextPoint = points[index + 1];
-            if (nextPoint) {
-                currentTrailX += (nextPoint.x - p.x) * smoothingFactor;
-                currentTrailY += (nextPoint.y - p.y) * smoothingFactor;
-            }
+            const currentX = p.x;
+            const currentY = p.y;
+
+            p.x += (leaderX - currentX) * smoothingFactor;
+            p.y += (leaderY - currentY) * smoothingFactor;
+
+            leaderX = currentX;
+            leaderY = currentY;
         });
 
         const pathData = `M ${points.map((p) => `${p.x} ${p.y}`).join(` L `)}`;
