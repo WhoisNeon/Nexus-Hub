@@ -532,7 +532,8 @@ function displayGeoData(geoData) {
     const ipTimezone = geoData.location?.time_zone || translationSet.unknown;
 
     const organizationItem = elements.organization.parentElement;
-    if (organization === isp) {
+
+    if (organization === isp || organization === translationSet.unavailable) {
         organizationItem.style.display = 'none';
     } else {
         organizationItem.style.display = 'flex';
