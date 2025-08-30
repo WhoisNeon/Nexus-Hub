@@ -1,0 +1,59 @@
+:root {
+    --cursor-head-color: #333;
+    --cursor-trail-color: rgba(51, 51, 51, 0.5);
+    --cursor-size: 12px;
+    --cursor-hover-size: 10px;
+    --trail-width: 8px;
+}
+
+body.dark-mode {
+    --cursor-head-color: #e2e8f0;
+    --cursor-trail-color: rgba(226, 232, 240, 0.5);
+}
+
+.custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--cursor-size);
+    height: var(--cursor-size);
+    background-color: var(--cursor-head-color);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 4;
+    opacity: 0;
+    transition: width 0.2s ease-in-out, height 0.2s ease-in-out, opacity 0.3s ease-in-out;
+    will-change: transform;
+}
+
+.custom-cursor.hover-effect {
+    width: var(--cursor-hover-size);
+    height: var(--cursor-hover-size);
+    opacity: 0.8;
+}
+
+svg.trail {
+    position: fixed;
+    top: 5.25px;
+    left: 7px;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    will-change: transform;
+}
+
+svg.trail path {
+    fill: none;
+    stroke: var(--cursor-trail-color);
+    stroke-width: var(--trail-width);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+svg.trail.hidden,
+.custom-cursor.hidden {
+    opacity: 0 !important;
+}
