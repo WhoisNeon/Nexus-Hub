@@ -50,7 +50,7 @@
 
 **Click the badge below to try "Nexus Hub" in your browser!**
 
-[![Live Demo](https://img.shields.io/badge/Nexus-Live%20Demo-green?style=for-the-badge)](https://whoisneon.github.io/Nexus-hub)
+[![Live Demo](https://img.shields.io/badge/Nexus-Live%20Demo-green?style=for-the-badge)](https://whoisneon.github.io/Nexus-Hub)
 
 ---
 
