@@ -1,10 +1,14 @@
-![Nexus Hub Banner](https://raw.githubusercontent.com/WhoisNeon/Nexus-Hub/refs/heads/master/assets/banner.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/WhoisNeon/Nexus-Hub/refs/heads/master/assets/banner.png" alt="Nexus Hub Banner">
+</p>
 
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)
-![Build Status](https://img.shields.io/badge/build-passing-brightgreen?style=for-the-badge)
-![Version](https://img.shields.io/badge/version-1.0.0-blue?style=for-the-badge)
-![Demo](https://img.shields.io/badge/demo-online-blue?style=for-the-badge)
-![Languages](https://img.shields.io/badge/languages-10+-purple?style=for-the-badge)
+<p align="center">
+  <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge">
+  <img src="https://img.shields.io/badge/build-passing-brightgreen?style=for-the-badge">
+  <img src="https://img.shields.io/badge/version-1.0.0-blue?style=for-the-badge">
+  <img src="https://img.shields.io/badge/demo-online-blue?style=for-the-badge">
+  <img src="https://img.shields.io/badge/languages-10+-purple?style=for-the-badge">
+</p>
 
 Nexus Hub is a web-based utility designed with a clean, responsive, and user-friendly interface, offering comprehensive insights into your system, browser, and network information at a glance. It's built for performance and simplicity, using only vanilla web technologies.
 
@@ -45,7 +49,14 @@ Nexus Hub is a web-based utility designed with a clean, responsive, and user-fri
 
 ## 🔴 Live Demo
 
-[![Live Demo](https://img.shields.io/badge/Open-Live%20Demo-green?style=for-the-badge)](https://whoisneon.github.io/Nexus-Hub)
+
+**Click the badge below to try "Nexus Hub" in your browser!**
+
+<p align="left">
+  <a href="https://whoisneon.github.io/Nexus-Hub" target="_blank">
+    <img src="https://img.shields.io/badge/Open-Live%20Demo-green?style=for-the-badge" alt="Live Demo Badge">
+  </a>
+</p>
 
 ---
 
@@ -73,7 +84,7 @@ Nexus Hub is a web-based utility designed with a clean, responsive, and user-fri
 
 - [IPify](https://www.ipify.org/) — for public IP detection.
 - [FindIP](https://findip.net/) — for geolocation and network info.
-- [Cloudflare DNS-over-HTTPS](https://developers.cloudflare.com/dns/over-https/) — for domain resolution.
+- [Cloudflare DNS-over-HTTPS](https://developers.cloudflare.com/1.1.1.1/encryption/dns-over-https) — for domain resolution.
 - [Google DNS-over-HTTPS](https://developers.google.com/speed/public-dns/docs/dns-over-https) — for domain resolution.
 - [Circle Flags](https://github.com/hatscripts/circle-flags) — for country flags.
 - [Phosphor Icons](https://phosphoricons.com/) — for UI icons.
@@ -117,5 +128,3 @@ This project is licensed under the MIT License. See the [`LICENSE`](LICENSE) fil
 ## ✍️ Author
 
 Created with ❤️ by **[WhoisNeon](https://github.com/WhoisNeon)**.
-
----
