@@ -1,4 +1,4 @@
-[![Nexus Hub Banner](https://raw.githubusercontent.com/WhoisNeon/Nexus-Hub/main/assets/banner.png)](https://whoisneon.github.io/Nexus-Hub)
+![Nexus Hub Banner](https://raw.githubusercontent.com/WhoisNeon/Nexus-Hub/refs/heads/master/assets/banner.png)
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen?style=for-the-badge)
@@ -7,8 +7,6 @@
 ![Languages](https://img.shields.io/badge/languages-10+-purple?style=for-the-badge)
 
 Nexus Hub is a web-based utility designed with a clean, responsive, and user-friendly interface, offering comprehensive insights into your system, browser, and network information at a glance. It's built for performance and simplicity, using only vanilla web technologies.
-
-[![Nexus Hub Screenshot](https://raw.githubusercontent.com/WhoisNeon/Nexus-Hub/main/assets/screenshot.png)](https://whoisneon.github.io/Nexus-Hub)
 
 ---
 
