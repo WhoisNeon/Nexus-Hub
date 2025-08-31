@@ -713,7 +713,7 @@ async function fetchIPInfo(query = '') {
 
             const ipFromDomain = await (async () => {
                 try {
-                    const res = await fetchWithTimeout(`http://ip-api.com/json/${processedQuery}`);
+                    const res = await fetchWithTimeout(`https://ip-api.com/json/${processedQuery}`);
                     if (!res.ok) return null;
                     const data = await res.json();
                     return (data.status === 'success' && data.query) ? data.query : null;
