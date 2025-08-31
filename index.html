@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Hub</title>
+    <link rel="icon" href="https://whoisneon.github.io/Nexus-Hub/assets/globe.svg" type="image/x-icon">
+
+    <meta name="description" content="Get detailed information about your system, browser, network, and more.">
+    <meta name="keywords" content="system info, browser info, ip address, network details, device information">
+    <meta property="og:title" content="Nexus Hub">
+    <meta property="og:description" content="Get detailed information about your system, browser, network, and more.">
+    <meta property="og:url" content="https://whoisneon.github.io/Nexus-Hub">
+    <meta property="og:type" content="website">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://use.typekit.net/frb7uwd.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/theme-toggles@4.10.1/css/expand.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css">
+    <link rel="stylesheet" href="css/cursor.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="dark-mode">
+    <div class="custom-cursor"></div>
+    <svg class="trail" viewbox="0 0 1 1">
+        <path d="M 0 0" />
+    </svg>
+
+    <div class="preloader">
+        <div class="preloader-door-top"></div>
+        <div class="preloader-door-bottom"></div>
+        <div class="preloader-spinner">
+            <p class="text" data-translate="loading">Loading...</p>
+            <div class="invertbox"></div>
+        </div>
+    </div>
+
+    <video muted loop playsinline id="video-background">
+        <source data-src="https://whoisneon.github.io/Nexus-Hub/assets/background.mp4" type="video/mp4">
+    </video>
+
+    <div class="container" id="main-container">
+        <header class="header">
+            <button class="theme-toggle" id="theme-toggle-button" type="button" aria-label="Toggle theme">
+                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="1em" height="1em" fill="currentColor"
+                    class="theme-toggle__expand" viewBox="0 0 32 32">
+                    <clipPath id="theme-toggle__expand__cutout">
+                        <path d="M0-11h25a1 1 0 0017 13v30H0Z" />
+                    </clipPath>
+                    <g clip-path="url(#theme-toggle__expand__cutout)">
+                        <circle cx="16" cy="16" r="8.4" />
+                        <path
+                            d="M18.3 3.2c0 1.3-1 2.3-2.3 2.3s-2.3-1-2.3-2.3S14.7.9 16 .9s2.3 1 2.3 2.3zm-4.6 25.6c0-1.3 1-2.3 2.3-2.3s2.3 1 2.3 2.3-1 2.3-2.3 2.3-2.3-1-2.3-2.3zm15.1-10.5c-1.3 0-2.3-1-2.3-2.3s1-2.3 2.3-2.3 2.3 1 2.3 2.3-1 2.3-2.3 2.3zM3.2 13.7c1.3 0 2.3 1 2.3 2.3s-1 2.3-2.3 2.3S.9 17.3.9 16s1-2.3 2.3-2.3zm5.8-7C9 7.9 7.9 9 6.7 9S4.4 8 4.4 6.7s1-2.3 2.3-2.3S9 5.4 9 6.7zm16.3 21c-1.3 0-2.3-1-2.3-2.3s1-2.3 2.3-2.3 2.3 1 2.3 2.3-1 2.3-2.3 2.3zm2.4-21c0 1.3-1 2.3-2.3 2.3S23 7.9 23 6.7s1-2.3 2.3-2.3 2.4 1 2.4 2.3zM6.7 23C8 23 9 24 9 25.3s-1 2.3-2.3 2.3-2.3-1-2.3-2.3 1-2.3 2.3-2.3z" />
+                    </g>
+                </svg>
+            </button>
+            <h1>Nexus Hub</h1>
+            <div class="language-selector">
+                <button class="language-button">
+                    <img src="https://hatscripts.github.io/circle-flags/flags/us.svg" id="selected-flag">
+                    <span id="selected-lang-text">English</span>
+                    <i class="ph-fill ph-caret-down"></i> </button>
+                </button>
+                <div class="language-dropdown">
+                    <button type="button" data-lang="en" data-lang-name="English" data-flag-code="us"><img src="https://hatscripts.github.io/circle-flags/flags/us.svg"> English</button>
+                    <button type="button" data-lang="fa" data-lang-name="پارسی" data-flag-code="ir"><img src="https://whoisneon.github.io/Nexus-Hub/assets/ir.svg">پارسی</button>
+                    <button type="button" data-lang="de" data-lang-name="Deutsch" data-flag-code="de"><img src="https://hatscripts.github.io/circle-flags/flags/de.svg"> Deutsch</button>
+                    <button type="button" data-lang="es" data-lang-name="Español" data-flag-code="es"><img src="https://hatscripts.github.io/circle-flags/flags/es.svg"> Español</button>
+                    <button type="button" data-lang="pt" data-lang-name="Português" data-flag-code="pt"><img src="https://hatscripts.github.io/circle-flags/flags/pt.svg">Português</button>
+                    <button type="button" data-lang="fr" data-lang-name="Français" data-flag-code="fr"><img src="https://hatscripts.github.io/circle-flags/flags/fr.svg"> Français</button>
+                    <button type="button" data-lang="ru" data-lang-name="Русский" data-flag-code="ru"><img src="https://hatscripts.github.io/circle-flags/flags/ru.svg"> Русский</button>
+                    <button type="button" data-lang="ja" data-lang-name="日本語" data-flag-code="jp"><img src="https://hatscripts.github.io/circle-flags/flags/jp.svg"> 日本語</button>
+                    <button type="button" data-lang="ko" data-lang-name="한국어" data-flag-code="kr"><img src="https://hatscripts.github.io/circle-flags/flags/kr.svg"> 한국어</button>
+                    <button type="button" data-lang="zh" data-lang-name="中文" data-flag-code="cn"><img src="https://hatscripts.github.io/circle-flags/flags/cn.svg"> 中文</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="info-grid">
+            <section class="info-card">
+                <div class="card-header">
+                    <div class="card-icon" id="network-card-icon"><i class="ph ph-globe"></i></div>
+                    <h3 class="card-title" data-translate="networkDetails">Network Details</h3>
+                    <button class="refresh-button" id="refresh-network-button">
+                        <i class="ph ph-arrow-clockwise"></i>
+                    </button>
+                </div>
+                <div class="ip-search-container">
+                    <input type="text" id="ip-domain-search" class="ip-search-input"
+                        placeholder="" data-translate="searchPlaceholder">
+                    <button id="search-button" class="search-button">
+                        <i class="ph ph-magnifying-glass"></i>
+                    </button>
+                </div>
+                <div class="info-item" id="ip-address-item">
+                    <span class="info-label" data-translate="ipAddress">IP Address</span>
+                    <span class="info-value" id="ip-address"><i class="loading"></i></span>
+                </div>
+                <div class="info-item" id="ipv6-item">
+                    <span class="info-label" data-translate="ipv6">IPv6</span>
+                    <span class="info-value" id="ipv6-address"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="country">Country</span>
+                    <span class="info-value" id="country"><i class="loading"></i></span>
+                </div>
+                <div class="info-item" id="region-item" style="display: none;">
+                    <span class="info-label" data-translate="region">Region</span>
+                    <span class="info-value" id="region"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="city">City</span>
+                    <span class="info-value" id="city"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="isp">ISP</span>
+                    <span class="info-value" id="isp"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="organization">Organization</span>
+                    <span class="info-value" id="organization"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="asn">ASN</span>
+                    <span class="info-value" id="asn"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="ipTimezone">Time Zone</span>
+                    <span class="info-value" id="ip-timezone"><i class="loading"></i></span>
+                </div>
+            </section>
+
+            <section class="info-card">
+                <div class="card-header">
+                    <div class="card-icon" id="browser-card-icon"><i class="ph ph-browser"></i></div>
+                    <h3 class="card-title" data-translate="browserDetails">Browser Details</h3>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="browser">Browser</span>
+                    <span class="info-value" id="browser"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="version">Version</span>
+                    <span class="info-value" id="browser-version"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="engine">Engine</span>
+                    <span class="info-value" id="browser-engine"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="cookiesEnabled">Cookies Enabled</span>
+                    <span class="info-value" id="cookies-enabled"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="userAgent">User Agent</span>
+                    <span class="info-value" id="user-agent"><i class="loading"></i></span>
+                </div>
+            </section>
+
+            <section class="info-card">
+                <div class="card-header">
+                    <div class="card-icon" id="os-icon"><i class="loading"></i></div>
+                    <h3 class="card-title" data-translate="systemInfo">System Information</h3>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="os">Operating System</span>
+                    <span class="info-value" id="os"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="deviceType">Device Type</span>
+                    <span class="info-value" id="device-type"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="architecture">Architecture</span>
+                    <span class="info-value" id="architecture"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="cpuCores">CPU Cores</span>
+                    <span class="info-value" id="cpu-cores"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="memory">Memory</span>
+                    <span class="info-value" id="memory"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="systemTimezone">Time Zone</span>
+                    <span class="info-value" id="system-timezone"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="preferredTheme">Preferred Theme</span>
+                    <span class="info-value" id="preferred-theme"><i class="loading"></i></span>
+                </div>
+            </section>
+
+            <section class="info-card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="ph ph-monitor"></i></div>
+                    <h3 class="card-title" data-translate="displayGraphics">Display & Graphics</h3>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="screenResolution">Screen Resolution</span>
+                    <span class="info-value" id="screen-resolution"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="viewportSize">Viewport Size</span>
+                    <span class="info-value" id="viewport-size"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="colorDepth">Color Depth</span>
+                    <span class="info-value" id="color-depth"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="gpu">GPU</span>
+                    <span class="info-value" id="gpu"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="pixelRatio">Pixel Ratio</span>
+                    <span class="info-value" id="pixel-ratio"><i class="loading"></i></span>
+                </div>
+            </section>
+
+            <section class="info-card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="ph ph-lock-key"></i></div>
+                    <h3 class="card-title" data-translate="securityPrivacy">Security & Privacy</h3>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="https">HTTPS</span>
+                    <span class="info-value" id="https-status"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="dnt">Do Not Track</span>
+                    <span class="info-value" id="dnt-status"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="webrtc">WebRTC</span>
+                    <span class="info-value" id="webrtc-status"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="localStorage">Local Storage</span>
+                    <span class="info-value" id="local-storage"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="sessionStorage">Session Storage</span>
+                    <span class="info-value" id="session-storage"><i class="loading"></i></span>
+                </div>
+            </section>
+
+            <section class="info-card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="ph ph-lightning"></i></div>
+                    <h3 class="card-title" data-translate="webFeatures">Web Features</h3>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="javascript">JavaScript</span>
+                    <span class="info-value" id="javascript-enabled"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="webgl">WebGL</span>
+                    <span class="info-value" id="webgl-support"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="geolocation">Geolocation</span>
+                    <span class="info-value" id="geolocation-support"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="touchSupport">Touch Support</span>
+                    <span class="info-value" id="touch-support"><i class="loading"></i></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-translate="onlineStatus">Online Status</span>
+                    <span class="info-value" id="online-status"><i class="loading"></i></span>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2025 <a href="https://github.com/WhoisNeon" target="_blank">WhoisNeon</a>. <span data-translate="copyright">All rights reserved.</span></p>
+        </footer>
+    </div>
+
+<script src="js/cursor.js"></script>
+<script src="js/script.js"></script>
+</body>
+
+</html>
