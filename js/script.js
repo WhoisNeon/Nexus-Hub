@@ -581,9 +581,8 @@ function spamDetector() {
     return false;
 }
 
-// Add this function near the top-level utility functions
 async function resolveDomainToIP(domain) {
-    // Try Cloudflare DoH
+    // Cloudflare DoH
     try {
         const res = await fetch(`https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(domain)}&type=A`, {
             headers: { 'accept': 'application/dns-json' }
@@ -599,7 +598,7 @@ async function resolveDomainToIP(domain) {
     } catch (err) {
         console.error('Cloudflare DNS fetch failed:', err);
     }
-    // Try Google DNS
+    // Google DNS
     try {
         const res = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(domain)}&type=A`);
         if (res.ok) {
