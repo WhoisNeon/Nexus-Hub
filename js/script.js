@@ -581,6 +581,41 @@ function spamDetector() {
     return false;
 }
 
+// Add this function near the top-level utility functions
+async function resolveDomainToIP(domain) {
+    // Try Cloudflare DoH
+    try {
+        const res = await fetch(`https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(domain)}&type=A`, {
+            headers: { 'accept': 'application/dns-json' }
+        });
+        if (res.ok) {
+            const data = await res.json();
+            const answer = data.Answer?.find(a => a.type === 1 && a.data);
+            console.log("used Cloudflare");
+            if (answer) return answer.data;
+        } else {
+            console.error('Cloudflare DNS error:', res.status, res.statusText);
+        }
+    } catch (err) {
+        console.error('Cloudflare DNS fetch failed:', err);
+    }
+    // Try Google DNS
+    try {
+        const res = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(domain)}&type=A`);
+        if (res.ok) {
+            const data = await res.json();
+            const answer = data.Answer?.find(a => a.type === 1 && a.data);
+            console.log("used Google");
+            if (answer) return answer.data;
+        } else {
+            console.error('Google DNS error:', res.status, res.statusText);
+        }
+    } catch (err) {
+        console.error('Google DNS fetch failed:', err);
+    }
+    return null;
+}
+
 async function fetchIPInfo(query = '') {
     if (spamDetector()) return;
     if (elements.refreshNetworkButton.disabled) return;
@@ -711,16 +746,8 @@ async function fetchIPInfo(query = '') {
             elements.ipDomainSearch.value = '';
             elements.ipDomainSearch.placeholder = t.resolvingDomain;
 
-            const ipFromDomain = await (async () => {
-                try {
-                    const res = await fetchWithTimeout(`https://ip-api.com/json/${processedQuery}`);
-                    if (!res.ok) return null;
-                    const data = await res.json();
-                    return (data.status === 'success' && data.query) ? data.query : null;
-                } catch {
-                    return null;
-                }
-            })();
+            // Use the new resolveDomainToIP function
+            const ipFromDomain = await resolveDomainToIP(processedQuery);
 
             if (ipFromDomain) {
                 effectiveIP = ipFromDomain;
