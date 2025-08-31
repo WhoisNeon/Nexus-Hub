@@ -10,8 +10,6 @@
   <img src="https://img.shields.io/badge/languages-10+-purple?style=for-the-badge">
 </p>
 
-Nexus Hub is a web-based utility designed with a clean, responsive, and user-friendly interface, offering comprehensive insights into your system, browser, and network information at a glance. It's built for performance and simplicity, using only vanilla web technologies.
-
 ---
 
 ## 📋 Table of Contents
