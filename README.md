@@ -1,10 +1,12 @@
-# Nexus Hub 🌐
+[![Nexus Hub Banner](https://raw.githubusercontent.com/WhoisNeon/Nexus-Hub/main/assets/banner.png)](https://whoisneon.github.io/Nexus-Hub)
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen?style=for-the-badge)
 ![Version](https://img.shields.io/badge/version-1.0.0-blue?style=for-the-badge)
+![Demo](https://img.shields.io/badge/demo-online-blue?style=for-the-badge)
+![Languages](https://img.shields.io/badge/languages-10+-purple?style=for-the-badge)
 
-Nexus Hub is a web-based utility designed with a clean, responsive, and user-friendly interface, offering comprehensive insights into your system, browser, and network information at a glance. It's built with a focus on performance and simplicity, using only vanilla web technologies.
+Nexus Hub is a web-based utility designed with a clean, responsive, and user-friendly interface, offering comprehensive insights into your system, browser, and network information at a glance. It's built for performance and simplicity, using only vanilla web technologies.
 
 [![Nexus Hub Screenshot](https://raw.githubusercontent.com/WhoisNeon/Nexus-Hub/main/assets/screenshot.png)](https://whoisneon.github.io/Nexus-Hub)
 
@@ -12,20 +14,34 @@ Nexus Hub is a web-based utility designed with a clean, responsive, and user-fri
 
 ## 📋 Table of Contents
 
-* [Features](#-features)
-* [Live Demo](#-live-demo)
-* [Tech Stack](#-tech-stack)
-* [Contributing](#-contributing)
-* [License](#-license)
-* [Author](#️-author)
+- [Features](#-features)
+- [Live Demo](#-live-demo)
+- [Usage](#-usage)
+- [Tech Stack](#-tech-stack)
+- [APIs Used](#-apis-used)
+- [Troubleshooting](#-troubleshooting)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Author](#️-author)
 
 ---
 
 ## ✨ Features
 
-* **Comprehensive Information Panels:** Fetches IPv4/v6 addresses, Geolocation (Country, City, Region), ISP, ASN, and network timezone. It also detects your Operating System, Device Type, CPU Cores, estimated Memory, Architecture, Browser name, version, rendering engine, and full User Agent string.
-* **Interactive UX/UI:** An integrated search bar to look up details for any valid IP address, a "Copy to Clipboard" feature for key information, a seamless dark/light theme switcher, multi-language support, and a fully responsive design for all screen sizes.
-* **Modern Design:** A polished interface featuring smooth loading animations, icon-driven cards, and a frosted glass (glassmorphism) effect for a modern aesthetic.
+- **Comprehensive Information Panels:**
+  - IPv4/v6 addresses, Geolocation (Country, City, Region), ISP, ASN, network timezone.
+  - Operating System, Device Type, CPU Cores, estimated Memory, Architecture.
+  - Browser name, version, rendering engine, full User Agent string.
+- **Interactive UX/UI:**
+  - Search bar for any valid IP address or domain.
+  - "Copy to Clipboard" for key info.
+  - Seamless dark/light theme switcher.
+  - Multi-language support (10+ languages).
+  - Fully responsive design.
+- **Modern Design:**
+  - Smooth loading animations.
+  - Icon-driven cards.
+  - Glassmorphism effect.
 
 ---
 
@@ -35,42 +51,73 @@ Nexus Hub is a web-based utility designed with a clean, responsive, and user-fri
 
 ---
 
+## 🚀 Usage
+
+1. **Open the [Live Demo](https://whoisneon.github.io/Nexus-Hub) in your browser.**
+2. **View your system, browser, and network details instantly.**
+3. **Search for any IP address or domain using the search bar.**
+4. **Switch themes or languages using the controls in the header.**
+5. **Copy any info by clicking the clipboard icon next to it.**
+
+---
+
 ## 🛠️ Tech Stack
 
-This project is built with vanilla web technologies for performance and simplicity.
+| Technology            |                                                                    Icon                                                                    |
+| :-------------------- | :----------------------------------------------------------------------------------------------------------------------------------------: |
+| **HTML5**             |        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5" width="40" height="40"/>         |
+| **CSS3**              |          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3" width="40" height="40"/>          |
+| **JavaScript (ES6+)** | <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" width="40" height="40"/> |
 
-| Technology | Icon |
-| :--- | :---: |
-| **HTML5** | <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5" width="40" height="40"/> |
-| **CSS3** | <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3" width="40" height="40"/> |
-| **JavaScript (ES6+)**| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" width="40" height="40"/> |
+---
 
-**APIs & Libraries:**
-* [IPify](https://www.ipify.org/) & [FindIP](https://findip.net/)
-* [Google Fonts (Inter)](https://fonts.google.com/specimen/Inter)
-* [Phosphor Icons](https://phosphoricons.com/)
-* [Circle Flags](https://github.com/hatscripts/circle-flags)
+## 🌐 APIs Used
+
+- [IPify](https://www.ipify.org/) — for public IP detection.
+- [FindIP](https://findip.net/) — for geolocation and network info.
+- [Cloudflare DNS-over-HTTPS](https://developers.cloudflare.com/dns/over-https/) — for domain resolution.
+- [Google DNS-over-HTTPS](https://developers.google.com/speed/public-dns/docs/dns-over-https) — for domain resolution.
+- [Circle Flags](https://github.com/hatscripts/circle-flags) — for country flags.
+- [Phosphor Icons](https://phosphoricons.com/) — for UI icons.
+- [Google Fonts (Inter)](https://fonts.google.com/specimen/Inter) — for typography.
+
+---
+
+## 🧩 Troubleshooting
+
+- **Why can't I open DNS API links directly in my browser?**  
+  DNS-over-HTTPS endpoints (like Cloudflare or Google) are APIs, not web pages. They expect specific headers and return JSON, not HTML.
+- **Some info is missing or shows "Unknown":**
+  - Your browser/device may restrict access to certain details for privacy.
+  - Network APIs may be blocked by your firewall or region.
+- **Domain resolution fails:**
+  - The domain may not exist or DNS APIs may be blocked.
+  - Check browser console for error logs.
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! If you have suggestions for improvements, please feel free to fork the repository and submit a pull request. You can also open an issue with the tag "enhancement".
+Contributions are welcome!  
+If you have suggestions for improvements, fork the repository and submit a pull request.  
+You can also open an issue with the tag "enhancement".
 
-1.  Fork the Project
-2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4.  Push to the Branch (`git push origin feature/AmazingFeature`)
-5.  Open a Pull Request
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ---
 
 ## 📄 License
 
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+This project is licensed under the MIT License. See the [`LICENSE`](LICENSE) file for details.
 
 ---
 
 ## ✍️ Author
 
 Created with ❤️ by **[WhoisNeon](https://github.com/WhoisNeon)**.
+
+---
