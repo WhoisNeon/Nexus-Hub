@@ -53,7 +53,7 @@ body.dark-mode {
 
 html[dir="rtl"] body,
 html[dir="rtl"] #selected-lang-text,
-a[data-lang-name="پارسی"],
+.language-dropdown button:nth-child(2),
 html[dir="rtl"] .ip-search-input {
     font-family: 'IranSans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
