@@ -1,5 +1,6 @@
 :root {
     --cursor-head-color: #333;
+    --cursor-border-color: #e2e8f0;
     --cursor-trail-color: rgba(51, 51, 51, 0.5);
     --cursor-size: 14px;
     --trail-width: 10px;
@@ -10,6 +11,7 @@
 
 body.dark-mode {
     --cursor-head-color: #e2e8f0;
+    --cursor-border-color: #333;
     --cursor-trail-color: rgba(226, 232, 240, 0.5);
     --cursor-disabled-bg: #ff8585;
 }
@@ -27,6 +29,7 @@ body.dark-mode {
     opacity: 0;
     transition: width 0.2s, height 0.2s, opacity 0.3s, background-color 0.2s;
     will-change: transform;
+    border: 1px solid var(--cursor-border-color);
 }
 
 .custom-cursor.hover-effect {
@@ -59,4 +62,10 @@ svg.trail path {
 svg.trail.hidden,
 .custom-cursor.hidden {
     opacity: 0 !important;
+}
+
+.cursor-path {
+    stroke: var(--cursor-border-color);
+    stroke-width: 5px;
+    filter: drop-shadow(0 0 5px var(--cursor-border-color));
 }
