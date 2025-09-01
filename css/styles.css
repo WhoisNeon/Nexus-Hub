@@ -63,7 +63,7 @@ html[dir="rtl"] input {
     font-family: 'IranSans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-html[dir="rtl"] #ipv6-address {
+html[dir="rtl"] .info-value {
     direction: ltr;
     flex-direction: row-reverse;
 }
@@ -91,7 +91,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 5;
+    z-index: 3;
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -312,14 +312,14 @@ body.scrolled .header {
     .theme-toggle:hover,
     .refresh-button:enabled:hover,
     .language-button:hover,
-    .notice-buttons button:hover {
+    .notice-buttons button.btn-secondary:hover {
         background: rgba(25, 25, 25, 0.15);
     }
 
     body.dark-mode .theme-toggle:hover,
     body.dark-mode .refresh-button:enabled:hover,
     body.dark-mode .language-button:hover,
-    body.dark-mode .notice-buttons button:hover {
+    body.dark-mode .notice-buttons button.btn-secondary:hover {
         background: rgba(230, 230, 230, 0.15);
     }
 
@@ -397,11 +397,6 @@ body.scrolled .header {
     align-items: center;
     justify-content: flex-end;
     gap: 5px;
-}
-
-#user-agent {
-    text-align: center;
-    max-width: 53%;
 }
 
 .info-value .copy-button {
@@ -497,7 +492,9 @@ body.scrolled .header {
 
 .footer a {
     color: inherit;
+    text-shadow: 0px 0px 6px var(--text-color);
     transition: opacity 0.3s ease;
+    text-decoration: none;
 }
 
 .refresh-button {
@@ -819,4 +816,92 @@ body.scrolled .header {
     #user-agent {
         flex-basis: 60%;
     }
+}
+
+
+#user-agent {
+    cursor: pointer;
+    align-items: flex-end;
+    max-width: 202px;
+}
+
+.user-agent-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+#user-agent.expanded {
+    max-width: 210px;
+}
+
+#user-agent.expanded .user-agent-wrapper {
+    display: none;
+}
+
+.user-agent-short {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 10rem;
+}
+
+#user-agent .ph-caret-down {
+    transition: transform 0.3s ease;
+}
+
+#user-agent.expanded .user-agent-wrapper .ph-caret-down {
+    transform: rotate(180deg);
+}
+
+.user-agent-expanded-content {
+    display: none;
+    flex-direction: column;
+    width: 75%;
+    background: var(--theme-toggle-background);
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    flex-grow: 1;
+}
+
+#user-agent.expanded .user-agent-expanded-content {
+    display: flex;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.user-agent-full {
+    word-break: break-all;
+    text-align: left;
+}
+
+.ua-copy-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 100%;
+    margin-top: 10px;
+    padding: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease;
+}
+
+.ua-copy-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.light-mode .ua-copy-button {
+    background-color: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+.light-mode .ua-copy-button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
 }

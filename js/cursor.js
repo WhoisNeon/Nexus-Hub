@@ -120,12 +120,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const animate = () => {
         const elementUnderCursor = document.elementFromPoint(mouse.x, mouse.y);
-        const isInteractive = elementUnderCursor?.closest('a, button:not(:disabled), .theme-toggle, .language-selector, .copy-button, .search-button:not(:disabled)');
+        const isInteractive = elementUnderCursor?.closest('a, button:not(:disabled), .theme-toggle, .language-selector, .copy-button, .search-button:not(:disabled), input, .notice-checkbox-wrapper, #user-agent');
         const isDisabledButton = elementUnderCursor?.closest('button:disabled, .search-button:disabled, .refresh-button:disabled');
         const isTextInput =
             elementUnderCursor &&
             (
-                elementUnderCursor.matches('input, textarea') ||
+                elementUnderCursor.matches('input[type="text"]:focus, textarea:focus') ||
                 elementUnderCursor.isContentEditable
             );
         if (isTextInput) {
@@ -134,21 +134,21 @@ document.addEventListener('DOMContentLoaded', () => {
             interactiveCursor.style.display = 'none';
             disabledCursor.style.display = 'none';
             textSelectorCursor.style.display = '';
-            textSelectorCursor.style.transform = `translate(${mouse.x - 12}px, ${mouse.y - 12}px)`;
+            textSelectorCursor.style.transform = `translate(${mouse.x - 8}px, ${mouse.y - 12}px)`;
         } else if (isDisabledButton) {
             cursor.style.display = 'none';
             svg.style.display = 'none';
             interactiveCursor.style.display = 'none';
             textSelectorCursor.style.display = 'none';
             disabledCursor.style.display = '';
-            disabledCursor.style.transform = `translate(${mouse.x - 12}px, ${mouse.y - 12}px)`;
+            disabledCursor.style.transform = `translate(${mouse.x - 8}px, ${mouse.y - 12}px)`;
         } else if (isInteractive) {
             cursor.style.display = 'none';
             svg.style.display = 'none';
             textSelectorCursor.style.display = 'none';
             disabledCursor.style.display = 'none';
             interactiveCursor.style.display = '';
-            interactiveCursor.style.transform = `translate(${mouse.x - 12}px, ${mouse.y - 12}px)`;
+            interactiveCursor.style.transform = `translate(${mouse.x - 8}px, ${mouse.y - 0}px)`;
         } else {
             cursor.style.display = '';
             svg.style.display = '';
@@ -157,12 +157,12 @@ document.addEventListener('DOMContentLoaded', () => {
             disabledCursor.style.display = 'none';
         }
 
-        const centeredX = mouse.x - cursor.offsetWidth / 2;
-        const centeredY = mouse.y - cursor.offsetHeight / 2;
+        const centeredX = mouse.x - cursor.offsetWidth / 2 + 1.5;
+        const centeredY = mouse.y - cursor.offsetHeight / 2 + 2;
         cursor.style.transform = `translate(${centeredX}px, ${centeredY}px)`;
 
-        let leaderX = mouse.x;
-        let leaderY = mouse.y;
+        let leaderX = mouse.x + 1.5;
+        let leaderY = mouse.y + 2;
         points.forEach((p, index) => {
             const currentX = p.x;
             const currentY = p.y;

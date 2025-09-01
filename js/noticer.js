@@ -1,70 +1,70 @@
 // ---
 // Based on: https://github.com/OddDevelopment/Simple-Adblock-Detector
-// Modified and refactored for improved efficiency and reliability.
+// Modified and refactored for improved efficiency, reliability, and UI/UX.
 // ---
 (() => {
     'use strict';
 
     const blockerTranslations = {
         'en': {
-            blockerNotice: 'Ad/Content Blocker Detected',
-            blockerMessage: 'Some information may be inaccurate due to content blocking. Please disable your ad blocker or add this site to your allowlist for better accuracy.',
-            dismiss: 'Dismiss',
-            refresh: 'Refresh'
+            blockerNotice: 'Ad Blocker Detected',
+            blockerMessage: 'To ensure all content loads correctly and you get the best experience, we recommend adding this site to your ad blocker\'s allowlist.',
+            ok: 'Okay, I understand',
+            dontShowAgain: "Don't show this again"
         },
         'fa': {
             blockerNotice: 'مسدودکننده تبلیغات شناسایی شد',
-            blockerMessage: 'برخی اطلاعات ممکن است نادرست باشند. لطفاً مسدودکننده تبلیغات خود را غیرفعال کنید یا این سایت را به لیست مجاز اضافه کنید.',
-            dismiss: 'رد کردن',
-            refresh: 'بارگذاری مجدد'
+            blockerMessage: 'برای اطمینان از بارگذاری صحیح تمام محتوا و بهترین تجربه، توصیه می‌کنیم این سایت را به لیست مجاز مسدودکننده خود اضافه کنید.',
+            ok: 'باشه، متوجه شدم',
+            dontShowAgain: 'دیگر نمایش نده'
         },
         'de': {
             blockerNotice: 'Werbeblocker erkannt',
-            blockerMessage: 'Einige Informationen könnten ungenau sein. Bitte deaktivieren Sie Ihren Werbeblocker oder fügen Sie diese Seite zur Ausnahmeliste hinzu.',
-            dismiss: 'Schließen',
-            refresh: 'Aktualisieren'
+            blockerMessage: 'Um sicherzustellen, dass alle Inhalte korrekt geladen werden und Sie die beste Erfahrung erhalten, empfehlen wir, diese Seite zur Ausnahmeliste Ihres Werbeblockers hinzuzufügen.',
+            ok: 'Okay, verstanden',
+            dontShowAgain: 'Nicht wieder anzeigen'
         },
         'es': {
             blockerNotice: 'Bloqueador de anuncios detectado',
-            blockerMessage: 'Alguna información puede ser inexacta. Desactive su bloqueador de anuncios o agregue este sitio a su lista de permitidos.',
-            dismiss: 'Descartar',
-            refresh: 'Actualizar'
+            blockerMessage: 'Para asegurar que todo el contenido se cargue correctamente y obtenga la mejor experiencia, recomendamos agregar este sitio a la lista de permitidos de su bloqueador de anuncios.',
+            ok: 'De acuerdo, entiendo',
+            dontShowAgain: 'No mostrar de nuevo'
         },
         'pt': {
             blockerNotice: 'Bloqueador de anúncios detectado',
-            blockerMessage: 'Algumas informações podem estar incorretas. Desative seu bloqueador de anúncios ou adicione este site à lista de permissões.',
-            dismiss: 'Dispensar',
-            refresh: 'Atualizar'
+            blockerMessage: 'Para garantir que todo o conteúdo seja carregado corretamente e você tenha a melhor experiência, recomendamos adicionar este site à lista de permissões do seu bloqueador de anúncios.',
+            ok: 'Ok, entendi',
+            dontShowAgain: 'Não mostrar novamente'
         },
         'fr': {
             blockerNotice: 'Bloqueur de publicités détecté',
-            blockerMessage: 'Certaines informations peuvent être inexactes. Veuillez désactiver votre bloqueur de publicités ou ajouter ce site à votre liste blanche.',
-            dismiss: 'Ignorer',
-            refresh: 'Actualiser'
+            blockerMessage: 'Pour garantir que tout le contenu se charge correctement et que vous bénéficiez de la meilleure expérience, nous vous recommandons d\'ajouter ce site à la liste blanche de votre bloqueur de publicités.',
+            ok: 'D\'accord, je comprends',
+            dontShowAgain: 'Ne plus afficher'
         },
         'ru': {
             blockerNotice: 'Обнаружен блокировщик рекламы',
-            blockerMessage: 'Некоторая информация может быть неточной. Отключите блокировщик рекламы или добавьте этот сайт в список исключений.',
-            dismiss: 'Закрыть',
-            refresh: 'Обновить'
+            blockerMessage: 'Чтобы обеспечить правильную загрузку всего контента и лучший опыт, мы рекомендуем добавить этот сайт в список исключений вашего блокировщика рекламы.',
+            ok: 'Хорошо, я понимаю',
+            dontShowAgain: 'Больше не показывать'
         },
         'ja': {
             blockerNotice: '広告ブロッカーが検出されました',
-            blockerMessage: '一部の情報が不正確である可能性があります。広告ブロッカーを無効にするか、このサイトを許可リストに追加してください。',
-            dismiss: '閉じる',
-            refresh: '更新'
+            blockerMessage: 'すべてのコンテンツが正しく読み込まれ、最高のエクスペリエンスを得るために、このサイトを広告ブロッカーの許可リストに追加することをお勧めします。',
+            ok: 'はい、理解しました',
+            dontShowAgain: '今後表示しない'
         },
         'ko': {
-            blockerNotice: '광고 차단기가 감지됨',
-            blockerMessage: '일부 정보가 부정확할 수 있습니다. 광고 차단기를 비활성화하거나 이 사이트를 허용 목록에 추가하세요.',
-            dismiss: '닫기',
-            refresh: '새로고침'
+            blockerNotice: '광고 차단기 감지됨',
+            blockerMessage: '모든 콘텐츠가 올바르게 로드되고 최상의 경험을 얻으려면 광고 차단기의 허용 목록에 이 사이트를 추가하는 것이 좋습니다.',
+            ok: '네, 알겠습니다',
+            dontShowAgain: '다시 보지 않기'
         },
         'zh': {
             blockerNotice: '检测到广告拦截器',
-            blockerMessage: '某些信息可能不准确. 请禁用您的广告拦截器或将此站点添加到白名单.',
-            dismiss: '忽略',
-            refresh: '刷新'
+            blockerMessage: '为确保所有内容正确加载并获得最佳体验，我们建议您将此站点添加到广告拦截器的白名单中。',
+            ok: '好的，我明白了',
+            dontShowAgain: '不再显示'
         }
     };
 
@@ -138,11 +138,18 @@
     }
 
     function showBlockerNotice() {
-        const dismissedUntil = localStorage.getItem('adBlockerNoticeDismissedUntil');
-        if (dismissedUntil && Date.now() < parseInt(dismissedUntil, 10)) {
+        if (localStorage.getItem('adBlockerNoticeDismissedPermanently') === 'true') {
+            console.log("AdBlocker notice dismissed permanently.");
             return;
         }
 
+        const dismissedUntil = localStorage.getItem('adBlockerNoticeDismissedUntil');
+        if (dismissedUntil && Date.now() < parseInt(dismissedUntil, 10)) {
+            console.log(`AdBlocker notice dismissed until: ${new Date(parseInt(dismissedUntil, 10)).toLocaleString()}`);
+            return;
+        }
+
+        console.log("AdBlock detected. Displaying notice.");
         const currentLang = getCurrentLanguage();
         const translationSet = blockerTranslations[currentLang] || blockerTranslations['en'];
 
@@ -152,16 +159,22 @@
         const notice = document.createElement('div');
         notice.id = 'blocker-notice';
         notice.innerHTML = `
-            <div class="notice-content">
+            <button class="close-button"><i class="ph ph-x"></i></button>
+            <div class="notice-header">
                 <div class="notice-icon-wrapper">
-                    <i class="ph ph-warning"></i>
+                    <i class="ph-fill ph-warning"></i>
                 </div>
                 <h3>${translationSet.blockerNotice}</h3>
+            </div>
+            <div class="notice-body">
                 <p>${translationSet.blockerMessage}</p>
             </div>
-            <div class="notice-buttons">
-                <button id="dismiss-notice"><i class="ph ph-x-circle"></i> ${translationSet.dismiss}</button>
-                <button id="refresh-page"><i class="ph ph-arrows-clockwise"></i> ${translationSet.refresh}</button>
+            <div class="notice-footer">
+                <div class="notice-checkbox-wrapper">
+                    <input type="checkbox" id="dont-show-again">
+                    <label for="dont-show-again">${translationSet.dontShowAgain}</label>
+                </div>
+                <button id="ok-button">${translationSet.ok}</button>
             </div>
         `;
         noticeContainer.appendChild(notice);
@@ -172,25 +185,28 @@
             setTimeout(() => notice.style.transform = 'scale(1) translateY(0)', 50);
         });
 
-        const dismissNotice = () => {
-            const fiveMinutes = 5 * 60 * 1000;
-            localStorage.setItem('adBlockerNoticeDismissedUntil', Date.now() + fiveMinutes);
+        const dontShowAgainCheckbox = notice.querySelector('#dont-show-again');
+        const closeButton = notice.querySelector('.close-button');
 
+        const handleDismissal = (isOkButton) => {
+            if (dontShowAgainCheckbox.checked) {
+                localStorage.setItem('adBlockerNoticeDismissedPermanently', 'true');
+            } else if (isOkButton) {
+                const fiveMinutes = 5 * 60 * 1000;
+                localStorage.setItem('adBlockerNoticeDismissedUntil', Date.now() + fiveMinutes);
+            }
             noticeContainer.style.opacity = '0';
             notice.style.transform = 'scale(0.9) translateY(20px)';
             setTimeout(() => noticeContainer.remove(), 400);
         };
 
-        const dismissButton = notice.querySelector('#dismiss-notice');
-        const refreshButton = notice.querySelector('#refresh-page');
+        noticeContainer.addEventListener('click', (e) => (e.target === noticeContainer) && handleDismissal(false));
+        closeButton.addEventListener('click', () => handleDismissal(false));
+        notice.querySelector('#ok-button').addEventListener('click', () => handleDismissal(true));
 
-        dismissButton.addEventListener('click', dismissNotice);
-        refreshButton.addEventListener('click', () => location.reload());
-
-        noticeContainer.addEventListener('click', (e) => (e.target === noticeContainer) && dismissNotice());
         const handleEscape = (e) => {
             if (e.key === 'Escape') {
-                dismissNotice();
+                handleDismissal();
                 document.removeEventListener('keydown', handleEscape);
             }
         };
@@ -201,8 +217,7 @@
         console.log(`AdBlock detection status: ${isBlocked ? 'DETECTED' : 'NOT DETECTED'}.`);
 
         if (isBlocked) {
-            console.log("AdBlock detected. Displaying notice.");
-            const show = () => setTimeout(showBlockerNotice, 1500);
+            const show = () => setTimeout(showBlockerNotice, 1000);
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', show);
             } else {
@@ -215,6 +230,7 @@
 
     window.resetAdBlockerNotice = () => {
         localStorage.removeItem('adBlockerNoticeDismissedUntil');
+        localStorage.removeItem('adBlockerNoticeDismissedPermanently');
         console.log('Ad blocker notice dismissal has been reset.');
     };
 

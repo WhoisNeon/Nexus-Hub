@@ -30,6 +30,17 @@ body.dark-mode {
     transition: width 0.2s, height 0.2s, opacity 0.3s, background-color 0.2s;
     will-change: transform;
     border: 1px solid var(--cursor-border-color);
+
+}.custom-cursor::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 4px;
+    height: 4px;
+    background-color: var(--cursor-border-color);
+    border-radius: 50%;
 }
 
 .custom-cursor.hover-effect {

@@ -284,100 +284,153 @@ const addCopyFeature = (elementId) => {
     }
 };
 
+const canCopy = (id, content) => {
+    if (!content) return false;
+    const t = translations[currentLang] || translations.en;
+    const invalid = {
+        ipv4: ['unknown', 'unavailable', 'invalidIP'],
+        ipv6: ['unknown', 'unavailable'],
+        asn: ['unknown', 'unavailable'],
+        isp: ['unknown', 'unavailable'],
+        gpu: ['notDetected'],
+    }[id] || [];
+    const invalidVals = invalid.map((k) => t[k]);
+    return !invalidVals.includes(content.trim());
+};
+
+const setCopy = (id, content) => {
+    const el = document.getElementById(id);
+    if (el && canCopy(id, content)) addCopyFeature(id);
+};
+
+const browserDefinitions = [
+    {
+        name: 'Arc Browser',
+        engine: 'Blink',
+        svg: 'arc',
+        test: () => !!getComputedStyle(document.documentElement).getPropertyValue('--arc-palette-title'),
+        version: (ua) => ua.match(/Chrome\/([0-9.]+)/)?.[1],
+    },
+    {
+        name: 'Brave',
+        engine: 'Blink',
+        svg: 'brave',
+        test: () => !!navigator.brave,
+        version: (ua) => ua.match(/Chrome\/([0-9.]+)/)?.[1],
+    },
+    {
+        name: 'Opera GX',
+        engine: 'Blink',
+        svg: 'operagx',
+        test: (ua) => ua.includes('Opera GX'),
+        version: (ua) => ua.match(/(Opera|OPR|Opera GX)\/([0-9.]+)/)?.[2],
+    },
+    {
+        name: 'Opera',
+        engine: 'Blink',
+        svg: 'opera',
+        test: (ua) => ua.includes('Opera') || ua.includes('OPR'),
+        version: (ua) => ua.match(/(Opera|OPR)\/([0-9.]+)/)?.[2],
+    },
+    {
+        name: 'Vivaldi',
+        engine: 'Blink',
+        svg: 'vivaldi',
+        test: (ua) => ua.includes('Vivaldi'),
+        version: (ua) => ua.match(/Vivaldi\/([0-9.]+)/)?.[1],
+    },
+    {
+        name: 'Microsoft Edge',
+        engine: 'Blink',
+        svg: 'microsoftedge',
+        test: (ua) => ua.includes('Edg'),
+        version: (ua) => ua.match(/Edg\/([0-9.]+)/)?.[1],
+    },
+    {
+        name: 'Samsung Internet',
+        engine: 'Blink',
+        svg: null,
+        test: (ua) => ua.includes('SamsungBrowser'),
+        version: (ua) => ua.match(/SamsungBrowser\/([0-9.]+)/)?.[1],
+    },
+    {
+        name: 'DuckDuckGo',
+        engine: 'WebKit',
+        svg: 'duckduckgo',
+        test: (ua) => ua.includes('DuckDuckGo'),
+        version: (ua) => ua.match(/DuckDuckGo\/([0-9.]+)/)?.[1],
+    },
+    {
+        name: 'Tor Browser',
+        engine: 'Gecko',
+        svg: 'torbrowser',
+        test: (ua) => ua.includes('Tor'),
+        version: (ua) => ua.match(/Firefox\/([0-9.]+)/)?.[1],
+    },
+    {
+        name: 'Firefox',
+        engine: 'Gecko',
+        svg: 'firefoxbrowser',
+        test: (ua) => ua.includes('Firefox'),
+        version: (ua) => ua.match(/Firefox\/([0-9.]+)/)?.[1],
+    },
+    {
+        name: 'Google Chrome',
+        engine: 'Blink',
+        svg: 'googlechrome',
+        test: (ua) => ua.includes('Chrome'),
+        version: (ua) => ua.match(/Chrome\/([0-9.]+)/)?.[1],
+    },
+    {
+        name: 'Safari',
+        engine: 'WebKit',
+        svg: 'safari',
+        test: (ua) => ua.includes('Safari') && !ua.includes('Chrome'),
+        version: (ua) => ua.match(/Version\/([0-9.]+)/)?.[1],
+    },
+    {
+        name: 'Internet Explorer',
+        engine: 'Trident',
+        svg: 'internetexplorer',
+        test: (ua) => ua.includes('MSIE') || ua.includes('Trident'),
+        version: (ua) => ua.match(/(MSIE |rv:)([0-9.]+)/)?.[2],
+    }
+];
+
 function getBrowserInfo() {
     const ua = navigator.userAgent;
-    let browser = 'Unknown';
-    let version = 'Unknown';
-    let engine = 'Unknown';
-    let browserSvg = null;
 
-    const isArc = getComputedStyle(document.documentElement).getPropertyValue('--arc-palette-title');
-    if (isArc) {
-        browser = 'Arc Browser';
-        version = ua.match(/Chrome\/([0-9.]+)/)?.[1] || 'Unknown';
-        engine = 'Blink';
-        browserSvg = 'arc';
-    } else if (navigator.brave) {
-        browser = 'Brave';
-        version = ua.match(/Chrome\/([0-9.]+)/)?.[1] || 'Unknown';
-        engine = 'Blink';
-        browserSvg = 'brave';
-    } else if (ua.includes('Vivaldi')) {
-        browser = 'Vivaldi';
-        version = ua.match(/Vivaldi\/([0-9.]+)/)?.[1] || 'Unknown';
-        engine = 'Blink';
-        browserSvg = 'vivaldi';
-    } else if (ua.includes('DuckDuckGo')) {
-        browser = 'DuckDuckGo';
-        version = ua.match(/DuckDuckGo\/([0-9.]+)/)?.[1] || 'Unknown';
-        engine = 'WebKit';
-        browserSvg = 'duckduckgo';
-    } else if (ua.includes('SamsungBrowser')) {
-        browser = 'Samsung Internet';
-        version = ua.match(/SamsungBrowser\/([0-9.]+)/)?.[1] || 'Unknown';
-        engine = 'Blink';
+    for (const browser of browserDefinitions) {
+        if (browser.test(ua)) {
+            return {
+                name: browser.name,
+                version: browser.version(ua) || 'Unknown',
+                engine: browser.engine,
+                svg: browser.svg,
+            };
+        }
+    }
+
+    return { name: 'Unknown', version: 'Unknown', engine: 'Unknown', svg: null };
+}
+
+function updateBrowserIcon(browserInfo) {
+    if (!elements.browserCardIcon) return;
+
+    if (browserInfo.name === 'Samsung Internet') {
         setInnerHTML(elements.browserCardIcon, `<i class="ph-fill ph-planet" style="rotate: -10deg;"></i>`);
-        return { browser, version, engine };
-    } else if (ua.includes('Edg')) {
-        browser = 'microsoftedge';
-        version = ua.match(/Edg\/([0-9.]+)/)?.[1] || 'Unknown';
-        engine = 'Blink';
-        browserSvg = 'microsoftedge';
-    } else if (ua.includes('Opera') || ua.includes('OPR')) {
-        browser = 'Opera';
-        if (ua.includes('Opera GX')) {
-            browser = 'Opera GX';
-            browserSvg = 'operagx';
-        } else {
-            browserSvg = 'opera';
-        }
-        browserSvg = 'opera';
-        version = ua.match(/(Opera|OPR|Opera GX)\/([0-9.]+)/)?.[2] || 'Unknown';
-        engine = 'Blink';
-    } else if (ua.includes('Firefox')) {
-        browser = 'Firefox';
-        version = ua.match(/Firefox\/([0-9.]+)/)?.[1] || 'Unknown';
-        engine = 'Gecko';
-        browserSvg = 'firefoxbrowser';
-    } else if (ua.includes('Tor')) {
-        browser = 'Tor Browser';
-        version = ua.match(/Firefox\/([0-9.]+)/)?.[1] || 'Unknown';
-        engine = 'Gecko';
-        browserSvg = 'torbrowser';
-    } else if (ua.includes('Chrome')) {
-        browser = 'Google Chrome';
-        version = ua.match(/Chrome\/([0-9.]+)/)?.[1] || 'Unknown';
-        engine = 'Blink';
-        browserSvg = 'googlechrome';
-    } else if (ua.includes('Safari') && !ua.includes('Chrome')) {
-        browser = 'Safari';
-        version = ua.match(/Version\/([0-9.]+)/)?.[1] || 'Unknown';
-        engine = 'WebKit';
-        browserSvg = 'safari';
-    } else if (ua.includes('MSIE') || ua.includes('Trident')) {
-        browser = 'Internet Explorer';
-        version = ua.match(/(MSIE |rv:)([0-9.]+)/)?.[2] || 'Unknown';
-        engine = 'Trident';
-        browserSvg = 'internetexplorer';
+    } else if (browserInfo.svg) {
+        const divHtml = `<div class="browser-logo" style="--svg-url: url('https://cdn.jsdelivr.net/npm/simple-icons@12.4.0/icons/${browserInfo.svg}.svg');"></div>`;
+        setInnerHTML(elements.browserCardIcon, divHtml);
+    } else {
+        setInnerHTML(elements.browserCardIcon, `<i class="ph-fill ph-browser"></i>`);
     }
-
-    if (elements.browserCardIcon) {
-        if (browserSvg) {
-            const divHtml = `<div class="browser-logo" style="--svg-url: url('https://cdn.jsdelivr.net/npm/simple-icons@12.4.0/icons/${browserSvg}.svg');"></div>`;
-            setInnerHTML(elements.browserCardIcon, divHtml);
-        } else {
-            setInnerHTML(elements.browserCardIcon, `<i class="ph-fill ph-browser"></i>`);
-        }
-    }
-
-    return { browser, version, engine };
 }
 
 function getOSInfo() {
     const userAgent = navigator.userAgent;
     const isIPad = /iPad/.test(userAgent) || (/Macintosh/.test(userAgent) && 'ontouchend' in document);
 
-    // A more detailed list of OS and device types
     const osChecks = [
         { name: 'Windows 11', regex: /Windows NT 10\.0; Win64; x64/i, icon: 'ph-windows-logo', device: 'Desktop' },
         { name: 'Windows 10', regex: /Windows NT 10\.0/i, icon: 'ph-windows-logo', device: 'Desktop' },
@@ -564,7 +617,7 @@ function displayGeoData(geoData) {
         organizationItem.style.display = 'none';
     } else {
         organizationItem.style.display = 'flex';
-        setTextContent(elements.organization, organization);
+        setTextContent(elements.organization, organization || translationSet.unavailable);
     }
 
     setInnerHTML(elements.country, countryDisplay);
@@ -646,24 +699,6 @@ async function fetchIPInfo(query = '') {
 
     const fetchWithTimeout = (url, opts, ms = TIMEOUT) =>
         Promise.race([fetch(url, opts), raceTimeout(ms)]);
-
-    const canCopy = (id, content) => {
-        if (!content) return false;
-        const invalid = {
-            'ip-address': ['unknown', 'unavailable', 'invalidIP'],
-            'ipv6-address': ['unknown', 'unavailable'],
-            asn: ['unknown', 'unavailable'],
-            isp: ['unknown', 'unavailable'],
-            gpu: ['unknown', 'unavailable', 'notDetected'],
-        }[id] || [];
-        const invalidVals = invalid.map((k) => t[k]);
-        return !invalidVals.includes(content.trim());
-    };
-
-    const setCopy = (id, content) => {
-        const el = document.getElementById(id);
-        if (el && canCopy(id, content)) addCopyFeature(id);
-    };
 
     const fetchUserIPs = async () => {
         const result = { ipv4: t.unavailable, ipv6: t.unavailable };
@@ -814,13 +849,58 @@ function updatePreferredThemeDisplay() {
 }
 
 async function loadBrowserAndSystemInfo(isLanguageUpdate = false) {
-    const { browser, version, engine } = getBrowserInfo();
+    const browserInfo = getBrowserInfo();
     const { os, deviceType, osIconClass } = getOSInfo();
     const translationSet = translations[currentLang] || translations['en'];
-    setTextContent(elements.browser, browser);
-    setTextContent(elements.browserVersion, version);
-    setTextContent(elements.browserEngine, engine);
-    setTextContent(elements.userAgent, navigator.userAgent);
+    setTextContent(elements.browser, browserInfo.name);
+    setTextContent(elements.browserVersion, browserInfo.version);
+    setTextContent(elements.browserEngine, browserInfo.engine);
+    updateBrowserIcon(browserInfo);
+    const userAgentElement = elements.userAgent;
+    if (userAgentElement) {
+        const fullUserAgent = navigator.userAgent;
+
+        userAgentElement.innerHTML = `
+        <div class="user-agent-wrapper">
+            <span class="user-agent-short"></span>
+            <i class="ph-fill ph-caret-down"></i>
+        </div>
+        <div class="user-agent-expanded-content">
+            <span class="user-agent-full"></span>
+            <button class="ua-copy-button">Copy <i class="ph ph-clipboard"></i></button>
+        </div>`;
+
+        const userAgentShort = userAgentElement.querySelector('.user-agent-short');
+        const userAgentFull = userAgentElement.querySelector('.user-agent-full');
+        const uaCopyButton = userAgentElement.querySelector('.ua-copy-button');
+
+        if (userAgentShort) userAgentShort.textContent = fullUserAgent;
+        if (userAgentFull) userAgentFull.textContent = fullUserAgent;
+
+        if (!userAgentElement.hasAttribute('data-click-listener')) {
+            userAgentElement.addEventListener('click', (e) => {
+                if (e.target !== uaCopyButton) {
+                    userAgentElement.classList.toggle('expanded');
+                }
+            });
+
+            uaCopyButton.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                try {
+                    await navigator.clipboard.writeText(fullUserAgent);
+                    uaCopyButton.innerHTML = 'Copied! <i class="ph ph-check"></i>';
+                    setTimeout(() => {
+                        // 👇 And here as well
+                        uaCopyButton.innerHTML = 'Copy <i class="ph ph-clipboard"></i>';
+                    }, 1500);
+                } catch (err) {
+                    uaCopyButton.textContent = 'Failed';
+                }
+            });
+
+            userAgentElement.setAttribute('data-click-listener', 'true');
+        }
+    }
     setTextContent(elements.cookiesEnabled, navigator.cookieEnabled ? translationSet.enabled : translationSet.disabled);
     updatePreferredThemeDisplay();
     setTextContent(elements.os, os);
@@ -842,6 +922,7 @@ async function loadBrowserAndSystemInfo(isLanguageUpdate = false) {
     } else {
         setTextContent(elements.gpu, gpuInfo);
     }
+    setCopy('gpu', gpuInfo);
     setTextContent(elements.pixelRatio, window.devicePixelRatio || '1');
     setInnerHTML(elements.httpsStatus, location.protocol === 'https:' ?
         '<span class="security-badge secure">STATUS_TEXT</span>' :
