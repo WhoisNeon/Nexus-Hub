@@ -128,8 +128,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 elementUnderCursor.matches('input, textarea') ||
                 elementUnderCursor.isContentEditable
             );
-
-        // Show correct SVG cursor
         if (isTextInput) {
             cursor.style.display = 'none';
             svg.style.display = 'none';

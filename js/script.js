@@ -1,3 +1,5 @@
+const TOKEN = 'eb2978e07c2e4a5e9bcb8c40e5f68292';
+
 const translations = {
     'en': {
         resolvingDomain: 'Resolving domain...',
@@ -207,7 +209,7 @@ function setLanguage(lang, langName, flagCode) {
 
     if (elements.selectedFlag) {
         if (flagCode === 'ir') {
-            elements.selectedFlag.src = 'https://whoisneon.github.io/Nexus-Hub/assets/ir.svg';
+            elements.selectedFlag.src = 'https://raw.githubusercontent.com/WhoisNeon/Nexus-Hub/refs/heads/master/assets/ir.svg';
         } else {
             elements.selectedFlag.src = `https://hatscripts.github.io/circle-flags/flags/${flagCode}.svg`;
         }
@@ -289,69 +291,82 @@ function getBrowserInfo() {
     let engine = 'Unknown';
     let browserSvg = null;
 
-    if (navigator.brave) {
+    const isArc = getComputedStyle(document.documentElement).getPropertyValue('--arc-palette-title');
+    if (isArc) {
+        browser = 'Arc Browser';
+        version = ua.match(/Chrome\/([0-9.]+)/)?.[1] || 'Unknown';
+        engine = 'Blink';
+        browserSvg = 'arc';
+    } else if (navigator.brave) {
         browser = 'Brave';
         version = ua.match(/Chrome\/([0-9.]+)/)?.[1] || 'Unknown';
         engine = 'Blink';
-        browserSvg = 'brave.svg';
+        browserSvg = 'brave';
     } else if (ua.includes('Vivaldi')) {
         browser = 'Vivaldi';
         version = ua.match(/Vivaldi\/([0-9.]+)/)?.[1] || 'Unknown';
         engine = 'Blink';
-        browserSvg = 'vivaldi.svg';
+        browserSvg = 'vivaldi';
     } else if (ua.includes('DuckDuckGo')) {
         browser = 'DuckDuckGo';
         version = ua.match(/DuckDuckGo\/([0-9.]+)/)?.[1] || 'Unknown';
         engine = 'WebKit';
-        browserSvg = 'duckduckgo.svg';
+        browserSvg = 'duckduckgo';
     } else if (ua.includes('SamsungBrowser')) {
         browser = 'Samsung Internet';
         version = ua.match(/SamsungBrowser\/([0-9.]+)/)?.[1] || 'Unknown';
         engine = 'Blink';
-        browserSvg = 'samsung-internet.svg';
+        setInnerHTML(elements.browserCardIcon, `<i class="ph-fill ph-planet" style="rotate: -10deg;"></i>`);
+        return { browser, version, engine };
     } else if (ua.includes('Edg')) {
-        browser = 'Edge';
+        browser = 'microsoftedge';
         version = ua.match(/Edg\/([0-9.]+)/)?.[1] || 'Unknown';
         engine = 'Blink';
-        browserSvg = 'edge.svg';
+        browserSvg = 'microsoftedge';
     } else if (ua.includes('Opera') || ua.includes('OPR')) {
         browser = 'Opera';
         if (ua.includes('Opera GX')) {
             browser = 'Opera GX';
-            browserSvg = 'opera-gx.svg';
+            browserSvg = 'operagx';
         } else {
-            browserSvg = 'opera.svg';
+            browserSvg = 'opera';
         }
+        browserSvg = 'opera';
         version = ua.match(/(Opera|OPR|Opera GX)\/([0-9.]+)/)?.[2] || 'Unknown';
         engine = 'Blink';
     } else if (ua.includes('Firefox')) {
         browser = 'Firefox';
         version = ua.match(/Firefox\/([0-9.]+)/)?.[1] || 'Unknown';
         engine = 'Gecko';
-        browserSvg = 'firefox.svg';
+        browserSvg = 'firefoxbrowser';
+    } else if (ua.includes('Tor')) {
+        browser = 'Tor Browser';
+        version = ua.match(/Firefox\/([0-9.]+)/)?.[1] || 'Unknown';
+        engine = 'Gecko';
+        browserSvg = 'torbrowser';
     } else if (ua.includes('Chrome')) {
-        browser = 'Chrome';
+        browser = 'Google Chrome';
         version = ua.match(/Chrome\/([0-9.]+)/)?.[1] || 'Unknown';
         engine = 'Blink';
-        browserSvg = 'chrome.svg';
+        browserSvg = 'googlechrome';
     } else if (ua.includes('Safari') && !ua.includes('Chrome')) {
         browser = 'Safari';
         version = ua.match(/Version\/([0-9.]+)/)?.[1] || 'Unknown';
         engine = 'WebKit';
-        browserSvg = 'safari.svg';
+        browserSvg = 'safari';
     } else if (ua.includes('MSIE') || ua.includes('Trident')) {
         browser = 'Internet Explorer';
         version = ua.match(/(MSIE |rv:)([0-9.]+)/)?.[2] || 'Unknown';
         engine = 'Trident';
-        browserSvg = 'ie.svg';
+        browserSvg = 'internetexplorer';
     }
 
     if (elements.browserCardIcon) {
         if (browserSvg) {
-            const divHtml = `<div class="browser-logo" style="--svg-url: url('https://whoisneon.github.io/Nexus-Hub/assets/browsers/${browserSvg}');"></div>`;
+            const divHtml = `<div class="browser-logo" style="--svg-url: url('https://cdn.jsdelivr.net/npm/simple-icons@12.4.0/icons/${browserSvg}.svg');"></div>`;
             setInnerHTML(elements.browserCardIcon, divHtml);
         } else {
-            setInnerHTML(elements.browserCardIcon, `<i class="ph ph-browser"></i>`);
+            setInnerHTML(elements.browserCardIcon, `<i class="ph-fill ph-browser"></i>`);
         }
     }
 
@@ -359,40 +374,41 @@ function getBrowserInfo() {
 }
 
 function getOSInfo() {
-    const ua = navigator.userAgent;
-    let os = 'Unknown';
-    let deviceType = 'Desktop';
-    let osIconClass = 'ph ph-desktop';
+    const userAgent = navigator.userAgent;
+    const isIPad = /iPad/.test(userAgent) || (/Macintosh/.test(userAgent) && 'ontouchend' in document);
 
-    if (ua.includes('Windows')) {
-        if (ua.includes('Windows NT 10.0')) os = 'Windows 10/11';
-        else if (ua.includes('Windows NT 6.3')) os = 'Windows 8.1';
-        else os = 'Windows';
-        osIconClass = 'ph ph-windows-logo';
-    } else if (ua.includes('Macintosh') || ua.includes('Mac OS X')) {
-        os = 'macOS';
-        osIconClass = 'ph ph-apple-logo';
-    } else if (ua.includes('Android')) {
-        os = 'Android';
-        deviceType = 'Mobile';
-        osIconClass = 'ph ph-android-logo';
-    } else if (ua.includes('iPhone')) {
-        os = 'iOS';
-        deviceType = 'Mobile';
-        osIconClass = 'ph ph-apple-logo';
-    } else if (ua.includes('iPad')) {
-        os = 'iOS';
-        deviceType = 'Tablet';
-        osIconClass = 'ph ph-apple-logo';
-    } else if (ua.includes('CrOS')) {
-        os = 'Chrome OS';
-        osIconClass = 'ph ph-google-logo';
-    } else if (ua.includes('Linux')) {
-        os = 'Linux';
-        osIconClass = 'ph ph-linux-logo';
+    // A more detailed list of OS and device types
+    const osChecks = [
+        { name: 'Windows 11', regex: /Windows NT 10\.0; Win64; x64/i, icon: 'ph-windows-logo', device: 'Desktop' },
+        { name: 'Windows 10', regex: /Windows NT 10\.0/i, icon: 'ph-windows-logo', device: 'Desktop' },
+        { name: 'Windows 8.1', regex: /Windows NT 6\.3/i, icon: 'ph-windows-logo', device: 'Desktop' },
+        { name: 'Windows 8', regex: /Windows NT 6\.2/i, icon: 'ph-windows-logo', device: 'Desktop' },
+        { name: 'Windows 7', regex: /Windows NT 6\.1/i, icon: 'ph-windows-logo', device: 'Desktop' },
+        { name: 'macOS', regex: /Macintosh|Mac OS X/, icon: 'ph-apple-logo', device: 'Desktop' },
+        { name: 'Android', regex: /Android/, icon: 'ph-android-logo', device: 'Mobile' },
+        { name: 'iOS', regex: /iPhone/, icon: 'ph-apple-logo', device: 'Mobile' },
+        { name: 'iOS', regex: /iPad/, icon: 'ph-apple-logo', device: 'Tablet' },
+        { name: 'Chrome OS', regex: /CrOS/, icon: 'ph-google-logo', device: 'Desktop' },
+        { name: 'Ubuntu', regex: /Ubuntu/i, icon: 'ph-ubuntu-logo', device: 'Desktop' },
+        { name: 'Linux', regex: /Linux/, icon: 'ph-linux-logo', device: 'Desktop' },
+    ];
+
+    let osResult = osChecks.find(os => os.regex.test(userAgent));
+    if (!osResult) {
+        osResult = { name: 'Unknown', icon: 'ph-desktop' };
     }
 
-    return { os, deviceType, osIconClass };
+    if (isIPad) {
+        osResult.name = 'iPadOS';
+        osResult.icon = 'ph-apple-logo';
+        osResult.device = 'Tablet';
+    }
+
+    return {
+        os: osResult.name,
+        deviceType: osResult.device,
+        osIconClass: `ph-fill ${osResult.icon}`
+    };
 }
 
 function getGPUInfo() {
@@ -513,7 +529,7 @@ function displayGeoData(geoData) {
     if (countryIso) {
         let flagUrl;
         if (countryIso === 'ir') {
-            flagUrl = `https://whoisneon.github.io/Nexus-Hub/assets/ir.svg`;
+            flagUrl = `https://raw.githubusercontent.com/WhoisNeon/Nexus-Hub/refs/heads/master/assets/ir.svg`;
         } else {
             flagUrl = `https://hatscripts.github.io/circle-flags/flags/${countryIso}.svg`;
         }
@@ -623,7 +639,6 @@ async function fetchIPInfo(query = '') {
     resetNetworkInfoState();
 
     const t = translations[currentLang] || translations.en;
-    const TOKEN = 'eb2978e07c2e4a5e9bcb8c40e5f68292';
     const TIMEOUT = 10000;
 
     const raceTimeout = (ms, msg = 'Request timeout') =>
