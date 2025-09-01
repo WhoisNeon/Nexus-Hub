@@ -2,7 +2,9 @@
     font-family: "IranSans";
     src: url("https://raw.githubusercontent.com/WhoisNeon/Persian-font-theme/main/IranSans-Regular.ttf") format("truetype");
 }
-
+html{
+    color-scheme: dark light;
+}
 :root {
     --background: #ddd;
     --card-background: rgba(255, 255, 255, 0.5);
