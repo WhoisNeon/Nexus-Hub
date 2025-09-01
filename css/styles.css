@@ -58,7 +58,8 @@ body.dark-mode {
 html[dir="rtl"] body,
 html[dir="rtl"] #selected-lang-text,
 .language-dropdown button:nth-child(2),
-html[dir="rtl"] .ip-search-input {
+html[dir="rtl"] button,
+html[dir="rtl"] input {
     font-family: 'IranSans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
@@ -310,13 +311,15 @@ body.scrolled .header {
 
     .theme-toggle:hover,
     .refresh-button:enabled:hover,
-    .language-button:hover {
+    .language-button:hover,
+    .notice-buttons button:hover {
         background: rgba(25, 25, 25, 0.15);
     }
 
     body.dark-mode .theme-toggle:hover,
     body.dark-mode .refresh-button:enabled:hover,
-    body.dark-mode .language-button:hover {
+    body.dark-mode .language-button:hover,
+    body.dark-mode .notice-buttons button:hover {
         background: rgba(230, 230, 230, 0.15);
     }
 
@@ -791,7 +794,7 @@ body.scrolled .header {
     }
 }
 
-@media (max-width: 424px) {
+@media (max-width: 425px) {
     .header {
         justify-content: space-around;
     }

@@ -963,6 +963,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
     hidePreloader();
+    checkAndNotifyBlocker();
 });
 
 const handleScroll = () => { document.body.classList.toggle('scrolled', window.scrollY > 10); };
