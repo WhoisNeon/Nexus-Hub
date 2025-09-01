@@ -4,7 +4,7 @@
 }
 
 :root {
-    --background: #f0f2f5;
+    --background: #ddd;
     --card-background: rgba(255, 255, 255, 0.5);
     --dropdown-background: rgba(255, 255, 255, 0.95);
     --theme-toggle-background: rgba(25, 25, 25, 0.1);
@@ -21,7 +21,7 @@
 }
 
 body.dark-mode {
-    --background: #151515;
+    --background: #101010;
     --card-background: rgba(25, 25, 25, 0.5);
     --dropdown-background: rgba(25, 25, 25, 0.95);
     --theme-toggle-background: rgba(230, 230, 230, 0.1);
@@ -171,7 +171,7 @@ body {
     width: auto;
     height: auto;
     z-index: -1;
-    background-image: url('assets/background.png');
+    background-image: url('https: //raw.githubusercontent.com/WhoisNeon/Nexus-Hub/refs/heads/master/assets/background.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
