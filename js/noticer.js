@@ -209,7 +209,7 @@
             if (dontShowAgainCheckbox.checked) {
                 localStorage.setItem('adBlockerNoticeDismissedPermanently', 'true');
             } else if (isOkButton) {
-                const fiveMinutes = 5 * 60 * 1000;
+                const fiveMinutes = 15 * 60 * 1000;
                 localStorage.setItem('adBlockerNoticeDismissedUntil', Date.now() + fiveMinutes);
             }
             noticeContainer.style.opacity = '0';

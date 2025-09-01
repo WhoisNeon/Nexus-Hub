@@ -68,7 +68,14 @@ document.addEventListener('DOMContentLoaded', () => {
         activateCursor();
     });
 
-    window.addEventListener("mousedown", activateCursor);
+    window.addEventListener("mousedown", () => {
+        activateCursor();
+        cursor.classList.add('click-effect');
+    });
+
+    window.addEventListener("mouseup", () => {
+        cursor.classList.remove('click-effect');
+    });
     window.addEventListener("scroll", activateCursor);
     window.addEventListener("keydown", activateCursor);
     window.addEventListener("resize", setSvgSize);
@@ -98,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
     disabledCursor.style.display = "none";
     disabledCursor.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="var(--cursor-disabled-bg)" viewBox="0 0 256 256">
-            <path class="cursor-path" d="M200,128a71.69,71.69,0,0,1-15.78,44.91L83.09,71.78A71.95,71.95,0,0,1,200,128ZM56,128a71.95,71.95,0,0,0,116.91,56.22L71.78,83.09A71.69,71.69,0,0,0,56,128Zm180,0A108,108,0,1,1,128,20,108.12,108.12,0,0,1,236,128Zm-20,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"></path>
+            <path d="M128,20A108,108,0,1,0,236,128,108.12,108.12,0,0,0,128,20Zm84,108a83.6,83.6,0,0,1-16.75,50.28L77.72,60.75A84,84,0,0,1,212,128ZM44,128A83.6,83.6,0,0,1,60.75,77.72L178.28,195.25A84,84,0,0,1,44,128Z"></path>
         </svg>
     `;
     document.body.appendChild(disabledCursor);
@@ -141,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
             interactiveCursor.style.display = 'none';
             textSelectorCursor.style.display = 'none';
             disabledCursor.style.display = '';
-            disabledCursor.style.transform = `translate(${mouse.x - 8}px, ${mouse.y - 12}px)`;
+            disabledCursor.style.transform = `translate(${mouse.x - 10}px, ${mouse.y - 10}px)`;
         } else if (isInteractive) {
             cursor.style.display = 'none';
             svg.style.display = 'none';
