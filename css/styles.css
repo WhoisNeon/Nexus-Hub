@@ -55,12 +55,12 @@ body.dark-mode {
     -webkit-mask-position: center;
 }
 
-html[dir="rtl"] body,
-html[dir="rtl"] #selected-lang-text,
-.language-dropdown button:nth-child(2),
-html[dir="rtl"] button,
-html[dir="rtl"] input {
-    font-family: 'IranSans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+.english-font {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+.persian-font {
+    font-family: 'IranSans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
 
 html[dir="rtl"] .info-value {
@@ -250,7 +250,7 @@ body.scrolled .header {
     color: var(--header-text);
     margin: 0;
     text-shadow: var(--header-h1-shadow);
-    font-family: "owners", 'Inter';
+    font-family: "owners", 'Inter' !important;
     font-weight: 900;
 }
 
@@ -364,7 +364,9 @@ body.scrolled .header {
     font-size: 1.5rem;
     margin: 0;
     word-break: break-word;
-    font-family: "owners", 'IranSans', 'Inter';
+}
+.card-title.english-font{
+    font-family: "owners", 'Inter' !important;
 }
 
 .info-item {

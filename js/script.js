@@ -176,6 +176,11 @@ const elements = {
     languageButton: document.querySelector('.language-button')
 };
 
+function containsPersianArabic(text) {
+    const persianArabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFBB1\uFC00-\uFC5C\uFC5E-\uFCDA\uFD01-\uFD3D\uFD40-\uFD43\uFD47-\uFD4F\uFD51-\uFD8E\uFD90-\uFD91\uFD93-\uFDC7\uFDF0-\uFDFD\uFE70-\uFE7E\uFF65-\uFFBE\uFFC2-\uFFC7\uFFCA-\uFFCF\uFFD2-\uFFD7\uFFDA-\uFFDC]/;
+    return persianArabicRegex.test(text);
+}
+
 function translatePage() {
     const lang = currentLang;
     const translationSet = translations[lang] || translations['en'];
@@ -183,13 +188,25 @@ function translatePage() {
     document.querySelectorAll('[data-translate]').forEach(el => {
         const key = el.dataset.translate;
         if (translationSet[key]) {
-            el.textContent = translationSet[key];
+            setTextContent(el, translationSet[key]);
         }
     });
 
     if (elements.ipDomainSearch) {
         elements.ipDomainSearch.placeholder = translationSet.ipSearchPlaceholder;
+        applyFontClass(elements.ipDomainSearch, elements.ipDomainSearch.placeholder);
     }
+
+    const allTextElements = document.querySelectorAll('h1, h3, p, span, button, input');
+    allTextElements.forEach(el => {
+        applyFontClass(el, el.textContent || '');
+    });
+    const placeholderElements = document.querySelectorAll('input, textarea');
+    placeholderElements.forEach(el => {
+        if (el.placeholder) {
+            applyFontClass(el, el.placeholder);
+        }
+    });
 
     loadBrowserAndSystemInfo(true);
     updateOnlineStatusIndicator(navigator.onLine);
@@ -202,6 +219,7 @@ function translatePage() {
     if (elements.searchButton) elements.searchButton.disabled = false;
     fetchIPInfo();
 }
+
 
 function setLanguage(lang, langName, flagCode) {
     currentLang = lang;
@@ -235,26 +253,45 @@ function setLanguage(lang, langName, flagCode) {
     translatePage();
 }
 
+function applyFontClass(element, text) {
+    if (!element) return;
+    const persianArabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFBB1\uFC00-\uFC5C\uFC5E-\uFCDA\uFD01-\uFD3D\uFD40-\uFD43\uFD47-\uFD4F\uFD51-\uFD8E\uFD90-\uFD91\uFD93-\uFDC7\uFDF0-\uFDFD\uFE70-\uFE7E\uFF65-\uFFBE\uFFC2-\uFFC7\uFFCA-\uFFCF\uFFD2-\uFFD7\uFFDA-\uFFDC]/;
+    if (persianArabicRegex.test(text)) {
+        element.classList.add('persian-font');
+        element.classList.remove('english-font');
+    } else {
+        element.classList.add('english-font');
+        element.classList.remove('persian-font');
+    }
+}
+
 const setTextContent = (element, text, translationKey = null) => {
     if (element) {
+        let content;
         if (translationKey) {
             const translationSet = translations[currentLang] || translations['en'];
-            element.textContent = translationSet[translationKey] || text;
+            content = translationSet[translationKey] || text;
+            element.textContent = content;
         } else {
-            element.textContent = text;
+            content = text;
+            element.textContent = content;
         }
+        applyFontClass(element, content);
     }
 };
-
 const setInnerHTML = (element, html, translationKey = null) => {
     if (element) {
+        let content;
         if (translationKey) {
             const translationSet = translations[currentLang] || translations['en'];
             const statusText = translationSet[translationKey] || '';
-            element.innerHTML = html.replace('STATUS_TEXT', statusText);
+            content = html.replace('STATUS_TEXT', statusText);
+            element.innerHTML = content;
         } else {
-            element.innerHTML = html;
+            content = html;
+            element.innerHTML = content;
         }
+        applyFontClass(element, element.textContent || '');
     }
 };
 
@@ -291,8 +328,7 @@ const canCopy = (id, content) => {
         ipv4: ['unknown', 'unavailable', 'invalidIP'],
         ipv6: ['unknown', 'unavailable'],
         asn: ['unknown', 'unavailable'],
-        isp: ['unknown', 'unavailable'],
-        gpu: ['notDetected'],
+        isp: ['unknown', 'unavailable']
     }[id] || [];
     const invalidVals = invalid.map((k) => t[k]);
     return !invalidVals.includes(content.trim());
@@ -922,7 +958,6 @@ async function loadBrowserAndSystemInfo(isLanguageUpdate = false) {
     } else {
         setTextContent(elements.gpu, gpuInfo);
     }
-    setCopy('gpu', gpuInfo);
     setTextContent(elements.pixelRatio, window.devicePixelRatio || '1');
     setInnerHTML(elements.httpsStatus, location.protocol === 'https:' ?
         '<span class="security-badge secure">STATUS_TEXT</span>' :
@@ -1043,6 +1078,17 @@ document.addEventListener('DOMContentLoaded', function () {
             updatePreferredThemeDisplay();
         });
     }
+
+    const textElements = document.querySelectorAll('.info-value');
+    const persianArabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/; // Persian Unicode range
+
+    textElements.forEach(element => {
+        if (persianArabicRegex.test(element.textContent)) {
+            element.classList.add('persian-font');
+        } else {
+            element.classList.add('english-font');
+        }
+    });
     hidePreloader();
     checkAndNotifyBlocker();
 });
