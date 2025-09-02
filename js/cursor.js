@@ -127,12 +127,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const animate = () => {
         const elementUnderCursor = document.elementFromPoint(mouse.x, mouse.y);
-        const isInteractive = elementUnderCursor?.closest('a, button:not(:disabled), .theme-toggle, .language-selector, .copy-button, .search-button:not(:disabled), input, .notice-checkbox-wrapper, #user-agent');
+        const isInteractive = elementUnderCursor?.closest('a, button:not(:disabled), .theme-toggle, .language-selector, .copy-button, .search-button:not(:disabled), input, .notice-checkbox-wrapper, .user-agent-wrapper, .user-agent-expanded-content');
         const isDisabledButton = elementUnderCursor?.closest('button:disabled, .search-button:disabled, .refresh-button:disabled');
         const isTextInput =
             elementUnderCursor &&
             (
-                elementUnderCursor.matches('input[type="text"]:focus, textarea:focus') ||
+                elementUnderCursor.matches('input[type="text"]:focus, textarea:focus, .user-agent-full, h1, h3, p, span:not(.user-agent-wrapper span)') ||
                 elementUnderCursor.isContentEditable
             );
         if (isTextInput) {

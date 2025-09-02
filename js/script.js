@@ -831,7 +831,6 @@ async function fetchIPInfo(query = '') {
             elements.ipDomainSearch.value = '';
             elements.ipDomainSearch.placeholder = t.resolvingDomain;
 
-            // Use the new resolveDomainToIP function
             const ipFromDomain = await resolveDomainToIP(processedQuery);
 
             if (ipFromDomain) {
@@ -903,7 +902,7 @@ async function loadBrowserAndSystemInfo(isLanguageUpdate = false) {
         </div>
         <div class="user-agent-expanded-content">
             <span class="user-agent-full"></span>
-            <button class="ua-copy-button">Copy <i class="ph ph-clipboard"></i></button>
+            <button class="ua-copy-button">Copy<i class="ph ph-clipboard"></i></button>
         </div>`;
 
         const userAgentShort = userAgentElement.querySelector('.user-agent-short');
@@ -916,6 +915,7 @@ async function loadBrowserAndSystemInfo(isLanguageUpdate = false) {
         if (!userAgentElement.hasAttribute('data-click-listener')) {
             userAgentElement.addEventListener('click', (e) => {
                 if (e.target !== uaCopyButton) {
+                    if (window.getSelection().toString().length > 0) return;
                     userAgentElement.classList.toggle('expanded');
                 }
             });
@@ -924,10 +924,9 @@ async function loadBrowserAndSystemInfo(isLanguageUpdate = false) {
                 e.stopPropagation();
                 try {
                     await navigator.clipboard.writeText(fullUserAgent);
-                    uaCopyButton.innerHTML = 'Copied! <i class="ph ph-check"></i>';
+                    uaCopyButton.innerHTML = 'Copied<i class="ph ph-check"></i>';
                     setTimeout(() => {
-                        // 👇 And here as well
-                        uaCopyButton.innerHTML = 'Copy <i class="ph ph-clipboard"></i>';
+                        uaCopyButton.innerHTML = 'Copy<i class="ph ph-clipboard"></i>';
                     }, 1500);
                 } catch (err) {
                     uaCopyButton.textContent = 'Failed';

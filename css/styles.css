@@ -4,6 +4,7 @@
 }
 
 html{
+    min-width: 320px;
     color-scheme: dark light;
 }
 
@@ -82,8 +83,8 @@ body {
     overflow-x: hidden;
     transition: color 0.5s ease, background 0.5s ease;
     position: relative;
-    min-width: 320px;
 }
+
 
 .preloader {
     position: fixed;
@@ -245,13 +246,17 @@ body.scrolled .header {
 }
 
 
-.header h1 {
+.header .logo {
     font-size: 3rem;
     color: var(--header-text);
     margin: 0;
     text-shadow: var(--header-h1-shadow);
     font-family: "owners", 'Inter' !important;
     font-weight: 900;
+}
+
+a{
+    text-decoration: none;
 }
 
 .theme-toggle {
@@ -265,7 +270,6 @@ body.scrolled .header {
     padding: .5rem;
     border-radius: 50%;
     z-index: 2;
-    text-decoration: none;
     transition: opacity 0.3s ease, background 0.4s ease;
 }
 
@@ -312,14 +316,16 @@ body.scrolled .header {
     .theme-toggle:hover,
     .refresh-button:enabled:hover,
     .language-button:hover,
-    .notice-buttons button.btn-secondary:hover {
+    .notice-buttons button.btn-secondary:hover,
+    .ua-copy-button:hover {
         background: rgba(25, 25, 25, 0.15);
     }
 
     body.dark-mode .theme-toggle:hover,
     body.dark-mode .refresh-button:enabled:hover,
     body.dark-mode .language-button:hover,
-    body.dark-mode .notice-buttons button.btn-secondary:hover {
+    body.dark-mode .notice-buttons button.btn-secondary:hover,
+    body.dark-mode .ua-copy-button:hover {
         background: rgba(230, 230, 230, 0.15);
     }
 
@@ -496,7 +502,6 @@ body.scrolled .header {
     color: inherit;
     text-shadow: 0px 0px 6px var(--text-color);
     transition: opacity 0.3s ease;
-    text-decoration: none;
 }
 
 .refresh-button {
@@ -660,7 +665,6 @@ body.scrolled .header {
 .language-dropdown button {
     color: var(--text-color);
     padding: 12px 16px;
-    text-decoration: none;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -717,7 +721,7 @@ body.scrolled .header {
         gap: 1rem;
     }
 
-    .header h1 {
+    .header .logo {
         font-size: 2rem;
         white-space: normal;
         text-align: center;
@@ -761,7 +765,7 @@ body.scrolled .header {
 }
 
 @media (max-width: 480px) {
-    .header h1 {
+    .header .logo {
         font-size: 1.8rem;
     }
 
@@ -798,7 +802,7 @@ body.scrolled .header {
         justify-content: space-around;
     }
 
-    .header h1 {
+    .header .logo {
         font-size: 2rem;
     }
 }
@@ -884,26 +888,12 @@ body.scrolled .header {
     width: 100%;
     margin-top: 10px;
     padding: 8px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: #fff;
+    background-color: var(--theme-toggle-background);
+    border: 1px solid var(--card-border);
+    color: var(--text-color);
     border-radius: 6px;
     cursor: pointer;
     text-align: center;
     font-size: 0.9em;
     transition: background-color 0.2s ease;
-}
-
-.ua-copy-button:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-.light-mode .ua-copy-button {
-    background-color: rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    color: #333;
-}
-
-.light-mode .ua-copy-button:hover {
-    background-color: rgba(0, 0, 0, 0.1);
 }
