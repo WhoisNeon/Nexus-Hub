@@ -234,7 +234,7 @@ body {
     margin-bottom: 1rem;
 }
 
-.header.hidden {
+.header.hidden, .footer.hidden, .info-card.hidden {
     display: none;
 }
 

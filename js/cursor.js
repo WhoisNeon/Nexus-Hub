@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const isTextInput =
             elementUnderCursor &&
             (
-                elementUnderCursor.matches('input[type="text"]:focus, textarea:focus, .user-agent-full, h1, h3, p, span:not(.user-agent-wrapper span)') ||
+                elementUnderCursor.matches('input[type="text"]:focus, textarea:focus, .user-agent-full, h1, h3, p, span:not(.user-agent-wrapper span, .language-button span)') ||
                 elementUnderCursor.isContentEditable
             );
         if (isTextInput) {

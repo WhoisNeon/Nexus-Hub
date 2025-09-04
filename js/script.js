@@ -120,6 +120,7 @@ const elements = {
     preloader: document.querySelector('.preloader'),
     mainContainer: document.getElementById('main-container'),
     header: document.querySelector('.header'),
+    footer: document.querySelector('.footer'),
     browserCardIcon: document.getElementById('browser-card-icon'),
     infoCards: document.querySelectorAll('.info-card'),
     ipAddress: document.getElementById('ip-address'),
@@ -1110,6 +1111,12 @@ elements.networkCardIcon.addEventListener('dblclick', async () => {
 
 elements.browserCardIcon.addEventListener('dblclick', async () => {
     elements.header.classList.toggle("hidden");
+    elements.footer.classList.toggle("hidden");
+    elements.infoCards.forEach((card, index) => {
+        if (index >= 2) {
+            card.classList.toggle("hidden");
+        }
+    });
 });
 
 function adjustHeaderContent() {
