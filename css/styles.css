@@ -177,7 +177,7 @@ body {
     width: auto;
     height: auto;
     z-index: -1;
-    background-image: url('https://raw.githubusercontent.com/WhoisNeon/Nexus-Hub/refs/heads/master/assets/background.png');
+    background-image: url('assets/background.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

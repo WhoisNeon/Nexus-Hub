@@ -2,8 +2,8 @@ const TOKEN = 'eb2978e07c2e4a5e9bcb8c40e5f68292';
 
 const translations = {
     'en': {
-        resolvingDomain: 'Resolving domain...',
-        loading: 'Loading...', ipSearchPlaceholder: 'Search IP or domain', copyright: 'All rights reserved.',
+        resolvingDomain: 'Resolving Hostname...',
+        loading: 'Loading...', ipSearchPlaceholder: 'Hostname or IP Address', copyright: 'All rights reserved.',
         networkDetails: 'Network Details', ipAddress: 'IP Address', ipv6: 'IPv6', country: 'Country', region: 'Region', city: 'City', isp: 'ISP', organization: 'Organization', asn: 'ASN', ipTimezone: 'Time Zone',
         browserDetails: 'Browser Details', browser: 'Browser', version: 'Version', engine: 'Engine', userAgent: 'User Agent', cookiesEnabled: 'Cookies',
         systemInfo: 'System Information', os: 'Operating System', deviceType: 'Device Type', architecture: 'Architecture', cpuCores: 'CPU Cores', memory: 'Memory', systemTimezone: 'Time Zone', preferredTheme: 'Preferred Theme',
@@ -14,7 +14,7 @@ const translations = {
     },
     'fa': {
         resolvingDomain: 'در حال دریافت آی‌پی دامنه...',
-        loading: 'در حال بارگذاری...', ipSearchPlaceholder: 'جستجوی آی‌پی یا دامنه', copyright: 'تمامی حقوق محفوظ است.',
+        loading: 'در حال بارگذاری...', ipSearchPlaceholder: 'دامنه یا آدرس آی‌پی', copyright: 'تمامی حقوق محفوظ است.',
         networkDetails: 'جزئیات شبکه', ipAddress: 'آدرس آی‌پی', ipv6: 'آی‌پی ورژن ۶', country: 'کشور', region: 'منطقه', city: 'شهر', isp: 'ارائه دهنده', organization: 'سازمان', asn: 'شماره سیستم', ipTimezone: 'منطقه زمانی',
         browserDetails: 'جزئیات مرورگر', browser: 'مرورگر', version: 'نسخه', engine: 'موتور', userAgent: 'User Agent', cookiesEnabled: 'کوکی‌ها',
         systemInfo: 'اطلاعات سیستم', os: 'سیستم عامل', deviceType: 'نوع دستگاه', architecture: 'معماری', cpuCores: 'هسته‌های پردازنده', memory: 'حافظه', systemTimezone: 'منطقه زمانی', preferredTheme: 'تم ترجیحی',
@@ -24,8 +24,8 @@ const translations = {
         enabled: 'فعال', disabled: 'غیرفعال', notSpecified: 'مشخص نشده', supported: 'پشتیبانی می‌شود', notSupported: 'پشتیبانی نمی‌شود', available: 'در دسترس', notAvailable: 'در دسترس نیست', secure: 'امن', insecure: 'نا امن', online: 'آنلاین', offline: 'آفلاین', darkMode: 'حالت تاریک', lightMode: 'حالت روشن', systemPreference: 'تنظیمات سیستم', notDetected: 'شناسایی نشد / ناشناخته', unknown: 'ناشناخته', unavailable: 'در دسترس نیست', invalidIP: 'آی‌پی / دامنه نامعتبر'
     },
     'de': {
-        resolvingDomain: 'Domain wird aufgelöst...',
-        loading: 'Wird geladen...', ipSearchPlaceholder: 'IP oder Domain suchen', copyright: 'Alle Rechte vorbehalten.',
+        resolvingDomain: 'Hostname wird aufgelöst...',
+        loading: 'Wird geladen...', ipSearchPlaceholder: 'Hostname oder IP-Adresse', copyright: 'Alle Rechte vorbehalten.',
         networkDetails: 'Netzwerkdetails', ipAddress: 'IP-Adresse', ipv6: 'IPv6', country: 'Land', region: 'Region', city: 'Stadt', isp: 'ISP', organization: 'Organisation', asn: 'ASN', ipTimezone: 'Zeitzone',
         browserDetails: 'Browserdetails', browser: 'Browser', version: 'Version', engine: 'Engine', userAgent: 'User Agent', cookiesEnabled: 'Cookies',
         systemInfo: 'Systeminformationen', os: 'Betriebssystem', deviceType: 'Gerätetyp', architecture: 'Architektur', cpuCores: 'CPU-Kerne', memory: 'Speicher', systemTimezone: 'Zeitzone', preferredTheme: 'Bevorzugtes Thema',
@@ -35,8 +35,8 @@ const translations = {
         enabled: 'Aktiviert', disabled: 'Deaktiviert', notSpecified: 'Nicht angegeben', supported: 'Unterstützt', notSupported: 'Nicht unterstützt', available: 'Verfügbar', notAvailable: 'Nicht verfügbar', secure: 'Sicher', insecure: 'Unsicher', online: 'Online', offline: 'Offline', darkMode: 'Dunkelmodus', lightMode: 'Heller Modus', systemPreference: 'Systempräferenz', notDetected: 'Nicht erkannt / Unbekannt', unknown: 'Unbekannt', unavailable: 'Nicht verfügbar', invalidIP: 'Ungültige IP / Domain'
     },
     'es': {
-        resolvingDomain: 'Resolviendo dominio...',
-        loading: 'Cargando...', ipSearchPlaceholder: 'Buscar IP o dominio', copyright: 'Todos los derechos reservados.',
+        resolvingDomain: 'Resolviendo nombre de host...',
+        loading: 'Cargando...', ipSearchPlaceholder: 'Nombre de host o dirección IP', copyright: 'Todos los derechos reservados.',
         networkDetails: 'Detalles de la red', ipAddress: 'Dirección IP', ipv6: 'IPv6', country: 'País', region: 'Región', city: 'Ciudad', isp: 'ISP', organization: 'Organización', asn: 'ASN', ipTimezone: 'Zona horaria',
         browserDetails: 'Detalles del navegador', browser: 'Navegador', version: 'Versión', engine: 'Motor', userAgent: 'User Agent', cookiesEnabled: 'Cookies',
         systemInfo: 'Información del sistema', os: 'Sistema operativo', deviceType: 'Tipo de dispositivo', architecture: 'Arquitectura', cpuCores: 'Núcleos de CPU', memory: 'Memoria', systemTimezone: 'Zona horaria', preferredTheme: 'Tema preferido',
@@ -46,8 +46,8 @@ const translations = {
         enabled: 'Habilitado', disabled: 'Deshabilitado', notSpecified: 'No especificado', supported: 'Soportado', notSupported: 'No soportado', available: 'Disponible', notAvailable: 'No disponible', secure: 'Seguro', insecure: 'Inseguro', online: 'En línea', offline: 'Fuera de línea', darkMode: 'Modo oscuro', lightMode: 'Modo claro', systemPreference: 'Preferencia del sistema', notDetected: 'No detectado / Desconocido', unknown: 'Desconocido', unavailable: 'No disponible', invalidIP: 'IP / Dominio inválido'
     },
     'pt': {
-        resolvingDomain: 'Resolvendo domínio...',
-        loading: 'Carregando...', ipSearchPlaceholder: 'Buscar IP ou domínio', copyright: 'Todos os direitos reservados.',
+        resolvingDomain: 'Resolvendo nome do host...',
+        loading: 'Carregando...', ipSearchPlaceholder: 'Nome do host ou endereço IP', copyright: 'Todos os direitos reservados.',
         networkDetails: 'Detalhes da Rede', ipAddress: 'Endereço IP', ipv6: 'IPv6', country: 'País', region: 'Região', city: 'Cidade', isp: 'ISP', organization: 'Organização', asn: 'ASN', ipTimezone: 'Fuso Horário',
         browserDetails: 'Detalhes do Navegador', browser: 'Navegador', version: 'Versão', engine: 'Motor', userAgent: 'User Agent', cookiesEnabled: 'Cookies',
         systemInfo: 'Informações do Sistema', os: 'Sistema Operacional', deviceType: 'Tipo de Dispositivo', architecture: 'Arquitetura', cpuCores: 'Núcleos da CPU', memory: 'Memória', systemTimezone: 'Fuso Horário', preferredTheme: 'Tema Preferido',
@@ -57,8 +57,8 @@ const translations = {
         enabled: 'Ativado', disabled: 'Desativado', notSpecified: 'Não especificado', supported: 'Suportado', notSupported: 'Não suportado', available: 'Disponível', notAvailable: 'Indisponível', secure: 'Seguro', insecure: 'Inseguro', online: 'Online', offline: 'Offline', darkMode: 'Modo Escuro', lightMode: 'Modo Claro', systemPreference: 'Preferência do Sistema', notDetected: 'Não detectado / Desconhecido', unknown: 'Desconhecido', unavailable: 'Indisponível', invalidIP: 'IP / Domínio Inválido'
     },
     'fr': {
-        resolvingDomain: 'Résolution du domaine...',
-        loading: 'Chargement...', ipSearchPlaceholder: 'Rechercher IP ou domaine', copyright: 'Tous droits réservés.',
+        resolvingDomain: 'Résolution du nom d\'hôte...',
+        loading: 'Chargement...', ipSearchPlaceholder: 'Nom d\'hôte ou adresse IP', copyright: 'Tous droits réservés.',
         networkDetails: 'Détails du réseau', ipAddress: 'Adresse IP', ipv6: 'IPv6', country: 'Pays', region: 'Région', city: 'Ville', isp: 'FAI', organization: 'Organisation', asn: 'ASN', ipTimezone: 'Fuseau horaire',
         browserDetails: 'Détails du navigateur', browser: 'Navigateur', version: 'Version', engine: 'Moteur', userAgent: 'User Agent', cookiesEnabled: 'Cookies',
         systemInfo: 'Informations système', os: 'Système d\'exploitation', deviceType: 'Type d\'appareil', architecture: 'Architecture', cpuCores: 'Cœurs CPU', memory: 'Mémoire', systemTimezone: 'Fuseau horaire', preferredTheme: 'Thème préféré',
@@ -68,8 +68,8 @@ const translations = {
         enabled: 'Activé', disabled: 'Désactivé', notSpecified: 'Non spécifié', supported: 'Supporté', notSupported: 'Non supporté', available: 'Disponible', notAvailable: 'Non disponible', secure: 'Sécurisé', insecure: 'Non sécurisé', online: 'En ligne', offline: 'Hors ligne', darkMode: 'Mode sombre', lightMode: 'Mode clair', systemPreference: 'Préférence système', notDetected: 'Non détecté / Inconnu', unknown: 'Inconnu', unavailable: 'Indisponible', invalidIP: 'IP / Domaine invalide'
     },
     'ru': {
-        resolvingDomain: 'Определение IP домена...',
-        loading: 'Загрузка...', ipSearchPlaceholder: 'Поиск IP или домена', copyright: 'Все права защищены.',
+        resolvingDomain: 'Разрешение имени хоста...',
+        loading: 'Загрузка...', ipSearchPlaceholder: 'Имя узла или IP адрес', copyright: 'Все права защищены.',
         networkDetails: 'Сетевые данные', ipAddress: 'IP-адрес', ipv6: 'IPv6', country: 'Страна', region: 'Регион', city: 'Город', isp: 'Провайдер', organization: 'Организация', asn: 'ASN', ipTimezone: 'Часовой пояс',
         browserDetails: 'Данные браузера', browser: 'Браузер', version: 'Версия', engine: 'Движок', userAgent: 'User Agent', cookiesEnabled: 'Cookies',
         systemInfo: 'Информация о системе', os: 'Операционная система', deviceType: 'Тип устройства', architecture: 'Архитектура', cpuCores: 'Ядра ЦП', memory: 'Память', systemTimezone: 'Часовой пояс', preferredTheme: 'Предпочтительная тема',
@@ -79,8 +79,8 @@ const translations = {
         enabled: 'Включено', disabled: 'Отключено', notSpecified: 'Не указано', supported: 'Поддерживается', notSupported: 'Не поддерживается', available: 'Доступно', notAvailable: 'Недоступно', secure: 'Безопасно', insecure: 'Небезопасно', online: 'В сети', offline: 'Не в сети', darkMode: 'Темный режим', lightMode: 'Светлый режим', systemPreference: 'Системные настройки', notDetected: 'Не определено / Неизвестно', unknown: 'Неизвестно', unavailable: 'Недоступно', invalidIP: 'Неверный IP / домен'
     },
     'ja': {
-        resolvingDomain: 'ドメインを解決中...',
-        loading: '読み込み中...', ipSearchPlaceholder: 'IPまたはドメイン検索', copyright: 'All rights reserved.',
+        resolvingDomain: 'ホスト名を解決中...',
+        loading: '読み込み中...', ipSearchPlaceholder: 'ホスト名またはIPアドレス', copyright: 'All rights reserved.',
         networkDetails: 'ネットワーク詳細', ipAddress: 'IPアドレス', ipv6: 'IPv6', country: '国', region: '地域', city: '都市', isp: 'ISP', organization: '組織', asn: 'ASN', ipTimezone: 'タイムゾーン',
         browserDetails: 'ブラウザ詳細', browser: 'ブラウザ', version: 'バージョン', engine: 'エンジン', userAgent: 'ユーザーエージェント', cookiesEnabled: 'クッキー',
         systemInfo: 'システム情報', os: 'オペレーティングシステム', deviceType: 'デバイスタイプ', architecture: 'アーキテクチャ', cpuCores: 'CPUコア数', memory: 'メモリ', systemTimezone: 'タイムゾーン', preferredTheme: '優先テーマ',
@@ -90,8 +90,8 @@ const translations = {
         enabled: '有効', disabled: '無効', notSpecified: '指定なし', supported: '対応', notSupported: '非対応', available: '利用可能', notAvailable: '利用不可', secure: '安全', insecure: '危険', online: 'オンライン', offline: 'オフライン', darkMode: 'ダークモード', lightMode: 'ライトモード', systemPreference: 'システム設定', notDetected: '未検出/不明', unknown: '不明', unavailable: '利用不可', invalidIP: '無効なIP / ドメイン'
     },
     'ko': {
-        resolvingDomain: '도메인 확인 중...',
-        loading: '로드 중...', ipSearchPlaceholder: 'IP 또는 도메인 검색', copyright: 'All rights reserved.',
+        resolvingDomain: '호스트명 확인 중...',
+        loading: '로드 중...', ipSearchPlaceholder: '호스트 이름 또는 IP 주소', copyright: 'All rights reserved.',
         networkDetails: '네트워크 정보', ipAddress: 'IP 주소', ipv6: 'IPv6', country: '국가', region: '지역', city: '도시', isp: 'ISP', organization: '조직', asn: 'ASN', ipTimezone: '시간대',
         browserDetails: '브라우저 정보', browser: '브라우저', version: '버전', engine: '엔진', userAgent: '사용자 에이전트', cookiesEnabled: '쿠키',
         systemInfo: '시스템 정보', os: '운영 체제', deviceType: '기기 종류', architecture: '아키텍처', cpuCores: 'CPU 코어', memory: '메모리', systemTimezone: '시간대', preferredTheme: '선호 테마',
@@ -101,8 +101,8 @@ const translations = {
         enabled: '활성화됨', disabled: '비활성화됨', notSpecified: '지정되지 않음', supported: '지원됨', notSupported: '지원되지 않음', available: '사용 가능', notAvailable: '사용 불가', secure: '안전함', insecure: '안전하지 않음', online: '온라인', offline: '오프라인', darkMode: '다크 모드', lightMode: '라이트 모드', systemPreference: '시스템 환경설정', notDetected: '감지되지 않음 / 알 수 없음', unknown: '알 수 없음', unavailable: '사용 불가', invalidIP: '잘못된 IP / 도메인'
     },
     'zh': {
-        resolvingDomain: '正在解析域名...',
-        loading: '加载中...', ipSearchPlaceholder: '搜索IP或域名', copyright: '版权所有。',
+        resolvingDomain: '正在解析主机名...',
+        loading: '加载中...', ipSearchPlaceholder: '主机名或 IP 地址', copyright: '版权所有。',
         networkDetails: '网络详情', ipAddress: 'IP地址', ipv6: 'IPv6', country: '国家', region: '地区', city: '城市', isp: 'ISP', organization: '组织', asn: 'ASN', ipTimezone: '时区',
         browserDetails: '浏览器详情', browser: '浏览器', version: '版本', engine: '引擎', userAgent: '用户代理', cookiesEnabled: 'Cookie',
         systemInfo: '系统信息', os: '操作系统', deviceType: '设备类型', architecture: '架构', cpuCores: 'CPU核心数', memory: '内存', systemTimezone: '时区', preferredTheme: '首选主题',
@@ -227,7 +227,7 @@ function setLanguage(lang, langName, flagCode) {
 
     if (elements.selectedFlag) {
         if (flagCode === 'ir') {
-            elements.selectedFlag.src = 'https://raw.githubusercontent.com/WhoisNeon/Nexus-Hub/refs/heads/master/assets/ir.svg';
+            elements.selectedFlag.src = 'assets/ir.svg';
         } else {
             elements.selectedFlag.src = `https://hatscripts.github.io/circle-flags/flags/${flagCode}.svg`;
         }
@@ -618,7 +618,7 @@ function displayGeoData(geoData) {
     if (countryIso) {
         let flagUrl;
         if (countryIso === 'ir') {
-            flagUrl = `https://raw.githubusercontent.com/WhoisNeon/Nexus-Hub/refs/heads/master/assets/ir.svg`;
+            flagUrl = `assets/ir.svg`;
         } else {
             flagUrl = `https://hatscripts.github.io/circle-flags/flags/${countryIso}.svg`;
         }
