@@ -1,181 +1,140 @@
 const TOKEN = 'eb2978e07c2e4a5e9bcb8c40e5f68292';
 
-const translations = {
-    'en': {
-        resolvingDomain: 'Resolving Hostname...',
-        loading: 'Loading...', ipSearchPlaceholder: 'Hostname or IP Address', copyright: 'All rights reserved.',
-        networkDetails: 'Network Details', ipAddress: 'IP Address', ipv6: 'IPv6', country: 'Country', region: 'Region', city: 'City', isp: 'ISP', organization: 'Organization', asn: 'ASN', ipTimezone: 'Time Zone',
-        browserDetails: 'Browser Details', browser: 'Browser', version: 'Version', engine: 'Engine', userAgent: 'User Agent', cookiesEnabled: 'Cookies',
-        systemInfo: 'System Information', os: 'Operating System', deviceType: 'Device Type', architecture: 'Architecture', cpuCores: 'CPU Cores', memory: 'Memory', systemTimezone: 'Time Zone', preferredTheme: 'Preferred Theme',
-        displayGraphics: 'Display & Graphics', screenResolution: 'Screen Resolution', viewportSize: 'Viewport Size', colorDepth: 'Color Depth', gpu: 'GPU', pixelRatio: 'Pixel Ratio',
-        securityPrivacy: 'Security & Privacy', https: 'HTTPS', dnt: 'Do Not Track', webrtc: 'WebRTC', localStorage: 'Local Storage', sessionStorage: 'Session Storage',
-        webFeatures: 'Web Features', javascript: 'JavaScript', webgl: 'WebGL', geolocation: 'Geolocation', touchSupport: 'Touch Support', onlineStatus: 'Online Status',
-        enabled: 'Enabled', disabled: 'Disabled', notSpecified: 'Not specified', supported: 'Supported', notSupported: 'Not supported', available: 'Available', notAvailable: 'Not available', secure: 'Secure', insecure: 'Insecure', online: 'Online', offline: 'Offline', darkMode: 'Dark Mode', lightMode: 'Light Mode', systemPreference: 'System Preference', notDetected: 'Not detected / Unknown', unknown: 'Unknown', unavailable: 'Unavailable', invalidIP: 'Invalid IP / Domain'
-    },
-    'fa': {
-        resolvingDomain: 'در حال دریافت آی‌پی دامنه...',
-        loading: 'در حال بارگذاری...', ipSearchPlaceholder: 'دامنه یا آدرس آی‌پی', copyright: 'تمامی حقوق محفوظ است.',
-        networkDetails: 'جزئیات شبکه', ipAddress: 'آدرس آی‌پی', ipv6: 'آی‌پی ورژن ۶', country: 'کشور', region: 'منطقه', city: 'شهر', isp: 'ارائه دهنده', organization: 'سازمان', asn: 'شماره سیستم', ipTimezone: 'منطقه زمانی',
-        browserDetails: 'جزئیات مرورگر', browser: 'مرورگر', version: 'نسخه', engine: 'موتور', userAgent: 'User Agent', cookiesEnabled: 'کوکی‌ها',
-        systemInfo: 'اطلاعات سیستم', os: 'سیستم عامل', deviceType: 'نوع دستگاه', architecture: 'معماری', cpuCores: 'هسته‌های پردازنده', memory: 'حافظه', systemTimezone: 'منطقه زمانی', preferredTheme: 'تم ترجیحی',
-        displayGraphics: 'نمایشگر و گرافیک', screenResolution: 'وضوح صفحه', viewportSize: 'اندازه Viewport', colorDepth: 'عمق رنگ', gpu: 'پردازنده گرافیکی', pixelRatio: 'نسبت پیکسل',
-        securityPrivacy: 'امنیت و حریم خصوصی', https: 'HTTPS', dnt: 'Do Not Track', webrtc: 'WebRTC', localStorage: 'حافظه محلی', sessionStorage: 'حافظه جلسه',
-        webFeatures: 'ویژگی‌های وب', javascript: 'جاوا اسکریپت', webgl: 'WebGL', geolocation: 'موقعیت جغرافیایی', touchSupport: 'پشتیبانی از لمس', onlineStatus: 'وضعیت آنلاین',
-        enabled: 'فعال', disabled: 'غیرفعال', notSpecified: 'مشخص نشده', supported: 'پشتیبانی می‌شود', notSupported: 'پشتیبانی نمی‌شود', available: 'در دسترس', notAvailable: 'در دسترس نیست', secure: 'امن', insecure: 'نا امن', online: 'آنلاین', offline: 'آفلاین', darkMode: 'حالت تاریک', lightMode: 'حالت روشن', systemPreference: 'تنظیمات سیستم', notDetected: 'شناسایی نشد / ناشناخته', unknown: 'ناشناخته', unavailable: 'در دسترس نیست', invalidIP: 'آی‌پی / دامنه نامعتبر'
-    },
-    'de': {
-        resolvingDomain: 'Hostname wird aufgelöst...',
-        loading: 'Wird geladen...', ipSearchPlaceholder: 'Hostname oder IP-Adresse', copyright: 'Alle Rechte vorbehalten.',
-        networkDetails: 'Netzwerkdetails', ipAddress: 'IP-Adresse', ipv6: 'IPv6', country: 'Land', region: 'Region', city: 'Stadt', isp: 'ISP', organization: 'Organisation', asn: 'ASN', ipTimezone: 'Zeitzone',
-        browserDetails: 'Browserdetails', browser: 'Browser', version: 'Version', engine: 'Engine', userAgent: 'User Agent', cookiesEnabled: 'Cookies',
-        systemInfo: 'Systeminformationen', os: 'Betriebssystem', deviceType: 'Gerätetyp', architecture: 'Architektur', cpuCores: 'CPU-Kerne', memory: 'Speicher', systemTimezone: 'Zeitzone', preferredTheme: 'Bevorzugtes Thema',
-        displayGraphics: 'Anzeige & Grafik', screenResolution: 'Bildschirmauflösung', viewportSize: 'Viewport-Größe', colorDepth: 'Farbtiefe', gpu: 'GPU', pixelRatio: 'Pixel-Verhältnis',
-        securityPrivacy: 'Sicherheit & Datenschutz', https: 'HTTPS', dnt: 'Do Not Track', webrtc: 'WebRTC', localStorage: 'Lokaler Speicher', sessionStorage: 'Sitzungsspeicher',
-        webFeatures: 'Web-Funktionen', javascript: 'JavaScript', webgl: 'WebGL', geolocation: 'Geolokalisierung', touchSupport: 'Touch-Unterstützung', onlineStatus: 'Online-Status',
-        enabled: 'Aktiviert', disabled: 'Deaktiviert', notSpecified: 'Nicht angegeben', supported: 'Unterstützt', notSupported: 'Nicht unterstützt', available: 'Verfügbar', notAvailable: 'Nicht verfügbar', secure: 'Sicher', insecure: 'Unsicher', online: 'Online', offline: 'Offline', darkMode: 'Dunkelmodus', lightMode: 'Heller Modus', systemPreference: 'Systempräferenz', notDetected: 'Nicht erkannt / Unbekannt', unknown: 'Unbekannt', unavailable: 'Nicht verfügbar', invalidIP: 'Ungültige IP / Domain'
-    },
-    'es': {
-        resolvingDomain: 'Resolviendo nombre de host...',
-        loading: 'Cargando...', ipSearchPlaceholder: 'Nombre de host o dirección IP', copyright: 'Todos los derechos reservados.',
-        networkDetails: 'Detalles de la red', ipAddress: 'Dirección IP', ipv6: 'IPv6', country: 'País', region: 'Región', city: 'Ciudad', isp: 'ISP', organization: 'Organización', asn: 'ASN', ipTimezone: 'Zona horaria',
-        browserDetails: 'Detalles del navegador', browser: 'Navegador', version: 'Versión', engine: 'Motor', userAgent: 'User Agent', cookiesEnabled: 'Cookies',
-        systemInfo: 'Información del sistema', os: 'Sistema operativo', deviceType: 'Tipo de dispositivo', architecture: 'Arquitectura', cpuCores: 'Núcleos de CPU', memory: 'Memoria', systemTimezone: 'Zona horaria', preferredTheme: 'Tema preferido',
-        displayGraphics: 'Pantalla y gráficos', screenResolution: 'Resolución de pantalla', viewportSize: 'Tamaño de viewport', colorDepth: 'Profundidad de color', gpu: 'GPU', pixelRatio: 'Relación de píxeles',
-        securityPrivacy: 'Seguridad y privacidad', https: 'HTTPS', dnt: 'Do Not Track', webrtc: 'WebRTC', localStorage: 'Almacenamiento local', sessionStorage: 'Almacenamiento de sesión',
-        webFeatures: 'Características web', javascript: 'JavaScript', webgl: 'WebGL', geolocation: 'Geolocalización', touchSupport: 'Soporte táctil', onlineStatus: 'Estado en línea',
-        enabled: 'Habilitado', disabled: 'Deshabilitado', notSpecified: 'No especificado', supported: 'Soportado', notSupported: 'No soportado', available: 'Disponible', notAvailable: 'No disponible', secure: 'Seguro', insecure: 'Inseguro', online: 'En línea', offline: 'Fuera de línea', darkMode: 'Modo oscuro', lightMode: 'Modo claro', systemPreference: 'Preferencia del sistema', notDetected: 'No detectado / Desconocido', unknown: 'Desconocido', unavailable: 'No disponible', invalidIP: 'IP / Dominio inválido'
-    },
-    'pt': {
-        resolvingDomain: 'Resolvendo nome do host...',
-        loading: 'Carregando...', ipSearchPlaceholder: 'Nome do host ou endereço IP', copyright: 'Todos os direitos reservados.',
-        networkDetails: 'Detalhes da Rede', ipAddress: 'Endereço IP', ipv6: 'IPv6', country: 'País', region: 'Região', city: 'Cidade', isp: 'ISP', organization: 'Organização', asn: 'ASN', ipTimezone: 'Fuso Horário',
-        browserDetails: 'Detalhes do Navegador', browser: 'Navegador', version: 'Versão', engine: 'Motor', userAgent: 'User Agent', cookiesEnabled: 'Cookies',
-        systemInfo: 'Informações do Sistema', os: 'Sistema Operacional', deviceType: 'Tipo de Dispositivo', architecture: 'Arquitetura', cpuCores: 'Núcleos da CPU', memory: 'Memória', systemTimezone: 'Fuso Horário', preferredTheme: 'Tema Preferido',
-        displayGraphics: 'Tela e Gráficos', screenResolution: 'Resolução da Tela', viewportSize: 'Tamanho da Janela', colorDepth: 'Profundidade de Cor', gpu: 'GPU', pixelRatio: 'Taxa de Pixels',
-        securityPrivacy: 'Segurança e Privacidade', https: 'HTTPS', dnt: 'Do Not Track', webrtc: 'WebRTC', localStorage: 'Armazenamento Local', sessionStorage: 'Armazenamento de Sessão',
-        webFeatures: 'Recursos da Web', javascript: 'JavaScript', webgl: 'WebGL', geolocation: 'Geolocalização', touchSupport: 'Suporte a Toque', onlineStatus: 'Status Online',
-        enabled: 'Ativado', disabled: 'Desativado', notSpecified: 'Não especificado', supported: 'Suportado', notSupported: 'Não suportado', available: 'Disponível', notAvailable: 'Indisponível', secure: 'Seguro', insecure: 'Inseguro', online: 'Online', offline: 'Offline', darkMode: 'Modo Escuro', lightMode: 'Modo Claro', systemPreference: 'Preferência do Sistema', notDetected: 'Não detectado / Desconhecido', unknown: 'Desconhecido', unavailable: 'Indisponível', invalidIP: 'IP / Domínio Inválido'
-    },
-    'fr': {
-        resolvingDomain: 'Résolution du nom d\'hôte...',
-        loading: 'Chargement...', ipSearchPlaceholder: 'Nom d\'hôte ou adresse IP', copyright: 'Tous droits réservés.',
-        networkDetails: 'Détails du réseau', ipAddress: 'Adresse IP', ipv6: 'IPv6', country: 'Pays', region: 'Région', city: 'Ville', isp: 'FAI', organization: 'Organisation', asn: 'ASN', ipTimezone: 'Fuseau horaire',
-        browserDetails: 'Détails du navigateur', browser: 'Navigateur', version: 'Version', engine: 'Moteur', userAgent: 'User Agent', cookiesEnabled: 'Cookies',
-        systemInfo: 'Informations système', os: 'Système d\'exploitation', deviceType: 'Type d\'appareil', architecture: 'Architecture', cpuCores: 'Cœurs CPU', memory: 'Mémoire', systemTimezone: 'Fuseau horaire', preferredTheme: 'Thème préféré',
-        displayGraphics: 'Affichage et graphiques', screenResolution: 'Résolution de l\'écran', viewportSize: 'Taille du viewport', colorDepth: 'Profondeur de couleur', gpu: 'GPU', pixelRatio: 'Ratio de pixels',
-        securityPrivacy: 'Sécurité et confidentialité', https: 'HTTPS', dnt: 'Do Not Track', webrtc: 'WebRTC', localStorage: 'Stockage local', sessionStorage: 'Stockage de session',
-        webFeatures: 'Fonctionnalités Web', javascript: 'JavaScript', webgl: 'WebGL', geolocation: 'Géolocalisation', touchSupport: 'Support tactile', onlineStatus: 'Statut en ligne',
-        enabled: 'Activé', disabled: 'Désactivé', notSpecified: 'Non spécifié', supported: 'Supporté', notSupported: 'Non supporté', available: 'Disponible', notAvailable: 'Non disponible', secure: 'Sécurisé', insecure: 'Non sécurisé', online: 'En ligne', offline: 'Hors ligne', darkMode: 'Mode sombre', lightMode: 'Mode clair', systemPreference: 'Préférence système', notDetected: 'Non détecté / Inconnu', unknown: 'Inconnu', unavailable: 'Indisponible', invalidIP: 'IP / Domaine invalide'
-    },
-    'ru': {
-        resolvingDomain: 'Разрешение имени хоста...',
-        loading: 'Загрузка...', ipSearchPlaceholder: 'Имя узла или IP адрес', copyright: 'Все права защищены.',
-        networkDetails: 'Сетевые данные', ipAddress: 'IP-адрес', ipv6: 'IPv6', country: 'Страна', region: 'Регион', city: 'Город', isp: 'Провайдер', organization: 'Организация', asn: 'ASN', ipTimezone: 'Часовой пояс',
-        browserDetails: 'Данные браузера', browser: 'Браузер', version: 'Версия', engine: 'Движок', userAgent: 'User Agent', cookiesEnabled: 'Cookies',
-        systemInfo: 'Информация о системе', os: 'Операционная система', deviceType: 'Тип устройства', architecture: 'Архитектура', cpuCores: 'Ядра ЦП', memory: 'Память', systemTimezone: 'Часовой пояс', preferredTheme: 'Предпочтительная тема',
-        displayGraphics: 'Дисплей и графика', screenResolution: 'Разрешение экрана', viewportSize: 'Размер окна', colorDepth: 'Глубина цвета', gpu: 'GPU', pixelRatio: 'Соотношение пикселей',
-        securityPrivacy: 'Безопасность и конфиденциальность', https: 'HTTPS', dnt: 'Do Not Track', webrtc: 'WebRTC', localStorage: 'Локальное хранилище', sessionStorage: 'Сессионное хранилище',
-        webFeatures: 'Веб-функции', javascript: 'JavaScript', webgl: 'WebGL', geolocation: 'Геолокация', touchSupport: 'Сенсорная поддержка', onlineStatus: 'Статус в сети',
-        enabled: 'Включено', disabled: 'Отключено', notSpecified: 'Не указано', supported: 'Поддерживается', notSupported: 'Не поддерживается', available: 'Доступно', notAvailable: 'Недоступно', secure: 'Безопасно', insecure: 'Небезопасно', online: 'В сети', offline: 'Не в сети', darkMode: 'Темный режим', lightMode: 'Светлый режим', systemPreference: 'Системные настройки', notDetected: 'Не определено / Неизвестно', unknown: 'Неизвестно', unavailable: 'Недоступно', invalidIP: 'Неверный IP / домен'
-    },
-    'ja': {
-        resolvingDomain: 'ホスト名を解決中...',
-        loading: '読み込み中...', ipSearchPlaceholder: 'ホスト名またはIPアドレス', copyright: 'All rights reserved.',
-        networkDetails: 'ネットワーク詳細', ipAddress: 'IPアドレス', ipv6: 'IPv6', country: '国', region: '地域', city: '都市', isp: 'ISP', organization: '組織', asn: 'ASN', ipTimezone: 'タイムゾーン',
-        browserDetails: 'ブラウザ詳細', browser: 'ブラウザ', version: 'バージョン', engine: 'エンジン', userAgent: 'ユーザーエージェント', cookiesEnabled: 'クッキー',
-        systemInfo: 'システム情報', os: 'オペレーティングシステム', deviceType: 'デバイスタイプ', architecture: 'アーキテクチャ', cpuCores: 'CPUコア数', memory: 'メモリ', systemTimezone: 'タイムゾーン', preferredTheme: '優先テーマ',
-        displayGraphics: 'ディスプレイとグラフィックス', screenResolution: '画面解像度', viewportSize: 'ビューポートサイズ', colorDepth: '色深度', gpu: 'GPU', pixelRatio: 'ピクセル比',
-        securityPrivacy: 'セキュリティとプライバシー', https: 'HTTPS', dnt: 'Do Not Track', webrtc: 'WebRTC', localStorage: 'ローカルストレージ', sessionStorage: 'セッションストレージ',
-        webFeatures: 'Web機能', javascript: 'JavaScript', webgl: 'WebGL', geolocation: '地理位置情報', touchSupport: 'タッチサポート', onlineStatus: 'オンラインステータス',
-        enabled: '有効', disabled: '無効', notSpecified: '指定なし', supported: '対応', notSupported: '非対応', available: '利用可能', notAvailable: '利用不可', secure: '安全', insecure: '危険', online: 'オンライン', offline: 'オフライン', darkMode: 'ダークモード', lightMode: 'ライトモード', systemPreference: 'システム設定', notDetected: '未検出/不明', unknown: '不明', unavailable: '利用不可', invalidIP: '無効なIP / ドメイン'
-    },
-    'ko': {
-        resolvingDomain: '호스트명 확인 중...',
-        loading: '로드 중...', ipSearchPlaceholder: '호스트 이름 또는 IP 주소', copyright: 'All rights reserved.',
-        networkDetails: '네트워크 정보', ipAddress: 'IP 주소', ipv6: 'IPv6', country: '국가', region: '지역', city: '도시', isp: 'ISP', organization: '조직', asn: 'ASN', ipTimezone: '시간대',
-        browserDetails: '브라우저 정보', browser: '브라우저', version: '버전', engine: '엔진', userAgent: '사용자 에이전트', cookiesEnabled: '쿠키',
-        systemInfo: '시스템 정보', os: '운영 체제', deviceType: '기기 종류', architecture: '아키텍처', cpuCores: 'CPU 코어', memory: '메모리', systemTimezone: '시간대', preferredTheme: '선호 테마',
-        displayGraphics: '디스플레이 및 그래픽', screenResolution: '화면 해상도', viewportSize: '뷰포트 크기', colorDepth: '색 농도', gpu: 'GPU', pixelRatio: '픽셀 비율',
-        securityPrivacy: '보안 및 개인 정보', https: 'HTTPS', dnt: 'Do Not Track', webrtc: 'WebRTC', localStorage: '로컬 스토리지', sessionStorage: '세션 스토리지',
-        webFeatures: '웹 기능', javascript: '자바스크립트', webgl: 'WebGL', geolocation: '지리적 위치', touchSupport: '터치 지원', onlineStatus: '온라인 상태',
-        enabled: '활성화됨', disabled: '비활성화됨', notSpecified: '지정되지 않음', supported: '지원됨', notSupported: '지원되지 않음', available: '사용 가능', notAvailable: '사용 불가', secure: '안전함', insecure: '안전하지 않음', online: '온라인', offline: '오프라인', darkMode: '다크 모드', lightMode: '라이트 모드', systemPreference: '시스템 환경설정', notDetected: '감지되지 않음 / 알 수 없음', unknown: '알 수 없음', unavailable: '사용 불가', invalidIP: '잘못된 IP / 도메인'
-    },
-    'zh': {
-        resolvingDomain: '正在解析主机名...',
-        loading: '加载中...', ipSearchPlaceholder: '主机名或 IP 地址', copyright: '版权所有。',
-        networkDetails: '网络详情', ipAddress: 'IP地址', ipv6: 'IPv6', country: '国家', region: '地区', city: '城市', isp: 'ISP', organization: '组织', asn: 'ASN', ipTimezone: '时区',
-        browserDetails: '浏览器详情', browser: '浏览器', version: '版本', engine: '引擎', userAgent: '用户代理', cookiesEnabled: 'Cookie',
-        systemInfo: '系统信息', os: '操作系统', deviceType: '设备类型', architecture: '架构', cpuCores: 'CPU核心数', memory: '内存', systemTimezone: '时区', preferredTheme: '首选主题',
-        displayGraphics: '显示与图形', screenResolution: '屏幕分辨率', viewportSize: '视口大小', colorDepth: '颜色深度', gpu: 'GPU', pixelRatio: '像素比',
-        securityPrivacy: '安全与隐私', https: 'HTTPS', dnt: '请勿跟踪', webrtc: 'WebRTC', localStorage: '本地存储', sessionStorage: '会话存储',
-        webFeatures: 'Web功能', javascript: 'JavaScript', webgl: 'WebGL', geolocation: '地理位置', touchSupport: '触摸支持', onlineStatus: '在线状态',
-        enabled: '已启用', disabled: '已禁用', notSpecified: '未指定', supported: '支持', notSupported: '不支持', available: '可用', notAvailable: '不可用', secure: '安全', insecure: '不安全', online: '在线', offline: '离线', darkMode: '深色模式', lightMode: '浅色模式', systemPreference: '系统偏好', notDetected: '未检测到/未知', unknown: '未知', unavailable: '不可用', invalidIP: '无效IP / 域名'
-    }
-};
+import translations from './translations.js';
 
 let currentLang = localStorage.getItem('userLanguage') || 'en';
 let lastGeoData = null;
 
 const elements = {
+    // --- Core Layout & General UI ---
+    body: document.body,
     preloader: document.querySelector('.preloader'),
-    mainContainer: document.getElementById('main-container'),
+    mainContainer: document.querySelector('#main-container'),
     header: document.querySelector('.header'),
     footer: document.querySelector('.footer'),
-    browserCardIcon: document.getElementById('browser-card-icon'),
+    videoBackground: document.querySelector('#video-background'),
     infoCards: document.querySelectorAll('.info-card'),
-    ipAddress: document.getElementById('ip-address'),
-    ipv6Address: document.getElementById('ipv6-address'),
-    ipv4Item: document.getElementById('ip-address-item'),
-    ipv6Item: document.getElementById('ipv6-item'),
-    city: document.getElementById('city'),
-    country: document.getElementById('country'),
-    region: document.getElementById('region'),
-    regionItem: document.getElementById('region-item'),
-    isp: document.getElementById('isp'),
-    organization: document.getElementById('organization'),
-    connectionType: document.getElementById('asn'),
-    ipTimezone: document.getElementById('ip-timezone'),
-    browser: document.getElementById('browser'),
-    browserVersion: document.getElementById('browser-version'),
-    browserEngine: document.getElementById('browser-engine'),
-    userAgent: document.getElementById('user-agent'),
-    cookiesEnabled: document.getElementById('cookies-enabled'),
-    preferredTheme: document.getElementById('preferred-theme'),
-    os: document.getElementById('os'),
-    deviceType: document.getElementById('device-type'),
-    architecture: document.getElementById('architecture'),
-    cpuCores: document.getElementById('cpu-cores'),
-    memory: document.getElementById('memory'),
-    systemTimezone: document.getElementById('system-timezone'),
-    screenResolution: document.getElementById('screen-resolution'),
-    viewportSize: document.getElementById('viewport-size'),
-    colorDepth: document.getElementById('color-depth'),
-    gpu: document.getElementById('gpu'),
-    pixelRatio: document.getElementById('pixel-ratio'),
-    httpsStatus: document.getElementById('https-status'),
-    dntStatus: document.getElementById('dnt-status'),
-    webrtcStatus: document.getElementById('webrtc-status'),
-    localStorage: document.getElementById('local-storage'),
-    sessionStorage: document.getElementById('session-storage'),
-    javascriptEnabled: document.getElementById('javascript-enabled'),
-    webglSupport: document.getElementById('webgl-support'),
-    geolocationSupport: document.getElementById('geolocation-support'),
-    touchSupport: document.getElementById('touch-support'),
-    onlineStatus: document.getElementById('online-status'),
-    themeToggle: document.getElementById('theme-toggle-button'),
-    body: document.body,
-    videoBackground: document.getElementById('video-background'),
-    osIcon: document.getElementById('os-icon'),
-    refreshNetworkButton: document.getElementById('refresh-network-button'),
-    networkCardIcon: document.getElementById('network-card-icon'),
-    ipDomainSearch: document.getElementById('ip-domain-search'),
-    searchButton: document.getElementById('search-button'),
-    selectedFlag: document.getElementById('selected-flag'),
-    selectedLangText: document.getElementById('selected-lang-text'),
-    languageDropdown: document.querySelector('.language-dropdown'),
+
+    // --- Header Controls ---
+    themeToggle: document.querySelector('#theme-toggle-button'),
     languageSelector: document.querySelector('.language-selector'),
-    languageButton: document.querySelector('.language-button')
+    languageButton: document.querySelector('.language-button'),
+    languageDropdown: document.querySelector('.language-dropdown'),
+    selectedFlag: document.querySelector('#selected-flag'),
+    selectedLangText: document.querySelector('#selected-lang-text'),
+
+    // --- Network Card ---
+    networkCardIcon: document.querySelector('#network-card-icon'),
+    refreshNetworkButton: document.querySelector('#refresh-network-button'),
+    ipDomainSearch: document.querySelector('#ip-domain-search'),
+    searchButton: document.querySelector('#search-button'),
+    ipAddress: document.querySelector('#ip-address'),
+    ipv6Address: document.querySelector('#ipv6-address'),
+    ipv4Item: document.querySelector('#ip-address-item'),
+    ipv6Item: document.querySelector('#ipv6-item'),
+    fetchGeoButton: document.querySelector('#fetch-geo-button'),
+    geoFetchContainer: document.querySelector('.geo-fetch-container'),
+    geolocationItems: document.querySelector('.geolocation-items'),
+    country: document.querySelector('#country'),
+    region: document.querySelector('#region'),
+    regionItem: document.querySelector('#region-item'),
+    city: document.querySelector('#city'),
+    isp: document.querySelector('#isp'),
+    organization: document.querySelector('#organization'),
+    asn: document.querySelector('#asn'),
+    ipTimezone: document.querySelector('#ip-timezone'),
+
+    // --- Browser Card ---
+    browserCardIcon: document.querySelector('#browser-card-icon'),
+    browser: document.querySelector('#browser'),
+    browserVersion: document.querySelector('#browser-version'),
+    browserEngine: document.querySelector('#browser-engine'),
+    userAgent: document.querySelector('#user-agent'),
+    cookiesEnabled: document.querySelector('#cookies-enabled'),
+
+    // --- System Card ---
+    osIcon: document.querySelector('#os-icon'),
+    os: document.querySelector('#os'),
+    deviceType: document.querySelector('#device-type'),
+    architecture: document.querySelector('#architecture'),
+    cpuCores: document.querySelector('#cpu-cores'),
+    memory: document.querySelector('#memory'),
+    systemTimezone: document.querySelector('#system-timezone'),
+    preferredTheme: document.querySelector('#preferred-theme'),
+
+    // --- Display & Graphics Card ---
+    screenResolution: document.querySelector('#screen-resolution'),
+    viewportSize: document.querySelector('#viewport-size'),
+    colorDepth: document.querySelector('#color-depth'),
+    gpu: document.querySelector('#gpu'),
+    pixelRatio: document.querySelector('#pixel-ratio'),
+
+    // --- Security & Privacy Card ---
+    httpsStatus: document.querySelector('#https-status'),
+    dntStatus: document.querySelector('#dnt-status'),
+    webrtcStatus: document.querySelector('#webrtc-status'),
+    localStorage: document.querySelector('#local-storage'),
+    sessionStorage: document.querySelector('#session-storage'),
+
+    // --- Web Features Card ---
+    javascriptEnabled: document.querySelector('#javascript-enabled'),
+    webglSupport: document.querySelector('#webgl-support'),
+    geolocationSupport: document.querySelector('#geolocation-support'),
+    touchSupport: document.querySelector('#touch-support'),
+    onlineStatus: document.querySelector('#online-status'),
 };
+
+function compressIPv6(address) {
+    if (!address || !address.includes(':')) return address;
+
+    let parts = address.split('::');
+    let part1 = parts[0] ? parts[0].split(':') : [];
+    let part2 = parts.length > 1 && parts[1] ? parts[1].split(':') : [];
+
+    let fullAddress = [];
+    if (parts.length > 1) {
+        let missingParts = 8 - (part1.length + part2.length);
+        fullAddress = [...part1, ...Array(missingParts).fill('0000'), ...part2];
+    } else {
+        fullAddress = address.split(':');
+    }
+
+    fullAddress = fullAddress.map(part => part.padStart(4, '0'));
+
+    let longestStreak = { start: -1, len: 0 };
+    let currentStreak = { start: -1, len: 0 };
+
+    for (let i = 0; i < 8; i++) {
+        if (fullAddress[i] === '0000') {
+            if (currentStreak.start === -1) {
+                currentStreak.start = i;
+            }
+            currentStreak.len++;
+        } else {
+            if (currentStreak.len > longestStreak.len) {
+                longestStreak = { ...currentStreak };
+            }
+            currentStreak = { start: -1, len: 0 };
+        }
+    }
+    if (currentStreak.len > longestStreak.len) {
+        longestStreak = { ...currentStreak };
+    }
+
+    let compressed = fullAddress.map(part => parseInt(part, 16).toString(16));
+
+    if (longestStreak.len > 1) {
+        compressed.splice(longestStreak.start, longestStreak.len, '');
+        if (longestStreak.start === 0) {
+            compressed.unshift('');
+        }
+        if (longestStreak.start + longestStreak.len === 8) {
+            compressed.push('');
+        }
+    }
+
+    return compressed.join(':');
+}
 
 function containsPersianArabic(text) {
     const persianArabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFBB1\uFC00-\uFC5C\uFC5E-\uFCDA\uFD01-\uFD3D\uFD40-\uFD43\uFD47-\uFD4F\uFD51-\uFD8E\uFD90-\uFD91\uFD93-\uFDC7\uFDF0-\uFDFD\uFE70-\uFE7E\uFF65-\uFFBE\uFFC2-\uFFC7\uFFCA-\uFFCF\uFFD2-\uFFD7\uFFDA-\uFFDC]/;
@@ -196,6 +155,10 @@ function translatePage() {
     if (elements.ipDomainSearch) {
         elements.ipDomainSearch.placeholder = translationSet.ipSearchPlaceholder;
         applyFontClass(elements.ipDomainSearch, elements.ipDomainSearch.placeholder);
+    }
+
+    if (elements.fetchGeoButton) {
+        setTextContent(elements.fetchGeoButton, translationSet.showGeoInfo);
     }
 
     const allTextElements = document.querySelectorAll('h1, h3, p, span, button, input');
@@ -325,14 +288,9 @@ const addCopyFeature = (elementId) => {
 const canCopy = (id, content) => {
     if (!content) return false;
     const t = translations[currentLang] || translations.en;
-    const invalid = {
-        ipv4: ['unknown', 'unavailable', 'invalidIP'],
-        ipv6: ['unknown', 'unavailable'],
-        asn: ['unknown', 'unavailable'],
-        isp: ['unknown', 'unavailable']
-    }[id] || [];
-    const invalidVals = invalid.map((k) => t[k]);
-    return !invalidVals.includes(content.trim());
+    const invalidKeys = ['unknown', 'unavailable', 'invalidIP', 'notDetected'];
+    const invalidValues = invalidKeys.map(key => t[key]);
+    return !invalidValues.includes(content.trim());
 };
 
 const setCopy = (id, content) => {
@@ -585,17 +543,41 @@ function hidePreloader() {
     }
 }
 
+function updateGeoButtonState() {
+    if (!elements.fetchGeoButton) return;
+    const t = translations[currentLang] || translations.en;
+    const ipText = elements.ipAddress.textContent;
+    const isInvalid = ipText === t.invalidIP || ipText === t.unavailable;
+    elements.fetchGeoButton.disabled = isInvalid;
+}
+
+function resetGeolocationState() {
+    if (elements.geoFetchContainer) {
+        elements.geoFetchContainer.classList.remove('hidden');
+    }
+    if (elements.geolocationItems) {
+        elements.geolocationItems.classList.add('hidden');
+    }
+    if (elements.fetchGeoButton) {
+        elements.fetchGeoButton.disabled = false;
+        setTextContent(elements.fetchGeoButton, '', 'showGeoInfo');
+    }
+
+    const geoElements = [
+        elements.country, elements.region, elements.city,
+        elements.isp, elements.organization, elements.asn, elements.ipTimezone
+    ];
+    geoElements.forEach(el => {
+        if (el) setInnerHTML(el, '<i class="loading"></i>');
+    });
+    if (elements.regionItem) elements.regionItem.style.display = 'none';
+    updateGeoButtonState();
+}
+
 function resetNetworkInfoState() {
     setInnerHTML(elements.ipAddress, '<i class="loading"></i>');
     setInnerHTML(elements.ipv6Address, '<i class="loading"></i>');
-    setInnerHTML(elements.country, '<i class="loading"></i>');
-    setInnerHTML(elements.region, '<i class="loading"></i>');
-    if (elements.regionItem) elements.regionItem.style.display = 'none';
-    setInnerHTML(elements.city, '<i class="loading"></i>');
-    setInnerHTML(elements.isp, '<i class="loading"></i>');
-    setInnerHTML(elements.organization, '<i class="loading"></i>');
-    setInnerHTML(elements.connectionType, '<i class="loading"></i>');
-    setInnerHTML(elements.ipTimezone, '<i class="loading"></i>');
+    resetGeolocationState();
 }
 
 const REFRESH_COOLDOWN = 2500;
@@ -660,14 +642,14 @@ function displayGeoData(geoData) {
     setInnerHTML(elements.country, countryDisplay);
     setTextContent(elements.city, city);
     setTextContent(elements.isp, isp);
-    setTextContent(elements.connectionType, asn);
+    setTextContent(elements.asn, asn);
     setTextContent(elements.ipTimezone, ipTimezone);
 }
 
 let spamClicks = [];
-const SPAM_LIMIT = 5;
+const SPAM_LIMIT = 10;
 const SPAM_WINDOW = 10000;
-const SPAM_BLOCK_TIME = 10000;
+const SPAM_BLOCK_TIME = 15000;
 
 function spamDetector() {
     const now = Date.now();
@@ -676,12 +658,14 @@ function spamDetector() {
     if (spamClicks.length > SPAM_LIMIT) {
         if (elements.refreshNetworkButton) elements.refreshNetworkButton.disabled = true;
         if (elements.searchButton) elements.searchButton.disabled = true;
+        if (elements.fetchGeoButton) elements.fetchGeoButton.disabled = true;
         setTimeout(() => {
             spamClicks = [];
             if (elements.refreshNetworkButton) elements.refreshNetworkButton.disabled = false;
             if (elements.searchButton) elements.searchButton.disabled = false;
+            updateGeoButtonState();
         }, SPAM_BLOCK_TIME);
-        alert('You are clicking too fast! 10 seconds cooldown applied.');
+        alert('You are clicking too fast! 15 seconds cooldown applied.');
         return true;
     }
     return false;
@@ -721,15 +705,33 @@ async function resolveDomainToIP(domain) {
     return null;
 }
 
-async function fetchIPInfo(query = '') {
-    if (spamDetector()) return;
-    if (elements.refreshNetworkButton.disabled) return;
-    elements.refreshNetworkButton.disabled = true;
-    if (elements.searchButton) elements.searchButton.disabled = true;
-    resetNetworkInfoState();
+let isGeoFetchInstant = false;
+
+async function fetchIPInfo(query = '', fetchGeo = false) {
+    if (spamDetector()) return false;
+    if (elements.refreshNetworkButton.disabled && !fetchGeo) return false;
+
+    if (!fetchGeo) {
+        elements.refreshNetworkButton.disabled = true;
+        if (elements.searchButton) elements.searchButton.disabled = true;
+        resetNetworkInfoState();
+    }
 
     const t = translations[currentLang] || translations.en;
     const TIMEOUT = 10000;
+
+    const finish = () => {
+        hidePreloader();
+        if (!fetchGeo) {
+            elements.ipDomainSearch.value = query;
+            elements.ipDomainSearch.placeholder = t.ipSearchPlaceholder;
+            setTimeout(() => {
+                elements.refreshNetworkButton.disabled = false;
+                if (elements.searchButton) elements.searchButton.disabled = false;
+            }, REFRESH_COOLDOWN);
+        }
+        updateGeoButtonState();
+    };
 
     const raceTimeout = (ms, msg = 'Request timeout') =>
         new Promise((_, reject) => setTimeout(() => reject(new Error(msg)), ms));
@@ -751,10 +753,11 @@ async function fetchIPInfo(query = '') {
         return result;
     };
 
-    const fetchGeo = async (ip) => {
+    const fetchGeoData = async (ip) => {
         if (!ip || ip === t.unavailable) return null;
         try {
-            const res = await fetchWithTimeout(`https://api.findip.net/${ip}/?token=${TOKEN}`);
+            const proxyUrl = 'https://corsproxy.io/?url=';
+            const res = await fetchWithTimeout(`${proxyUrl}https://api.findip.net/${ip}/?token=${TOKEN}`);
             if (!res.ok) throw new Error(`API responded with status: ${res.status}`);
             const data = await res.json();
             return data && typeof data === 'object' ? data : null;
@@ -770,7 +773,7 @@ async function fetchIPInfo(query = '') {
             setTextContent(elements.city, t.unavailable);
             setTextContent(elements.isp, t.unavailable);
             setTextContent(elements.organization, t.unavailable);
-            setTextContent(elements.connectionType, t.unavailable);
+            setTextContent(elements.asn, t.unavailable);
             setTextContent(elements.ipTimezone, t.unavailable);
             if (elements.regionItem) elements.regionItem.style.display = 'none';
             return;
@@ -783,82 +786,115 @@ async function fetchIPInfo(query = '') {
         setCopy('asn', asn);
     };
 
-    const finish = () => {
-        hidePreloader();
-        elements.ipDomainSearch.value = query;
-        elements.ipDomainSearch.placeholder = t.ipSearchPlaceholder;
-        setTimeout(() => {
-            elements.refreshNetworkButton.disabled = false;
-            if (elements.searchButton) elements.searchButton.disabled = false;
-        }, REFRESH_COOLDOWN);
-    };
-
     try {
         let processedQuery = query.trim();
         let effectiveIP = null;
 
-        if (processedQuery) {
-            let sanitizedInput = processedQuery;
-            if (!sanitizedInput.startsWith('http://') && !sanitizedInput.startsWith('https://')) {
-                sanitizedInput = 'http://' + sanitizedInput;
-            }
-            try {
-                const url = new URL(sanitizedInput);
-                processedQuery = url.hostname;
-            } catch (e) {
-                processedQuery = query.trim().split('/')[0];
-            }
-        }
-
-        if (!processedQuery) {
-            const { ipv4, ipv6 } = await fetchUserIPs();
-            setTextContent(elements.ipAddress, ipv4);
-            setTextContent(elements.ipv6Address, ipv6);
-            setCopy('ip-address', ipv4);
-            setCopy('ipv6-address', ipv6);
-            elements.ipv6Item.style.display = ipv6 === t.unavailable ? 'none' : 'flex';
-            elements.ipv4Item.style.display = 'flex';
-            effectiveIP = ipv4;
-
-        } else if (isValidIP(processedQuery)) {
-            effectiveIP = processedQuery;
-            setTextContent(elements.ipAddress, effectiveIP);
-            setTextContent(elements.ipv6Address, t.unavailable);
-            setCopy('ip-address', effectiveIP);
-            elements.ipv6Item.style.display = 'none';
-            elements.ipv4Item.style.display = 'flex';
-
+        if (fetchGeo) {
+            effectiveIP = elements.ipAddress.textContent.trim();
         } else {
-            elements.ipDomainSearch.value = '';
-            elements.ipDomainSearch.placeholder = t.resolvingDomain;
+            if (processedQuery) {
+                let sanitizedInput = processedQuery;
+                if (!sanitizedInput.startsWith('http://') && !sanitizedInput.startsWith('https://')) {
+                    sanitizedInput = 'http://' + sanitizedInput;
+                }
+                try {
+                    const url = new URL(sanitizedInput);
+                    processedQuery = url.hostname;
+                } catch (e) {
+                    processedQuery = query.trim().split('/')[0];
+                }
+            }
 
-            const ipFromDomain = await resolveDomainToIP(processedQuery);
+            if (!processedQuery) {
+                const { ipv4, ipv6 } = await fetchUserIPs();
+                setTextContent(elements.ipAddress, ipv4);
+                setTextContent(elements.ipv6Address, compressIPv6(ipv6));
+                setCopy('ip-address', ipv4);
+                setCopy('ipv6-address', compressIPv6(ipv6));
+                elements.ipv6Item.style.display = ipv6 === t.unavailable ? 'none' : 'flex';
+                elements.ipv4Item.style.display = 'flex';
+                effectiveIP = ipv4;
 
-            if (ipFromDomain) {
-                effectiveIP = ipFromDomain;
+            } else if (isValidIP(processedQuery)) {
+                effectiveIP = processedQuery;
                 setTextContent(elements.ipAddress, effectiveIP);
-                setCopy('ip-address', effectiveIP);
                 setTextContent(elements.ipv6Address, t.unavailable);
+                setCopy('ip-address', effectiveIP);
                 elements.ipv6Item.style.display = 'none';
                 elements.ipv4Item.style.display = 'flex';
+
             } else {
-                setTextContent(elements.ipAddress, '', 'invalidIP');
-                setTextContent(elements.ipv6Address, t.unavailable);
-                elements.ipv6Item.style.display = 'none';
-                showGeo(null);
-                return finish();
+                elements.ipDomainSearch.value = '';
+                elements.ipDomainSearch.placeholder = t.resolvingDomain;
+
+                const ipFromDomain = await resolveDomainToIP(processedQuery);
+
+                if (ipFromDomain) {
+                    effectiveIP = ipFromDomain;
+                    setTextContent(elements.ipAddress, effectiveIP);
+                    setCopy('ip-address', effectiveIP);
+                    setTextContent(elements.ipv6Address, t.unavailable);
+                    elements.ipv6Item.style.display = 'none';
+                    elements.ipv4Item.style.display = 'flex';
+                } else {
+                    setTextContent(elements.ipAddress, '', 'invalidIP');
+                    setTextContent(elements.ipv6Address, t.unavailable);
+                    elements.ipv6Item.style.display = 'none';
+                    showGeo(null);
+                    finish();
+                    return false;
+                }
+            }
+
+            if (isGeoFetchInstant && !fetchGeo && effectiveIP && effectiveIP !== t.unavailable && effectiveIP !== t.invalidIP) {
+                setTextContent(elements.fetchGeoButton, '', 'fetchingGeo');
+                const geo = await fetchGeoData(effectiveIP);
+                showGeo(geo);
+                if (geo) {
+                    elements.geoFetchContainer.classList.add('hidden');
+                    elements.geolocationItems.classList.remove('hidden');
+                } else {
+                    setTextContent(elements.fetchGeoButton, '', 'showGeoInfo');
+                }
             }
         }
 
-        const geo = await fetchGeo(effectiveIP);
-        showGeo(geo);
-
+        if (fetchGeo) {
+            const geo = await fetchGeoData(effectiveIP);
+            showGeo(geo);
+            return !!geo;
+        }
+        return true;
     } catch (e) {
         setTextContent(elements.ipAddress, t.unavailable);
         setTextContent(elements.ipv6Address, t.unavailable);
         showGeo(null);
+        return false;
     } finally {
         finish();
+    }
+}
+
+async function handleFetchGeo() {
+    const btn = elements.fetchGeoButton;
+    btn.disabled = true;
+    setTextContent(btn, '', 'fetchingGeo');
+
+    const success = await fetchIPInfo(elements.ipDomainSearch.value, true);
+
+    if (success) {
+        if (elements.geoFetchContainer) {
+            elements.geoFetchContainer.classList.add('hidden');
+        }
+        if (elements.geolocationItems) {
+            elements.geolocationItems.classList.remove('hidden');
+        }
+    } else {
+        btn.disabled = false;
+        setTextContent(btn, '', 'showGeoInfo');
+        const t = translations[currentLang] || translations.en;
+        alert(t.geoFetchError);
     }
 }
 
@@ -1005,7 +1041,7 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
         setLanguage('en', 'English', 'us');
     }
-
+    
     elements.languageDropdown.addEventListener('click', (e) => {
         const link = e.target.closest('button[data-lang]');
         if (link) {
@@ -1089,8 +1125,10 @@ document.addEventListener('DOMContentLoaded', function () {
             element.classList.add('english-font');
         }
     });
+
+    elements.fetchGeoButton?.addEventListener('click', handleFetchGeo);
+
     hidePreloader();
-    checkAndNotifyBlocker();
 });
 
 const handleScroll = () => { document.body.classList.toggle('scrolled', window.scrollY > 10); };
@@ -1112,6 +1150,9 @@ elements.networkCardIcon.addEventListener('dblclick', async () => {
 elements.browserCardIcon.addEventListener('dblclick', async () => {
     elements.header.classList.toggle("hidden");
     elements.footer.classList.toggle("hidden");
+    isGeoFetchInstant = !isGeoFetchInstant;
+    handleFetchGeo();
+    elements.networkCardIcon.classList.toggle('instant-geo-active', isGeoFetchInstant);
     elements.infoCards.forEach((card, index) => {
         if (index >= 2) {
             card.classList.toggle("hidden");
@@ -1120,10 +1161,16 @@ elements.browserCardIcon.addEventListener('dblclick', async () => {
 });
 
 function adjustHeaderContent() {
-    const headerH1 = document.querySelector('.header h1');
-    if (window.innerWidth < 367) { headerH1.textContent = 'Nexus'; }
-    else { headerH1.textContent = 'Nexus Hub'; }
+    const headerLogo = document.querySelector('.header .logo');
+    if (headerLogo) {
+        if (window.innerWidth < 367) {
+            headerLogo.textContent = 'Nexus';
+        } else {
+            headerLogo.textContent = 'Nexus Hub';
+        }
+    }
 }
+
 document.addEventListener('DOMContentLoaded', adjustHeaderContent);
 window.addEventListener('resize', adjustHeaderContent);
 history.scrollRestoration = 'manual';

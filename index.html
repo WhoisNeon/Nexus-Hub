@@ -70,10 +70,10 @@
                 </button>
                 <div class="language-dropdown">
                     <button type="button" data-lang="en" data-lang-name="English" data-flag-code="us"><img src="https://hatscripts.github.io/circle-flags/flags/us.svg"> English</button>
-                    <button type="button" data-lang="fa" data-lang-name="پارسی" data-flag-code="ir"><img src="assets/ir.svg">پارسی</button>
+                    <button type="button" data-lang="fa" data-lang-name="Persian" data-flag-code="ir"><img src="assets/ir.svg">Persian</button>
                     <button type="button" data-lang="de" data-lang-name="Deutsch" data-flag-code="de"><img src="https://hatscripts.github.io/circle-flags/flags/de.svg"> Deutsch</button>
                     <button type="button" data-lang="es" data-lang-name="Español" data-flag-code="es"><img src="https://hatscripts.github.io/circle-flags/flags/es.svg"> Español</button>
-                    <button type="button" data-lang="pt" data-lang-name="Português" data-flag-code="pt"><img src="https://hatscripts.github.io/circle-flags/flags/pt.svg">Português</button>
+                    <button type="button" data-lang="pt" data-lang-name="Português" data-flag-code="br"><img src="https://hatscripts.github.io/circle-flags/flags/br.svg">Português</button>
                     <button type="button" data-lang="fr" data-lang-name="Français" data-flag-code="fr"><img src="https://hatscripts.github.io/circle-flags/flags/fr.svg"> Français</button>
                     <button type="button" data-lang="ru" data-lang-name="Русский" data-flag-code="ru"><img src="https://hatscripts.github.io/circle-flags/flags/ru.svg"> Русский</button>
                     <button type="button" data-lang="ja" data-lang-name="日本語" data-flag-code="jp"><img src="https://hatscripts.github.io/circle-flags/flags/jp.svg"> 日本語</button>
@@ -94,7 +94,7 @@
                 </div>
                 <div class="ip-search-container">
                     <input type="text" id="ip-domain-search" class="ip-search-input"
-                        placeholder="" data-translate="searchPlaceholder">
+                    placeholder="" data-translate="searchPlaceholder">
                     <button id="search-button" class="search-button">
                         <i class="ph ph-magnifying-glass"></i>
                     </button>
@@ -107,33 +107,42 @@
                     <span class="info-label" data-translate="ipv6">IPv6</span>
                     <span class="info-value" id="ipv6-address"><i class="loading"></i></span>
                 </div>
-                <div class="info-item">
-                    <span class="info-label" data-translate="country">Country</span>
-                    <span class="info-value" id="country"><i class="loading"></i></span>
-                </div>
-                <div class="info-item" id="region-item" style="display: none;">
-                    <span class="info-label" data-translate="region">Region</span>
-                    <span class="info-value" id="region"><i class="loading"></i></span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label" data-translate="city">City</span>
-                    <span class="info-value" id="city"><i class="loading"></i></span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label" data-translate="isp">ISP</span>
-                    <span class="info-value" id="isp"><i class="loading"></i></span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label" data-translate="organization">Organization</span>
-                    <span class="info-value" id="organization"><i class="loading"></i></span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label" data-translate="asn">ASN</span>
-                    <span class="info-value" id="asn"><i class="loading"></i></span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label" data-translate="ipTimezone">Time Zone</span>
-                    <span class="info-value" id="ip-timezone"><i class="loading"></i></span>
+                
+                <div class="geolocation-info">
+                
+                    <div class="geo-fetch-container">
+                        <button id="fetch-geo-button">More Details</button>
+                    </div>
+                    <div class="geolocation-items hidden">
+                        <div class="info-item">
+                            <span class="info-label" data-translate="country">Country</span>
+                            <span class="info-value" id="country"><i class="loading"></i></span>
+                        </div>
+                        <div class="info-item" id="region-item" style="display: none;">
+                            <span class="info-label" data-translate="region">Region</span>
+                            <span class="info-value" id="region"><i class="loading"></i></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label" data-translate="city">City</span>
+                            <span class="info-value" id="city"><i class="loading"></i></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label" data-translate="isp">ISP</span>
+                            <span class="info-value" id="isp"><i class="loading"></i></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label" data-translate="organization">Organization</span>
+                            <span class="info-value" id="organization"><i class="loading"></i></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label" data-translate="asn">ASN</span>
+                            <span class="info-value" id="asn"><i class="loading"></i></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label" data-translate="ipTimezone">Time Zone</span>
+                            <span class="info-value" id="ip-timezone"><i class="loading"></i></span>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -288,7 +297,7 @@
 
 <script src="js/cursor.js"></script>
 <script src="js/noticer.js"></script>
-<script src="js/script.js"></script>
+<script type="module" src="js/script.js"></script>
 </body>
 
 </html>

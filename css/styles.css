@@ -3,7 +3,7 @@
     src: url("https://raw.githubusercontent.com/WhoisNeon/Persian-font-theme/main/IranSans-Regular.ttf") format("truetype");
 }
 
-html{
+html {
     min-width: 320px;
     color-scheme: dark light;
 }
@@ -234,7 +234,9 @@ body {
     margin-bottom: 1rem;
 }
 
-.header.hidden, .footer.hidden, .info-card.hidden {
+.header.hidden,
+.footer.hidden,
+.info-card.hidden {
     display: none;
 }
 
@@ -255,7 +257,7 @@ body.scrolled .header {
     font-weight: 900;
 }
 
-a{
+a {
     text-decoration: none;
 }
 
@@ -371,7 +373,8 @@ a{
     margin: 0;
     word-break: break-word;
 }
-.card-title.english-font{
+
+.card-title.english-font {
     font-family: "owners", 'Inter' !important;
 }
 
@@ -381,7 +384,7 @@ a{
     align-items: center;
     padding: 0.75rem 0;
     border-bottom: 1px solid var(--info-item-border);
-    margin: 0.5rem 0 0.5rem 0;
+    margin: 0.5rem 0 0 0;
 }
 
 .info-item:last-child {
@@ -896,4 +899,53 @@ a{
     text-align: center;
     font-size: 0.9em;
     transition: background-color 0.2s ease;
+}
+
+.geo-fetch-container {
+    margin-top: 1rem;
+}
+
+.geolocation-items,
+.geo-fetch-container {
+    transition: opacity 0.4s ease;
+    opacity: 1;
+}
+
+.geolocation-items.hidden,
+.geo-fetch-container.hidden {
+    opacity: 0;
+    margin-top: 0;
+    max-height: 0;
+    transition: none;
+}
+
+#fetch-geo-button {
+    width: 100%;
+    padding: 14px 28px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    background: var(--theme-toggle-background);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.3s ease, opacity 0.3s ease;
+}
+
+#fetch-geo-button:hover {
+    background: rgba(25, 25, 25, 0.15);
+}
+
+body.dark-mode #fetch-geo-button:hover {
+    background: rgba(230, 230, 230, 0.15);
+}
+
+#fetch-geo-button:disabled {
+    opacity: 0.5;
+}
+
+.instant-geo-active i {
+    color: #00aaff;
+    filter: drop-shadow(0 0 5px #00aaff);
+    transition: all 0.3s ease;
 }
