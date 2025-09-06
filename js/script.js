@@ -732,8 +732,7 @@ async function fetchIPInfo(query = '', fetchGeo = false) {
     const fetchGeoData = async (ip) => {
         if (!ip || ip === t.unavailable) return null;
         try {
-            const proxyUrl = 'https://cors2proxy.io/?url=';
-            const res = await fetchWithTimeout(`${proxyUrl}https://api.findip.net/${ip}/?token=${TOKEN}`);
+            const res = await fetchWithTimeout(`https://api.findip.net/${ip}/?token=${TOKEN}`);
             if (!res.ok) throw new Error(`API responded with status: ${res.status}`);
             const data = await res.json();
             return data && typeof data === 'object' ? data : null;
