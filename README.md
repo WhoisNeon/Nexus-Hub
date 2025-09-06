@@ -62,7 +62,10 @@
 4. **Switch themes or languages using the controls in the header.**
 5. **Copy any info by clicking the clipboard icon next to it.**
 
-#### ⚠️ Remember to replace your FindIP API token to the top of the `script.js` file before you using this locally! 
+- **⚠️ If you want to use this locally:**
+  - Open `js/script.js`
+  - Set isLocal to 'true'.
+  - Replace your FindIP API token. 
 
 ---
 

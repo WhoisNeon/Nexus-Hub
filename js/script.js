@@ -1,4 +1,5 @@
-const TOKEN = 'eb2978e07c2e4a5e9bcb8c40e5f68292';
+const isLocal = false;
+const FINDIP_TOKEN = 'eb2978e07c2e4a5e9bcb8c40e5f68292';
 
 import translations from './translations.js';
 
@@ -694,7 +695,7 @@ async function fetchIPInfo(query = '', fetchGeo = false) {
     }
 
     const t = translations[currentLang] || translations.en;
-    const TIMEOUT = 10000;
+    const TIMEOUT = 5000;
 
     const finish = () => {
         hidePreloader();
@@ -732,7 +733,14 @@ async function fetchIPInfo(query = '', fetchGeo = false) {
     const fetchGeoData = async (ip) => {
         if (!ip || ip === t.unavailable) return null;
         try {
-            const res = await fetchWithTimeout(`https://api.findip.net/${ip}/?token=${TOKEN}`);
+            let res; 
+            if (isLocal) {
+                const proxyUrl = 'https://corsproxy.io/?url=';
+                res = await fetchWithTimeout(`${proxyUrl}https://api.findip.net/${ip}/?token=${FINDIP_TOKEN}`);
+            } else {
+                res = await fetchWithTimeout(`https://api.findip.net/${ip}/?token=${FINDIP_TOKEN}`);
+            }
+
             if (!res.ok) throw new Error(`API responded with status: ${res.status}`);
             const data = await res.json();
             return data && typeof data === 'object' ? data : null;
