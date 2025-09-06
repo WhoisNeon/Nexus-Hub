@@ -3,11 +3,11 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge">
-  <img src="https://img.shields.io/badge/build-passing-brightgreen?style=for-the-badge">
-  <img src="https://img.shields.io/badge/version-1.0.0-blue?style=for-the-badge">
-  <img src="https://img.shields.io/badge/demo-online-blue?style=for-the-badge">
-  <img src="https://img.shields.io/badge/languages-10+-purple?style=for-the-badge">
+  <a href="https://github.com/WhoisNeon/Nexus-Hub/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge"></a>
+  <a href="#"><img src="https://img.shields.io/badge/build-passing-brightgreen?style=for-the-badge"></a>
+  <a href="#"><img src="https://img.shields.io/badge/version-1.0.0-blue?style=for-the-badge"></a>
+  <a href="#"><img src="https://img.shields.io/badge/languages-10+-purple?style=for-the-badge"></a>
+  <a href="https://nexus.usrsrc.com"><img src="https://img.shields.io/badge/demo-online-blue?style=for-the-badge"></a>
 </p>
 
 ---
