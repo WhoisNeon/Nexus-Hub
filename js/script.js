@@ -1,4 +1,4 @@
-const isLocal = false;
+const isLocal = true;
 const FINDIP_TOKEN = 'eb2978e07c2e4a5e9bcb8c40e5f68292';
 
 import translations from './translations.js';
