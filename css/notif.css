@@ -1,0 +1,143 @@
+#notif-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 3;
+}
+
+.notif {
+    background-color: var(--card-background);
+    color: var(--text-color);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(8px);
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    min-width: 18rem;
+    max-width: 21rem;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+    overflow: hidden;
+    animation: slideIn 0.5s ease-out forwards;
+    direction: ltr;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.notif-content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-grow: 1;
+}
+
+.notif-icon {
+    font-size: 26px;
+    max-height: 26px;
+    text-shadow: 0 0 26px;
+}
+
+.notif.success .notif-icon {
+    text-shadow: 0 0 26px #4CAF50;
+}
+
+.notif.info .notif-icon {
+    text-shadow: 0 0 26px #2196F3;
+}
+
+.notif.warning .notif-icon {
+    text-shadow: 0 0 26px #ff9800;
+}
+
+.notif.error .notif-icon {
+    text-shadow: 0 0 26px #f44336;
+}
+
+.notif-close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    max-height: 20px;
+    color: var(--text-color);
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.notif-close-btn:hover {
+    opacity: 1;
+}
+
+.notif-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    width: 100%;
+    background-color: var(--loading-color);
+}
+
+.notif-progress-bar {
+    height: 100%;
+    background-color: var(--text-color);
+    animation: progressBar linear forwards;
+}
+
+@keyframes progressBar {
+    from {
+        width: 100%;
+    }
+
+    to {
+        width: 0%;
+    }
+}
+
+.notif.success .notif-progress-bar {
+    background-color: #4CAF50;
+}
+
+.notif.info .notif-progress-bar {
+    background-color: #2196F3;
+}
+
+.notif.warning .notif-progress-bar {
+    background-color: #ff9800;
+}
+
+.notif.error .notif-progress-bar {
+    background-color: #f44336;
+}
+
+.notif.hide {
+    animation: slideOut 0.5s ease-in forwards;
+}
+
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+        margin-top: 0;
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+        margin-top: var(--slide-out-margin);
+    }
+}

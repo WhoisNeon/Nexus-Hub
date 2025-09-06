@@ -24,6 +24,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/bold/style.css">
     <link rel="stylesheet" href="css/cursor.css">
     <link rel="stylesheet" href="css/noticer.css">
+    <link rel="stylesheet" href="css/notif.css">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
@@ -61,7 +62,7 @@
                     </g>
                 </svg>
             </button>
-            <a href="" class="logo">Nexus Hub</a>
+            <a href="" class="logo notranslate">Nexus Hub</a>
             <div class="language-selector">
                 <button class="language-button">
                     <img src="https://hatscripts.github.io/circle-flags/flags/us.svg" id="selected-flag">
@@ -69,16 +70,16 @@
                     <i class="ph-fill ph-caret-down"></i> </button>
                 </button>
                 <div class="language-dropdown">
-                    <button type="button" data-lang="en" data-lang-name="English" data-flag-code="us"><img src="https://hatscripts.github.io/circle-flags/flags/us.svg"> English</button>
+                    <button type="button" data-lang="en" data-lang-name="English" data-flag-code="us"><img src="https://hatscripts.github.io/circle-flags/flags/us.svg">English</button>
                     <button type="button" data-lang="fa" data-lang-name="Persian" data-flag-code="ir"><img src="assets/ir.svg">Persian</button>
-                    <button type="button" data-lang="de" data-lang-name="Deutsch" data-flag-code="de"><img src="https://hatscripts.github.io/circle-flags/flags/de.svg"> Deutsch</button>
-                    <button type="button" data-lang="es" data-lang-name="Español" data-flag-code="es"><img src="https://hatscripts.github.io/circle-flags/flags/es.svg"> Español</button>
+                    <button type="button" data-lang="de" data-lang-name="Deutsch" data-flag-code="de"><img src="https://hatscripts.github.io/circle-flags/flags/de.svg">Deutsch</button>
+                    <button type="button" data-lang="es" data-lang-name="Español" data-flag-code="es"><img src="https://hatscripts.github.io/circle-flags/flags/es.svg">Español</button>
+                    <button type="button" data-lang="fr" data-lang-name="Français" data-flag-code="fr"><img src="https://hatscripts.github.io/circle-flags/flags/fr.svg">Français</button>
+                    <button type="button" data-lang="ru" data-lang-name="Русский" data-flag-code="ru"><img src="https://hatscripts.github.io/circle-flags/flags/ru.svg">Русский</button>
                     <button type="button" data-lang="pt" data-lang-name="Português" data-flag-code="br"><img src="https://hatscripts.github.io/circle-flags/flags/br.svg">Português</button>
-                    <button type="button" data-lang="fr" data-lang-name="Français" data-flag-code="fr"><img src="https://hatscripts.github.io/circle-flags/flags/fr.svg"> Français</button>
-                    <button type="button" data-lang="ru" data-lang-name="Русский" data-flag-code="ru"><img src="https://hatscripts.github.io/circle-flags/flags/ru.svg"> Русский</button>
-                    <button type="button" data-lang="ja" data-lang-name="日本語" data-flag-code="jp"><img src="https://hatscripts.github.io/circle-flags/flags/jp.svg"> 日本語</button>
-                    <button type="button" data-lang="ko" data-lang-name="한국어" data-flag-code="kr"><img src="https://hatscripts.github.io/circle-flags/flags/kr.svg"> 한국어</button>
-                    <button type="button" data-lang="zh" data-lang-name="中文" data-flag-code="cn"><img src="https://hatscripts.github.io/circle-flags/flags/cn.svg"> 中文</button>
+                    <button type="button" data-lang="ja" data-lang-name="日本語" data-flag-code="jp"><img src="https://hatscripts.github.io/circle-flags/flags/jp.svg">日本語</button>
+                    <button type="button" data-lang="ko" data-lang-name="한국어" data-flag-code="kr"><img src="https://hatscripts.github.io/circle-flags/flags/kr.svg">한국어</button>
+                    <button type="button" data-lang="zh" data-lang-name="中文" data-flag-code="cn"><img src="https://hatscripts.github.io/circle-flags/flags/cn.svg">中文</button>
                 </div>
             </div>
         </header>
@@ -291,12 +292,13 @@
         </main>
 
         <footer class="footer">
-            <p>&copy; 2025 <a href="https://github.com/WhoisNeon/Nexus-Hub" target="_blank">WhoisNeon</a>. <span data-translate="copyright">All rights reserved.</span></p>
+            <p>&copy; 2025 <a class="notranslate" href="https://github.com/WhoisNeon/Nexus-Hub" target="_blank">WhoisNeon</a>. <span data-translate="copyright">All rights reserved.</span></p>
         </footer>
     </div>
-
+    <div id="notif-container"></div>
 <script src="js/cursor.js"></script>
 <script src="js/noticer.js"></script>
+<script src="js/notif.js"></script>
 <script type="module" src="js/script.js"></script>
 </body>
 

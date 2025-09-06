@@ -77,21 +77,6 @@
         }
     };
 
-    function applyFontToElementAndChildren(element) {
-        if (!element) return;
-        const elementsToCheck = element.querySelectorAll('h1, h3, p, span, button, input, label');
-        elementsToCheck.forEach(el => {
-            const textContent = el.textContent || el.placeholder || '';
-            if (containsPersianArabic(textContent)) {
-                el.classList.add('persian-font');
-                el.classList.remove('english-font');
-            } else {
-                el.classList.add('english-font');
-                el.classList.remove('persian-font');
-            }
-        });
-    }
-    
     const checkDOMElementBlocking = async () => {
         const bannerIds = ['AdHeader', 'AdContainer', 'AD_Top', 'homead', 'ad-lead'];
         const dataContainer = document.createElement("div");
@@ -192,7 +177,6 @@
                 <button id="ok-button">${translationSet.ok}</button>
             </div>
         `;
-        applyFontToElementAndChildren(notice);
 
         noticeContainer.appendChild(notice);
         document.body.appendChild(noticeContainer);
@@ -245,6 +229,7 @@
         console.error('AdBlock detection script failed:', error);
     });
 
+    // resetAdBlockerNotice();
     window.resetAdBlockerNotice = () => {
         localStorage.removeItem('adBlockerNoticeDismissedUntil');
         localStorage.removeItem('adBlockerNoticeDismissedPermanently');

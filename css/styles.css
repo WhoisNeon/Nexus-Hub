@@ -15,11 +15,9 @@ html {
     --theme-toggle-background: rgba(25, 25, 25, 0.1);
     --card-border: rgba(180, 187, 195, 0.8);
     --text-color: #333;
-    --header-text: #333;
     --label-opacity: 0.7;
     --info-item-border: rgba(180, 180, 180, 0.5);
     --loading-color: rgba(51, 51, 51, 0.3);
-    --loading-border-top: #333;
     --shadow-color: rgba(0, 0, 0, 0.1);
     --video-filter: blur(.5rem) invert(80%);
     --header-h1-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
@@ -32,11 +30,9 @@ body.dark-mode {
     --theme-toggle-background: rgba(230, 230, 230, 0.1);
     --card-border: rgba(63, 75, 96, 0.6);
     --text-color: #e2e8f0;
-    --header-text: #edf2f7;
     --label-opacity: 0.75;
     --info-item-border: rgba(63, 75, 96, 0.4);
     --loading-color: rgba(226, 232, 240, 0.4);
-    --loading-border-top: #e2e8f0;
     --shadow-color: rgba(0, 0, 0, 0.5);
     --video-filter: blur(.75rem) invert(0%);
     --header-h1-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
@@ -56,14 +52,6 @@ body.dark-mode {
     -webkit-mask-position: center;
 }
 
-.english-font {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
-}
-
-.persian-font {
-    font-family: 'IranSans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
-}
-
 html[dir="rtl"] .info-value {
     direction: ltr;
     flex-direction: row-reverse;
@@ -73,10 +61,10 @@ html[dir="rtl"] .info-value {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'IranSans', sans-serif;
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background: var(--background);
     min-height: 100vh;
     color: var(--text-color);
@@ -177,7 +165,7 @@ body {
     width: auto;
     height: auto;
     z-index: -1;
-    background-image: url('assets/background.png');
+    background-image: url('/assets/background.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -250,10 +238,10 @@ body.scrolled .header {
 
 .header .logo {
     font-size: 3rem;
-    color: var(--header-text);
+    color: var(--text-color);
     margin: 0;
     text-shadow: var(--header-h1-shadow);
-    font-family: "owners", 'Inter' !important;
+    font-family: 'owners';
     font-weight: 900;
 }
 
@@ -343,7 +331,7 @@ a {
         background: rgba(230, 230, 230, 0.15);
     }
 
-    .language-dropdown a:hover {
+    .language-dropdown button:hover {
         background: var(--theme-toggle-background);
     }
 }
@@ -372,19 +360,15 @@ a {
     font-size: 1.5rem;
     margin: 0;
     word-break: break-word;
-}
-
-.card-title.english-font {
-    font-family: "owners", 'Inter' !important;
+    font-family: 'owners', 'Inter', -apple-system, BlinkMacSystemFont, 'IranSans', sans-serif;
 }
 
 .info-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.75rem 0;
+    padding: 1rem 0;
     border-bottom: 1px solid var(--info-item-border);
-    margin: 0.5rem 0 0 0;
 }
 
 .info-item:last-child {
@@ -428,7 +412,7 @@ a {
     height: 1.25rem;
     border: 2px solid var(--loading-color);
     border-radius: 50%;
-    border-top-color: var(--loading-border-top);
+    border-top-color: var(--text-color);
     animation: spin 1s linear infinite;
 }
 
@@ -573,7 +557,7 @@ a {
 
 .ip-search-input:focus {
     outline: none;
-    border-color: var(--header-text);
+    border-color: var(--text-color);
 }
 
 .search-button {
@@ -619,13 +603,15 @@ a {
     height: 1.75rem;
 }
 
-.language-button .fallback-icon-container {
-    margin-inline-end: 0;
+.language-dropdown img {
+    width: 1.5rem;
+    height: 1.5rem;
 }
 
 .fallback-icon-container {
-    width: 1.75rem;
-    height: 1.75rem;
+    margin-inline-end: 0;
+    width: 1.5rem;
+    height: 1.5rem;
     border-radius: 50%;
     background-color: var(--theme-toggle-background);
     display: flex;
@@ -646,7 +632,7 @@ a {
     transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
     position: absolute;
     background: var(--dropdown-background);
-    min-width: 100%;
+    min-width: max-content;
     box-shadow: 0 8px 16px var(--shadow-color);
     z-index: 10;
     border-radius: 1rem;
@@ -670,41 +656,30 @@ a {
     padding: 12px 16px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 0.75rem;
     transition: background 0.2s ease;
     border-bottom: 1px solid var(--info-item-border);
     background: none;
     border: none;
     width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
     text-align: left;
     font: inherit;
     cursor: pointer;
 }
 
-.language-dropdown button:first-child,
-.language-dropdown button:has(+ button.hidden) {
+.language-dropdown button {
+    border-radius: 0;
+}
+
+.language-dropdown .first-visible {
     border-radius: 1rem 1rem 0 0;
 }
 
-.language-dropdown button:last-child,
-.language-dropdown button:has(+ button.hidden:last-child) {
+.language-dropdown .last-visible {
     border-radius: 0 0 1rem 1rem;
 }
-
-.language-dropdown button:last-child,
-.language-dropdown button:has(+ button.hidden:last-child) {
-    border-bottom: none;
-}
-
-.language-dropdown button:hover {
-    background: var(--theme-toggle-background);
-}
-
-.language-dropdown img {
-    width: 1.5rem;
-    height: 1.5rem;
-}
-
 
 @media (max-width: 1024px) {
     .info-grid {
@@ -917,6 +892,7 @@ a {
     margin-top: 0;
     max-height: 0;
     transition: none;
+    pointer-events: none;
 }
 
 
@@ -950,3 +926,4 @@ body.dark-mode #fetch-geo-button:hover {
     filter: drop-shadow(0 0 5px #00aaff);
     transition: all 0.3s ease;
 }
+

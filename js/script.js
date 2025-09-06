@@ -22,6 +22,7 @@ const elements = {
     languageDropdown: document.querySelector('.language-dropdown'),
     selectedFlag: document.querySelector('#selected-flag'),
     selectedLangText: document.querySelector('#selected-lang-text'),
+    googleTranslateButton: document.querySelector('#google-translate-button'),
 
     // --- Network Card ---
     networkCardIcon: document.querySelector('#network-card-icon'),
@@ -136,11 +137,6 @@ function compressIPv6(address) {
     return compressed.join(':');
 }
 
-function containsPersianArabic(text) {
-    const persianArabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFBB1\uFC00-\uFC5C\uFC5E-\uFCDA\uFD01-\uFD3D\uFD40-\uFD43\uFD47-\uFD4F\uFD51-\uFD8E\uFD90-\uFD91\uFD93-\uFDC7\uFDF0-\uFDFD\uFE70-\uFE7E\uFF65-\uFFBE\uFFC2-\uFFC7\uFFCA-\uFFCF\uFFD2-\uFFD7\uFFDA-\uFFDC]/;
-    return persianArabicRegex.test(text);
-}
-
 function translatePage() {
     const lang = currentLang;
     const translationSet = translations[lang] || translations['en'];
@@ -154,23 +150,11 @@ function translatePage() {
 
     if (elements.ipDomainSearch) {
         elements.ipDomainSearch.placeholder = translationSet.ipSearchPlaceholder;
-        applyFontClass(elements.ipDomainSearch, elements.ipDomainSearch.placeholder);
     }
 
     if (elements.fetchGeoButton) {
         setTextContent(elements.fetchGeoButton, translationSet.showGeoInfo);
     }
-
-    const allTextElements = document.querySelectorAll('h1, h3, p, span, button, input');
-    allTextElements.forEach(el => {
-        applyFontClass(el, el.textContent || '');
-    });
-    const placeholderElements = document.querySelectorAll('input, textarea');
-    placeholderElements.forEach(el => {
-        if (el.placeholder) {
-            applyFontClass(el, el.placeholder);
-        }
-    });
 
     loadBrowserAndSystemInfo(true);
     updateOnlineStatusIndicator(navigator.onLine);
@@ -183,7 +167,6 @@ function translatePage() {
     if (elements.searchButton) elements.searchButton.disabled = false;
     fetchIPInfo();
 }
-
 
 function setLanguage(lang, langName, flagCode) {
     currentLang = lang;
@@ -217,17 +200,6 @@ function setLanguage(lang, langName, flagCode) {
     translatePage();
 }
 
-function applyFontClass(element, text) {
-    if (!element) return;
-    const persianArabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFBB1\uFC00-\uFC5C\uFC5E-\uFCDA\uFD01-\uFD3D\uFD40-\uFD43\uFD47-\uFD4F\uFD51-\uFD8E\uFD90-\uFD91\uFD93-\uFDC7\uFDF0-\uFDFD\uFE70-\uFE7E\uFF65-\uFFBE\uFFC2-\uFFC7\uFFCA-\uFFCF\uFFD2-\uFFD7\uFFDA-\uFFDC]/;
-    if (persianArabicRegex.test(text)) {
-        element.classList.add('persian-font');
-        element.classList.remove('english-font');
-    } else {
-        element.classList.add('english-font');
-        element.classList.remove('persian-font');
-    }
-}
 
 const setTextContent = (element, text, translationKey = null) => {
     if (element) {
@@ -240,9 +212,9 @@ const setTextContent = (element, text, translationKey = null) => {
             content = text;
             element.textContent = content;
         }
-        applyFontClass(element, content);
     }
 };
+
 const setInnerHTML = (element, html, translationKey = null) => {
     if (element) {
         let content;
@@ -255,7 +227,6 @@ const setInnerHTML = (element, html, translationKey = null) => {
             content = html;
             element.innerHTML = content;
         }
-        applyFontClass(element, element.textContent || '');
     }
 };
 
@@ -593,6 +564,13 @@ function displayGeoData(geoData) {
     const country = getTranslatedName(geoData.country?.names, currentLang) || translationSet.unknown;
     const countryIso = geoData.country?.iso_code?.toLowerCase();
 
+    if (elements.ipv6Item) {
+        const ipv6AddressElement = elements.ipv6Address;
+        if (ipv6AddressElement && ipv6AddressElement.textContent.trim() === translationSet.unavailable) {
+            elements.ipv6Item.style.display = 'none';
+        }
+    }
+
     if (countryIso && elements.country) {
         elements.country.dataset.iso = countryIso;
     }
@@ -665,7 +643,7 @@ function spamDetector() {
             if (elements.searchButton) elements.searchButton.disabled = false;
             updateGeoButtonState();
         }, SPAM_BLOCK_TIME);
-        alert('You are clicking too fast! 15 seconds cooldown applied.');
+        showNotif('You are clicking too fast!<br>15 seconds cooldown applied.', 'warning', 5);
         return true;
     }
     return false;
@@ -680,7 +658,6 @@ async function resolveDomainToIP(domain) {
         if (res.ok) {
             const data = await res.json();
             const answer = data.Answer?.find(a => a.type === 1 && a.data);
-            console.log("used Cloudflare");
             if (answer) return answer.data;
         } else {
             console.error('Cloudflare DNS error:', res.status, res.statusText);
@@ -694,7 +671,6 @@ async function resolveDomainToIP(domain) {
         if (res.ok) {
             const data = await res.json();
             const answer = data.Answer?.find(a => a.type === 1 && a.data);
-            console.log("used Google");
             if (answer) return answer.data;
         } else {
             console.error('Google DNS error:', res.status, res.statusText);
@@ -756,7 +732,7 @@ async function fetchIPInfo(query = '', fetchGeo = false) {
     const fetchGeoData = async (ip) => {
         if (!ip || ip === t.unavailable) return null;
         try {
-            const proxyUrl = 'https://corsproxy.io/?url=';
+            const proxyUrl = 'https://cors2proxy.io/?url=';
             const res = await fetchWithTimeout(`${proxyUrl}https://api.findip.net/${ip}/?token=${TOKEN}`);
             if (!res.ok) throw new Error(`API responded with status: ${res.status}`);
             const data = await res.json();
@@ -812,9 +788,10 @@ async function fetchIPInfo(query = '', fetchGeo = false) {
                 setTextContent(elements.ipv6Address, compressIPv6(ipv6));
                 setCopy('ip-address', ipv4);
                 setCopy('ipv6-address', compressIPv6(ipv6));
-                elements.ipv6Item.style.display = ipv6 === t.unavailable ? 'none' : 'flex';
                 elements.ipv4Item.style.display = 'flex';
                 effectiveIP = ipv4;
+                // Add this line to make the ipv6 item visible again when search input is empty.
+                elements.ipv6Item.style.display = 'flex';
 
             } else if (isValidIP(processedQuery)) {
                 effectiveIP = processedQuery;
@@ -894,7 +871,7 @@ async function handleFetchGeo() {
         btn.disabled = false;
         setTextContent(btn, '', 'showGeoInfo');
         const t = translations[currentLang] || translations.en;
-        alert(t.geoFetchError);
+        showNotif(t.geoFetchError, 'error', 5);
     }
 }
 
@@ -949,29 +926,26 @@ async function loadBrowserAndSystemInfo(isLanguageUpdate = false) {
         if (userAgentShort) userAgentShort.textContent = fullUserAgent;
         if (userAgentFull) userAgentFull.textContent = fullUserAgent;
 
-        if (!userAgentElement.hasAttribute('data-click-listener')) {
-            userAgentElement.addEventListener('click', (e) => {
-                if (e.target !== uaCopyButton) {
-                    if (window.getSelection().toString().length > 0) return;
-                    userAgentElement.classList.toggle('expanded');
-                }
-            });
+        userAgentElement.addEventListener('click', (e) => {
+            if (e.target.closest('.ua-copy-button')) {
+                return;
+            }
+            if (window.getSelection().toString().length > 0) return;
+            userAgentElement.classList.toggle('expanded');
+        });
 
-            uaCopyButton.addEventListener('click', async (e) => {
-                e.stopPropagation();
-                try {
-                    await navigator.clipboard.writeText(fullUserAgent);
-                    uaCopyButton.innerHTML = 'Copied<i class="ph ph-check"></i>';
-                    setTimeout(() => {
-                        uaCopyButton.innerHTML = 'Copy<i class="ph ph-clipboard"></i>';
-                    }, 1500);
-                } catch (err) {
-                    uaCopyButton.textContent = 'Failed';
-                }
-            });
-
-            userAgentElement.setAttribute('data-click-listener', 'true');
-        }
+        uaCopyButton.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            try {
+                await navigator.clipboard.writeText(fullUserAgent);
+                uaCopyButton.innerHTML = 'Copied<i class="ph ph-check"></i>';
+                setTimeout(() => {
+                    uaCopyButton.innerHTML = 'Copy<i class="ph ph-clipboard"></i>';
+                }, 1500);
+            } catch (err) {
+                uaCopyButton.textContent = 'Failed';
+            }
+        });
     }
     setTextContent(elements.cookiesEnabled, navigator.cookieEnabled ? translationSet.enabled : translationSet.disabled);
     updatePreferredThemeDisplay();
@@ -1041,7 +1015,7 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
         setLanguage('en', 'English', 'us');
     }
-    
+
     elements.languageDropdown.addEventListener('click', (e) => {
         const link = e.target.closest('button[data-lang]');
         if (link) {
@@ -1054,7 +1028,21 @@ document.addEventListener('DOMContentLoaded', function () {
     elements.languageButton.addEventListener('click', (e) => {
         e.stopPropagation();
         elements.languageSelector.classList.toggle('active');
+        updateBorders();
     });
+
+    function updateBorders() {
+        const visibleButtons = elements.languageDropdown.querySelectorAll('button:not(.hidden)');
+
+        elements.languageDropdown.querySelectorAll('button').forEach(btn => {
+            btn.classList.remove('first-visible', 'last-visible');
+        });
+
+        if (visibleButtons.length > 0) {
+            visibleButtons[0].classList.add('first-visible');
+            visibleButtons[visibleButtons.length - 1].classList.add('last-visible');
+        }
+    }
 
     window.addEventListener('click', (e) => {
         if (!elements.languageSelector.contains(e.target)) {
@@ -1114,17 +1102,6 @@ document.addEventListener('DOMContentLoaded', function () {
             updatePreferredThemeDisplay();
         });
     }
-
-    const textElements = document.querySelectorAll('.info-value');
-    const persianArabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/; // Persian Unicode range
-
-    textElements.forEach(element => {
-        if (persianArabicRegex.test(element.textContent)) {
-            element.classList.add('persian-font');
-        } else {
-            element.classList.add('english-font');
-        }
-    });
 
     elements.fetchGeoButton?.addEventListener('click', handleFetchGeo);
 
