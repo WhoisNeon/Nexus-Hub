@@ -369,12 +369,16 @@ a {
 .info-item {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: baseline;
     padding: 1rem 0;
     border-bottom: 1px solid var(--info-item-border);
 }
 
-.info-item:last-child,
+.info-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
 #ip-address-item,
 #ipv6-item {
     border-bottom: none;
