@@ -45,27 +45,58 @@
 
 ---
 
+## 📂 Project Structure
+
+```
+src/
+├── assets/       # Images, videos, favicons, and other media assets
+├── css/          # Stylesheets, organized into base, layout, and components
+│   ├── components/ # Component-specific styles (e.g., cursor, header, info-card)
+│   ├── base.css    # Base styles and resets
+│   ├── layout.css  # Layout-specific styles (e.g., grid, flex)
+│   └── main.css    # Main stylesheet, importing other styles
+└── js/           # JavaScript files, organized into modules, standalone, and utils
+    ├── modules/    # Modular JavaScript components (e.g., geolocation, language, preloader)
+    ├── standalone/ # Standalone scripts (e.g., cursor, blocker, notif, translations)
+    ├── utils/      # Utility functions (e.g., browser, copy, dom, network, system, theme)
+    └── main.js     # Main application logic and initialization
+```
+
+---
+
 ## 🔴 Live Demo
 
-
-**Click the badge below to try "Nexus Hub" in your browser!**
-
-[![Live Demo](https://img.shields.io/badge/Nexus-Live%20Demo-green?style=for-the-badge)](https://whoisneon.github.io/Nexus-Hub)
+Experience Nexus Hub live in your browser: [![Live Demo](https://img.shields.io/badge/Nexus-Live%20Demo-green?style=for-the-badge)](https://whoisneon.github.io/Nexus-Hub)
 
 ---
 
 ## 🚀 Usage
 
-1. **Open the [Live Demo](https://whoisneon.github.io/Nexus-Hub) in your browser.**
-2. **View your system, browser, and network details instantly.**
-3. **Search for any IP address or domain using the search bar.**
-4. **Switch themes or languages using the controls in the header.**
-5. **Copy any info by clicking the clipboard icon next to it.**
+1.  **Access the Live Demo:** Open the [Live Demo](https://whoisneon.github.io/Nexus-Hub) in your browser.
+2.  **Instant Information:** View your system, browser, and network details instantly.
+3.  **Search Functionality:** Use the search bar to look up any valid IP address or domain.
+4.  **Customize Experience:** Switch themes or languages using the controls in the header.
+5.  **Copy Information:** Click the clipboard icon next to any information field to copy it.
 
-- **⚠️ If you want to use this locally:**
-  - Open `js/script.js`
-  - Set isLocal to 'true'.
-  - Replace your FindIP API token. 
+### Local Setup
+
+To run Nexus Hub locally:
+
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/WhoisNeon/Nexus-Hub.git
+    cd Nexus-Hub
+    ```
+2.  **Open `index.html`:** Simply open the `index.html` file in your web browser.
+3.  **Configure for Local Use:**
+    *   Open `src/js/modules/geolocation.js`.
+    *   Set the `isLocal` variable to `true`.
+    *   Replace `YOUR_FINDIP_API_TOKEN` with your actual FindIP API token.
+        ```javascript
+        // Around line 120:
+        const isLocal = true; // Set to true for local development
+        const FINDIP_TOKEN = 'YOUR_FINDIP_API_TOKEN'; // Replace with your FindIP API token
+        ```
 
 ---
 

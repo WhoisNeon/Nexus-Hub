@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexus Hub</title>
-    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="src/assets/favicon.ico" type="image/x-icon">
 
     <meta name="description" content="Get detailed information about your system, browser, network, and more.">
     <meta name="keywords" content="system info, browser info, ip address, network details, device information">
@@ -22,10 +22,10 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/fill/style.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/bold/style.css">
-    <link rel="stylesheet" href="css/cursor.css">
-    <link rel="stylesheet" href="css/noticer.css">
-    <link rel="stylesheet" href="css/notif.css">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="src/css/components/cursor.css">
+    <link rel="stylesheet" href="src/css/components/noticer.css">
+    <link rel="stylesheet" href="src/css/components/notif.css">
+    <link rel="stylesheet" href="src/css/main.css">
 </head>
 
 <body class="dark-mode">
@@ -44,7 +44,7 @@
     </div>
 
     <video muted loop playsinline id="video-background">
-        <source data-src="assets/background.mp4" type="video/mp4">
+        <source data-src="src/assets/background.mp4" type="video/mp4">
     </video>
 
     <div class="container" id="main-container">
@@ -71,7 +71,7 @@
                 </button>
                 <div class="language-dropdown">
                     <button type="button" data-lang="en" data-lang-name="English" data-flag-code="us"><img src="https://hatscripts.github.io/circle-flags/flags/us.svg">English</button>
-                    <button type="button" data-lang="fa" data-lang-name="Persian" data-flag-code="ir"><img src="assets/ir.svg">Persian</button>
+                    <button type="button" data-lang="fa" data-lang-name="Persian" data-flag-code="ir"><img src="src/assets/ir.svg">Persian</button>
                     <button type="button" data-lang="de" data-lang-name="Deutsch" data-flag-code="de"><img src="https://hatscripts.github.io/circle-flags/flags/de.svg">Deutsch</button>
                     <button type="button" data-lang="es" data-lang-name="Español" data-flag-code="es"><img src="https://hatscripts.github.io/circle-flags/flags/es.svg">Español</button>
                     <button type="button" data-lang="fr" data-lang-name="Français" data-flag-code="fr"><img src="https://hatscripts.github.io/circle-flags/flags/fr.svg">Français</button>
@@ -296,10 +296,21 @@
         </footer>
     </div>
     <div id="notif-container"></div>
-<script src="js/cursor.js"></script>
-<script src="js/noticer.js"></script>
-<script src="js/notif.js"></script>
-<script type="module" src="js/script.js"></script>
+<script type="module" src="src/js/standalone/cursor.js"></script>
+<script type="module" src="src/js/standalone/blocker.js"></script>
+<script type="module" src="src/js/standalone/notif.js"></script>
+<script type="module" src="src/js/utils/dom.js"></script>
+<script type="module" src="src/js/utils/copy.js"></script>
+<script type="module" src="src/js/utils/theme.js"></script>
+<script type="module" src="src/js/utils/network.js"></script>
+<script type="module" src="src/js/utils/system.js"></script>
+<script type="module" src="src/js/utils/browser.js"></script>
+<script type="module" src="src/js/modules/language.js"></script>
+<script type="module" src="src/js/modules/preloader.js"></script>
+<script type="module" src="src/js/modules/geolocation.js"></script>
+<script type="module" src="src/js/standalone/translations.js"></script>
+<script type="module" src="src/js/modules/info-loader.js"></script>
+<script type="module" src="src/js/main.js"></script>
 </body>
 
 </html>

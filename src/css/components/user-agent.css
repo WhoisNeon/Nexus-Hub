@@ -1,0 +1,82 @@
+#user-agent {
+    cursor: pointer;
+    align-items: flex-end;
+    max-width: 202px;
+}
+
+.user-agent-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+#user-agent.expanded {
+    max-width: 210px;
+}
+
+#user-agent.expanded .user-agent-wrapper {
+    display: none;
+}
+
+.user-agent-short {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 10rem;
+}
+
+#user-agent .ph-caret-down {
+    transition: transform 0.3s ease;
+}
+
+#user-agent.expanded .user-agent-wrapper .ph-caret-down {
+    transform: rotate(180deg);
+}
+
+.user-agent-expanded-content {
+    display: none;
+    flex-direction: column;
+    width: 75%;
+    background: var(--theme-toggle-background);
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    flex-grow: 1;
+}
+
+#user-agent.expanded .user-agent-expanded-content {
+    display: flex;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.user-agent-full {
+    word-break: break-all;
+    text-align: left;
+}
+
+.ua-copy-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 100%;
+    margin-top: 10px;
+    padding: 8px;
+    background-color: var(--theme-toggle-background);
+    border: 1px solid var(--card-border);
+    color: var(--text-color);
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease;
+}
+
+@media (pointer: fine) {
+    .ua-copy-button:hover {
+        background: rgba(25, 25, 25, 0.15);
+    }
+
+    body.dark-mode .ua-copy-button:hover {
+        background: rgba(230, 230, 230, 0.15);
+    }
+}

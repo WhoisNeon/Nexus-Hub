@@ -1,0 +1,25 @@
+@import "base.css";
+@import "layout.css";
+@import "components/preloader.css";
+@import "components/header.css";
+@import "components/info-card.css";
+@import "components/language-selector.css";
+@import "components/user-agent.css";
+
+::-webkit-scrollbar {
+    width: 0.65rem;
+}
+
+::-webkit-scrollbar-track {
+    background: #9f9f9f;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(45, 45, 45, 1);
+    border-radius: 0.5rem;
+    border: 1px solid #9f9f9f;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(45, 45, 45, 0.9);
+}

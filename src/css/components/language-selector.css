@@ -1,0 +1,110 @@
+.language-selector {
+    position: relative;
+}
+
+.language-button {
+    background: var(--theme-toggle-background);
+    color: var(--text-color);
+    padding: .5rem 1rem;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background 0.3s ease;
+    border-top: 1px solid var(--card-border);
+    border-bottom: 1px solid var(--card-border);
+    box-sizing: border-box;
+}
+
+.language-button img {
+    width: 1.75rem;
+    height: 1.75rem;
+}
+
+.language-dropdown img {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.fallback-icon-container {
+    margin-inline-end: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background-color: var(--theme-toggle-background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--card-border);
+    margin-inline-end: -4px;
+}
+
+.fallback-icon {
+    font-size: 1.25rem;
+}
+
+.language-dropdown {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+    position: absolute;
+    background: var(--dropdown-background);
+    min-width: max-content;
+    box-shadow: 0 8px 16px var(--shadow-color);
+    z-index: 10;
+    border-radius: 1rem;
+    margin-top: 0.5rem;
+    border-bottom: 1px solid var(--card-border);
+    border-top: 2px solid var(--card-border);
+}
+
+.language-selector.active .language-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.language-dropdown button.hidden {
+    display: none;
+}
+
+.language-dropdown button {
+    color: var(--text-color);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: background 0.2s ease;
+    border: none;
+    border-bottom: 1px solid var(--info-item-border);
+    background: none;
+    width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+}
+
+.language-dropdown button {
+    border-radius: 0;
+}
+
+.language-dropdown .first-visible {
+    border-radius: 1rem 1rem 0 0;
+}
+
+.language-dropdown .last-visible {
+    border-radius: 0 0 1rem 1rem;
+    border-bottom: none;
+}
+
+@media (pointer: fine) {
+    .language-dropdown button:hover {
+        background: var(--theme-toggle-background);
+    }
+}

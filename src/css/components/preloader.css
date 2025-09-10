@@ -1,0 +1,80 @@
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.preloader-door-top,
+.preloader-door-bottom {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 51%;
+    background: var(--background);
+    transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+    z-index: 4;
+}
+
+.preloader-door-top {
+    top: 0;
+}
+
+.preloader-door-bottom {
+    bottom: 0;
+}
+
+.preloader-spinner {
+    position: absolute;
+    z-index: 5;
+    transition: opacity 0.25s ease;
+    height: fit-content;
+    min-width: 3rem;
+    width: fit-content;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 0.25ch;
+    position: relative;
+    color: var(--text-color);
+}
+
+.invertbox {
+    position: absolute;
+    z-index: 6;
+    height: 100%;
+    aspect-ratio: 1/1;
+    left: 0;
+    top: 0;
+    border-radius: 20%;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: invert(100%);
+    animation: move 2s ease-in-out infinite;
+}
+
+@keyframes move {
+    50% {
+        left: calc(100% - 2.7rem);
+    }
+}
+
+.preloader.hidden .preloader-door-top {
+    transform: translateY(-100%);
+}
+
+.preloader.hidden .preloader-door-bottom {
+    transform: translateY(100%);
+}
+
+.preloader.hidden .preloader-spinner {
+    opacity: 0;
+}
+
+.preloader.finished {
+    display: none;
+}

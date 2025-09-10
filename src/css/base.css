@@ -1,0 +1,76 @@
+@font-face {
+    font-family: "IranSans";
+    src: url("https://raw.githubusercontent.com/WhoisNeon/Persian-font-theme/main/IranSans-Regular.ttf") format("truetype");
+}
+
+html {
+    min-width: 320px;
+    color-scheme: dark light;
+}
+
+:root {
+    --background: rgba(220, 220, 220);
+    --card-background: rgba(255, 255, 255, 0.5);
+    --dropdown-background: rgba(255, 255, 255, 0.95);
+    --theme-toggle-background: rgba(25, 25, 25, 0.1);
+    --card-border: rgba(180, 187, 195, 0.8);
+    --text-color: #333;
+    --info-item-border: rgba(180, 180, 180, 0.5);
+    --loading-color: rgba(51, 51, 51, 0.3);
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --video-filter: blur(0.5rem) invert(90%);
+    --header-h1-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode {
+    --background: rgba(20, 20, 20);
+    --card-background: rgba(25, 25, 25, 0.5);
+    --dropdown-background: rgba(25, 25, 25, 0.95);
+    --theme-toggle-background: rgba(230, 230, 230, 0.1);
+    --card-border: rgba(63, 75, 96, 0.6);
+    --text-color: #e2e8f0;
+    --info-item-border: rgba(63, 75, 96, 0.4);
+    --loading-color: rgba(226, 232, 240, 0.4);
+    --shadow-color: rgba(0, 0, 0, 0.5);
+    --video-filter: blur(0.5rem) invert(0%);
+    --header-h1-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+}
+
+.browser-logo {
+    width: 1.75rem;
+    height: 1.75rem;
+    background-color: var(--text-color);
+    mask-image: var(--svg-url);
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-image: var(--svg-url);
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+}
+
+html[dir="rtl"] .info-value {
+    direction: ltr;
+    flex-direction: row-reverse;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'IranSans', sans-serif;
+}
+
+body {
+    background: var(--background);
+    min-height: 100vh;
+    color: var(--text-color);
+    overflow-x: hidden;
+    transition: color 0.5s ease, background 0.5s ease;
+    position: relative;
+}
+
+a {
+    text-decoration: none;
+}
