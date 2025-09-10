@@ -733,7 +733,7 @@ async function fetchIPInfo(query = '', fetchGeo = false) {
     const fetchGeoData = async (ip) => {
         if (!ip || ip === t.unavailable) return null;
         try {
-            let res; 
+            let res;
             if (isLocal) {
                 const proxyUrl = 'https://corsproxy.io/?url=';
                 res = await fetchWithTimeout(`${proxyUrl}https://api.findip.net/${ip}/?token=${FINDIP_TOKEN}`);
@@ -1115,7 +1115,7 @@ document.addEventListener('DOMContentLoaded', function () {
     hidePreloader();
 });
 
-const handleScroll = () => { document.body.classList.toggle('scrolled', window.scrollY > 10); };
+const handleScroll = () => { document.body.classList.toggle('scrolled', window.scrollY > 25); };
 window.addEventListener('scroll', handleScroll);
 window.addEventListener('online', () => updateOnlineStatusIndicator(true));
 window.addEventListener('offline', () => updateOnlineStatusIndicator(false));
@@ -1136,7 +1136,7 @@ elements.browserCardIcon.addEventListener('dblclick', async () => {
     elements.footer.classList.toggle("hidden");
     isGeoFetchInstant = !isGeoFetchInstant;
     handleFetchGeo();
-    elements.networkCardIcon.classList.toggle('instant-geo-active', isGeoFetchInstant);
+    showNotif('Instant Geo fetch ' + (isGeoFetchInstant ? 'enabled.' : 'disabled.'), 'success', 5);
     elements.infoCards.forEach((card, index) => {
         if (index >= 2) {
             card.classList.toggle("hidden");
