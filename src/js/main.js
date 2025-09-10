@@ -133,6 +133,11 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
             setLanguage(link.dataset.lang, link.dataset.langName, link.dataset.flagCode, elements);
             elements.languageSelector.classList.remove('active');
+            loadBrowserAndSystemInfo(elements);
+            updateOnlineStatusIndicator(navigator.onLine, elements.onlineStatus);
+            const translationSet = window.translations[link.dataset.lang] || window.translations['en'];
+            updatePreferredThemeDisplay(elements.preferredTheme, translationSet);
+            fetchIPInfo('', false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
         }
     });
 
@@ -210,7 +215,8 @@ document.addEventListener('DOMContentLoaded', function () {
     if (window.matchMedia) {
         prefersDarkMediaQuery.addEventListener('change', (event) => {
             if (localStorage.getItem('userThemePreference') === null) applyTheme(event.matches, elements.body, elements.themeToggle);
-            updatePreferredThemeDisplay(elements.preferredTheme);
+            const translationSet = window.translations[currentLang] || window.translations['en'];
+            updatePreferredThemeDisplay(elements.preferredTheme, translationSet);
         });
     }
 

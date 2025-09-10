@@ -53,6 +53,7 @@ export function translatePage(elements) {
         setTextContent(elements.fetchGeoButton, translationSet.showGeoInfo);
     }
 
+
     if (elements.ipDomainSearch) {
         elements.ipDomainSearch.value = '';
     }

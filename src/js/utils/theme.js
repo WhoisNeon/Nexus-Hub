@@ -12,12 +12,12 @@ export function toggleTheme(bodyElement, themeToggleElement) {
     localStorage.setItem('userThemePreference', newIsDarkMode ? 'dark' : 'light');
 }
 
-export function getPreferredThemeString() {
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'darkMode';
-    if (window.matchMedia('(prefers-color-scheme: light)').matches) return 'lightMode';
-    return 'systemPreference';
+export function getPreferredThemeString(translationSet) {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) return translationSet.darkMode;
+    if (window.matchMedia('(prefers-color-scheme: light)').matches) return translationSet.lightMode;
+    return translationSet.notSpecified;
 }
 
-export function updatePreferredThemeDisplay(preferredThemeElement) {
-    setTextContent(preferredThemeElement, '', getPreferredThemeString());
+export function updatePreferredThemeDisplay(preferredThemeElement, translationSet) {
+    setTextContent(preferredThemeElement, getPreferredThemeString(translationSet));
 }

@@ -94,7 +94,8 @@ export function resetGeolocationState(elements) {
     }
     if (elements.fetchGeoButton) {
         elements.fetchGeoButton.disabled = false;
-        setTextContent(elements.fetchGeoButton, '', 'showGeoInfo');
+        const translationSet = window.translations[currentLang] || window.translations['en'];
+        setTextContent(elements.fetchGeoButton, translationSet.showGeoInfo);
     }
 
     const geoElements = [
@@ -320,7 +321,8 @@ export async function fetchIPInfo(query = '', fetchGeo = false, elements, showNo
 export async function handleFetchGeo(elements, fetchIPInfo, showNotif) {
     const btn = elements.fetchGeoButton;
     btn.disabled = true;
-    setTextContent(btn, '', 'fetchingGeo');
+    const translationSet = window.translations[currentLang] || window.translations['en'];
+    setTextContent(btn, translationSet.fetchingGeo);
 
     const success = await fetchIPInfo(elements.ipDomainSearch.value, true, elements, showNotif);
 
@@ -333,7 +335,7 @@ export async function handleFetchGeo(elements, fetchIPInfo, showNotif) {
         }
     } else {
         btn.disabled = false;
-        setTextContent(btn, '', 'showGeoInfo');
+        setTextContent(btn, translationSet.showGeoInfo);
         const t = window.translations[currentLang] || window.translations.en;
         showNotif(t.geoFetchError, 'error', 5);
     }

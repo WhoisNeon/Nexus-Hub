@@ -66,7 +66,7 @@ export async function loadBrowserAndSystemInfo(elements, isLanguageUpdate = fals
         });
     }
     setTextContent(elements.cookiesEnabled, navigator.cookieEnabled ? translationSet.enabled : translationSet.disabled);
-    updatePreferredThemeDisplay(elements.preferredTheme);
+    updatePreferredThemeDisplay(elements.preferredTheme, translationSet);
     setTextContent(elements.os, os);
     setTextContent(elements.deviceType, deviceType);
     if (elements.osIcon) {
@@ -88,8 +88,8 @@ export async function loadBrowserAndSystemInfo(elements, isLanguageUpdate = fals
     }
     setTextContent(elements.pixelRatio, window.devicePixelRatio || '1');
     setInnerHTML(elements.httpsStatus, location.protocol === 'https:' ?
-        '<span class="security-badge secure">STATUS_TEXT</span>' :
-        '<span class="security-badge insecure">STATUS_TEXT</span>', location.protocol === 'https:' ? 'secure' : 'insecure');
+        `<span class="security-badge secure">${translationSet.secure}</span>` :
+        `<span class="security-badge insecure">${translationSet.insecure}</span>`);
     setTextContent(elements.dntStatus, navigator.doNotTrack === '1' ? translationSet.enabled : (navigator.doNotTrack === '0' ? translationSet.disabled : translationSet.notSpecified));
     setTextContent(elements.webrtcStatus, window.RTCPeerConnection ? translationSet.supported : translationSet.notSupported);
     setTextContent(elements.localStorage, typeof (Storage) !== 'undefined' && localStorage ? translationSet.available : translationSet.notAvailable);
