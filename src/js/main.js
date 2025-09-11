@@ -111,7 +111,7 @@ function lazyLoadVideo() {
 function adjustHeaderContent() {
     const headerLogo = document.querySelector('.header .logo');
     if (headerLogo) {
-        if (window.innerWidth < 367) {
+        if (window.innerWidth < 386) {
             headerLogo.textContent = 'Nexus';
         } else {
             headerLogo.textContent = 'Nexus Hub';
