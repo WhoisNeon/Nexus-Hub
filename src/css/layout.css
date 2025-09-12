@@ -124,111 +124,111 @@ body.scrolled .header {
 
 @media (max-width: 1024px) {
     .info-grid {
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)) !important;
-        padding: 1.5rem 0 !important;
-        gap: 1.5rem !important;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        padding: 1.5rem 0;
+        gap: 1.5rem;
     }
 
     .card-title {
-        font-size: 1.4rem !important;
+        font-size: 1.4rem;
     }
 }
 
 @media (max-width: 768px) {
     .header {
-        padding: 1rem !important;
-        gap: 1rem !important;
+        padding: 1rem;
+        gap: 1rem;
     }
 
     .header .logo {
-        font-size: 2.2rem !important;
-        white-space: normal !important;
-        text-align: center !important;
+        font-size: 2.2rem;
+        white-space: normal;
+        text-align: center;
     }
 
     .theme-toggle {
-        font-size: 1.5rem !important;
+        font-size: 1.5rem;
     }
 
     .language-button img {
-        width: 1.5rem !important;
-        height: 1.5rem !important;
+        width: 1.5rem;
+        height: 1.5rem;
     }
 
     .language-button {
-        padding: .5rem .75rem !important;
+        padding: .5rem .75rem;
     }
 
     .info-grid {
-        grid-template-columns: repeat(auto-fit, minmax(325px, 1fr)) !important;
-        gap: 1.25rem !important;
+        grid-template-columns: repeat(auto-fit, minmax(325px, 1fr));
+        gap: 1.25rem;
     }
 
     .info-card {
-        padding: 1.5rem !important;
+        padding: 1.5rem;
     }
 
     .card-title {
-        font-size: 1.3rem !important;
-        max-width: calc(100% - 60px) !important;
+        font-size: 1.3rem;
+        max-width: calc(100% - 60px);
     }
 
     .card-icon {
-        width: 2.5rem !important;
-        height: 2.5rem !important;
+        width: 2.5rem;
+        height: 2.5rem;
     }
 
     .footer {
-        padding: 1.5rem !important;
+        padding: 1.5rem;
     }
 }
 
 @media (max-width: 480px) {
     .card-title {
-        font-size: 1.25rem !important;
+        font-size: 1.25rem;
     }
 
     .info-card {
-        padding: 1rem !important;
+        padding: 1rem;
     }
 
     .language-dropdown {
-        right: 0 !important;
+        right: 0;
     }
 
     .header {
-        justify-content: space-around !important;
+        justify-content: space-around;
     }
 
     #selected-lang-text,
     .language-button .ph-caret-down {
-        display: none !important;
+        display: none;
     }
 
     .language-button img {
-        width: 1.5rem !important;
-        height: 1.5rem !important;
+        width: 1.5rem;
+        height: 1.5rem;
     }
 
     .language-button {
-        padding: .5rem !important;
-        border: none !important;
+        padding: .5rem;
+        border: none;
     }
 }
 
 @media (max-width: 375px) {
     .info-grid {
-        gap: 1rem !important;
-        grid-template-columns: 1fr !important;
+        gap: 1rem;
+        grid-template-columns: 1fr;
     }
 }
 
 @media (max-width: 320px) {
     .footer {
-        font-size: 0.9rem !important;
+        font-size: 0.9rem;
     }
 
     #user-agent {
-        flex-basis: 60% !important;
+        flex-basis: 60%;
     }
 }
