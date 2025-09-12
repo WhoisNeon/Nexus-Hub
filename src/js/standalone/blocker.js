@@ -217,7 +217,7 @@
     detectAdBlock().then(isBlocked => {
         console.log(`AdBlock detection status: ${isBlocked ? 'DETECTED' : 'NOT DETECTED'}.`);
 
-        if (isBlocked) {
+        if (true) {
             const show = () => setTimeout(showBlockerNotice, 1000);
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', show);

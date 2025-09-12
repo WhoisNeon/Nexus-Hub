@@ -96,16 +96,30 @@
 
 .notice-checkbox-wrapper label {
     color: var(--text-color);
-    opacity: 0.5;
+    opacity: 0.75;
     font-size: 0.9rem;
     cursor: pointer;
     user-select: none;
+}
+
+.dark-mode .notice-checkbox-wrapper label {
+    opacity: 0.5;
 }
 
 .notice-checkbox-wrapper input[type="checkbox"] {
     cursor: pointer;
     width: 16px;
     height: 16px;
+    accent-color: var(--text-color);
+    filter: invert(75%);
+}
+
+.dark-mode .notice-checkbox-wrapper input[type="checkbox"] {
+    filter: invert(0%);
+}
+
+.notice-checkbox-wrapper input[type="checkbox"]:checked {
+    filter: invert(0%);
 }
 
 .notice-footer button {

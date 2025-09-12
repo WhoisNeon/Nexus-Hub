@@ -196,7 +196,12 @@ document.addEventListener('DOMContentLoaded', function () {
     else if (userThemePreference === 'light') applyTheme(false, elements.body, elements.themeToggle);
     else applyTheme(prefersDarkMediaQuery.matches, elements.body, elements.themeToggle);
 
-    elements.themeToggle.addEventListener('click', () => toggleTheme(elements.body, elements.themeToggle));
+    elements.themeToggle.addEventListener('click', () => {
+        const audio = new Audio('src/assets/switch.mp3');
+        audio.volume = 0.1;
+        audio.play().catch(error => console.log('Audio play failed:', error));
+        toggleTheme(elements.body, elements.themeToggle);
+    });
     elements.refreshNetworkButton?.addEventListener('click', () => {
         if (!spamDetector(elements, showNotif)) fetchIPInfo(elements.ipDomainSearch.value, false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
     });
