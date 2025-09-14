@@ -59,6 +59,8 @@ const elements = {
     browserEngine: document.querySelector('#browser-engine'),
     userAgent: document.querySelector('#user-agent'),
     cookiesEnabled: document.querySelector('#cookies-enabled'),
+    browserLanguage: document.querySelector('#browser-language'),
+    adblockStatus: document.querySelector('#adblock-status'),
 
     // --- System Card ---
     osIcon: document.querySelector('#os-icon'),
@@ -92,7 +94,7 @@ const elements = {
     onlineStatus: document.querySelector('#online-status'),
 };
 
-import { showNotif } from './standalone/notif.js';
+import { showNotif, clearNotifications } from './standalone/notif.js';
 
 function lazyLoadVideo() {
     const videoBackground = elements.videoBackground;
@@ -131,6 +133,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const link = e.target.closest('button[data-lang]');
         if (link) {
             e.preventDefault();
+            clearNotifications();
             setLanguage(link.dataset.lang, link.dataset.langName, link.dataset.flagCode, elements);
             elements.languageSelector.classList.remove('active');
             loadBrowserAndSystemInfo(elements);

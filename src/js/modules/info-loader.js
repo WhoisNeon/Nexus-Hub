@@ -1,5 +1,5 @@
 import { setTextContent, setInnerHTML } from '../utils/dom.js';
-import { getBrowserInfo, updateBrowserIcon } from '../utils/browser.js';
+import { getBrowserInfo, updateBrowserIcon, getBrowserLanguage, adblockerDetector} from '../utils/browser.js';
 import { getOSInfo, getGPUInfo } from '../utils/system.js';
 import { getPreferredThemeString, updatePreferredThemeDisplay } from '../utils/theme.js';
 import { currentLang } from './language.js';
@@ -26,45 +26,56 @@ export async function loadBrowserAndSystemInfo(elements, isLanguageUpdate = fals
     const userAgentElement = elements.userAgent;
     if (userAgentElement) {
         const fullUserAgent = navigator.userAgent;
+        let userAgentShort = userAgentElement.querySelector('.user-agent-short');
+        let userAgentFull = userAgentElement.querySelector('.user-agent-full');
+        let uaCopyButton = userAgentElement.querySelector('.ua-copy-button');
 
-        userAgentElement.innerHTML = `
-        <div class="user-agent-wrapper">
-            <span class="user-agent-short"></span>
-            <i class="ph-fill ph-caret-down"></i>
-        </div>
-        <div class="user-agent-expanded-content">
-            <span class="user-agent-full"></span>
-            <button class="ua-copy-button">Copy<i class="ph ph-clipboard"></i></button>
-        </div>`;
+        if (!userAgentShort) { // If the structure doesn't exist, create it
+            userAgentElement.innerHTML = `
+            <div class="user-agent-wrapper">
+                <span class="user-agent-short"></span>
+                <i class="ph-fill ph-caret-down"></i>
+            </div>
+            <div class="user-agent-expanded-content">
+                <span class="user-agent-full"></span>
+                <button class="ua-copy-button">Copy<i class="ph ph-clipboard"></i></button>
+            </div>`;
 
-        const userAgentShort = userAgentElement.querySelector('.user-agent-short');
-        const userAgentFull = userAgentElement.querySelector('.user-agent-full');
-        const uaCopyButton = userAgentElement.querySelector('.ua-copy-button');
+            userAgentShort = userAgentElement.querySelector('.user-agent-short');
+            userAgentFull = userAgentElement.querySelector('.user-agent-full');
+            uaCopyButton = userAgentElement.querySelector('.ua-copy-button');
+
+            userAgentElement.addEventListener('click', (e) => {
+                if (e.target.closest('.ua-copy-button')) {
+                    return;
+                }
+                if (window.getSelection().toString().length > 0) return;
+                userAgentElement.classList.toggle('expanded');
+            });
+
+            uaCopyButton.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                try {
+                    await navigator.clipboard.writeText(fullUserAgent);
+                    uaCopyButton.innerHTML = 'Copied<i class="ph ph-check"></i>';
+                    setTimeout(() => {
+                        uaCopyButton.innerHTML = 'Copy<i class="ph ph-clipboard"></i>';
+                    }, 1500);
+                } catch (err) {
+                    uaCopyButton.textContent = 'Failed';
+                }
+            });
+        }
 
         if (userAgentShort) userAgentShort.textContent = fullUserAgent;
         if (userAgentFull) userAgentFull.textContent = fullUserAgent;
-
-        userAgentElement.addEventListener('click', (e) => {
-            if (e.target.closest('.ua-copy-button')) {
-                return;
-            }
-            if (window.getSelection().toString().length > 0) return;
-            userAgentElement.classList.toggle('expanded');
-        });
-
-        uaCopyButton.addEventListener('click', async (e) => {
-            e.stopPropagation();
-            try {
-                await navigator.clipboard.writeText(fullUserAgent);
-                uaCopyButton.innerHTML = 'Copied<i class="ph ph-check"></i>';
-                setTimeout(() => {
-                    uaCopyButton.innerHTML = 'Copy<i class="ph ph-clipboard"></i>';
-                }, 1500);
-            } catch (err) {
-                uaCopyButton.textContent = 'Failed';
-            }
-        });
     }
+    setTextContent(elements.browserLanguage, getBrowserLanguage());
+    adblockerDetector(translationSet).then(adblockStatus => {
+        setTextContent(elements.adblockStatus, adblockStatus);
+    }).catch(() => {
+        setTextContent(elements.adblockStatus, translationSet.unavailable);
+    });
     setTextContent(elements.cookiesEnabled, navigator.cookieEnabled ? translationSet.enabled : translationSet.disabled);
     updatePreferredThemeDisplay(elements.preferredTheme, translationSet);
     setTextContent(elements.os, os);

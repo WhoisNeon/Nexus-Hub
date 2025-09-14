@@ -86,8 +86,7 @@ body.scrolled .header {
 }
 
 .ip-search-input {
-    line-height: 1.125rem;
-    flex-grow: 1;
+    width: calc(100% - 54px);
     padding: 0.75rem;
     border-radius: 0.5rem;
     border: 1px solid var(--card-border);

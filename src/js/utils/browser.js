@@ -123,3 +123,19 @@ export function updateBrowserIcon(browserInfo, browserCardIconElement) {
         setInnerHTML(browserCardIconElement, `<i class="ph-fill ph-browser"></i>`);
     }
 }
+
+export function getBrowserLanguage() {
+    return navigator.language || navigator.userLanguage || 'Unknown';
+}
+
+export function adblockerDetector(translationSet) {
+    if (window.detectAdBlock && typeof window.detectAdBlock === 'function') {
+        return window.detectAdBlock().then(isBlocked => {
+            return isBlocked ? translationSet.enabled : translationSet.notDetected;
+        }).catch(() => {
+            return translationSet.unavailable;
+        });
+    } else {
+        return Promise.resolve(translationSet.unavailable);
+    }
+}

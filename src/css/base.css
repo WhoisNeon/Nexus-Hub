@@ -55,6 +55,10 @@ html[dir="rtl"] .info-value {
     flex-direction: row-reverse;
 }
 
+html[dir="rtl"] .notif {
+    direction: rtl;
+}
+
 * {
     margin: 0;
     padding: 0;

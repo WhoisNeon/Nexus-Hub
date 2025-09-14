@@ -214,10 +214,12 @@
         document.addEventListener('keydown', handleEscape);
     }
 
+    window.detectAdBlock = detectAdBlock;
+
     detectAdBlock().then(isBlocked => {
         console.log(`AdBlock detection status: ${isBlocked ? 'DETECTED' : 'NOT DETECTED'}.`);
 
-        if (true) {
+        if (isBlocked) {
             const show = () => setTimeout(showBlockerNotice, 1000);
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', show);

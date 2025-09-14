@@ -1,11 +1,11 @@
 export default {
-    // English (United States)
+    // English (United States) - Source Language
     'en': {
         // --- Network & Geo ---
         resolvingDomain: 'Resolving Hostname...',
         showGeoInfo: 'Show More Details',
         fetchingGeo: 'Fetching...',
-        geoFetchError: 'Error while receiving data. Please try again later.',
+        geoFetchError: 'Error while receiving data.',
         loading: 'Loading...',
         ipSearchPlaceholder: 'Hostname or IP Address',
         networkDetails: 'Network Details',
@@ -26,6 +26,8 @@ export default {
         engine: 'Engine',
         userAgent: 'User Agent',
         cookiesEnabled: 'Cookies',
+        language: 'Language',
+        adblockStatus: 'Adblocker',
 
         // --- System ---
         systemInfo: 'System Information',
@@ -77,7 +79,7 @@ export default {
         darkMode: 'Dark Mode',
         lightMode: 'Light Mode',
         systemPreference: 'System Preference',
-        notDetected: 'Not detected / Unknown',
+        notDetected: 'Not Detected',
         unknown: 'Unknown',
         unavailable: 'Unavailable',
         invalidIP: 'Invalid IP / Domain'
@@ -88,7 +90,7 @@ export default {
         resolvingDomain: 'در حال دریافت آی‌پی دامنه...',
         showGeoInfo: 'نمایش جزئیات بیشتر',
         fetchingGeo: 'در حال دریافت...',
-        geoFetchError: 'خطا در دریافت اطلاعات. لطفاً بعداً دوباره تلاش کنید.',
+        geoFetchError: 'خطا در دریافت اطلاعات.',
         loading: 'در حال بارگذاری...',
         ipSearchPlaceholder: 'دامنه یا آدرس آی‌پی',
         networkDetails: 'جزئیات شبکه',
@@ -97,9 +99,9 @@ export default {
         country: 'کشور',
         region: 'منطقه',
         city: 'شهر',
-        isp: 'ارائه دهنده',
+        isp: 'ارائه دهنده اینترنت',
         organization: 'سازمان',
-        asn: 'شماره سیستم',
+        asn: 'ASN',
         ipTimezone: 'منطقه زمانی',
 
         // --- Browser ---
@@ -107,8 +109,10 @@ export default {
         browser: 'مرورگر',
         version: 'نسخه',
         engine: 'موتور',
-        userAgent: 'User Agent',
+        userAgent: 'عامل کاربر',
         cookiesEnabled: 'کوکی‌ها',
+        language: 'زبان',
+        adblockStatus: 'ادبلاکر',
 
         // --- System ---
         systemInfo: 'اطلاعات سیستم',
@@ -123,7 +127,7 @@ export default {
         // --- Display & Graphics ---
         displayGraphics: 'نمایشگر و گرافیک',
         screenResolution: 'وضوح صفحه',
-        viewportSize: 'اندازه Viewport',
+        viewportSize: 'اندازه دیدگاه',
         colorDepth: 'عمق رنگ',
         gpu: 'پردازنده گرافیکی',
         pixelRatio: 'نسبت پیکسل',
@@ -131,15 +135,15 @@ export default {
         // --- Security & Privacy ---
         securityPrivacy: 'امنیت و حریم خصوصی',
         https: 'HTTPS',
-        dnt: 'Do Not Track',
-        webrtc: 'WebRTC',
+        dnt: 'ردیابی نکن',
+        webrtc: 'وب‌آرتی‌سی',
         localStorage: 'حافظه محلی',
         sessionStorage: 'حافظه جلسه',
 
         // --- Web Features ---
         webFeatures: 'ویژگی‌های وب',
         javascript: 'جاوا اسکریپت',
-        webgl: 'WebGL',
+        webgl: 'وب‌جی‌ال',
         geolocation: 'موقعیت جغرافیایی',
         touchSupport: 'پشتیبانی از لمس',
         onlineStatus: 'وضعیت آنلاین',
@@ -152,7 +156,7 @@ export default {
         supported: 'پشتیبانی می‌شود',
         notSupported: 'پشتیبانی نمی‌شود',
         available: 'در دسترس',
-        notAvailable: 'در دسترس نیست',
+        notAvailable: 'موجود نیست',
         secure: 'امن',
         insecure: 'نا امن',
         online: 'آنلاین',
@@ -160,7 +164,7 @@ export default {
         darkMode: 'حالت تاریک',
         lightMode: 'حالت روشن',
         systemPreference: 'تنظیمات سیستم',
-        notDetected: 'شناسایی نشد / ناشناخته',
+        notDetected: 'شناسایی نشد',
         unknown: 'ناشناخته',
         unavailable: 'در دسترس نیست',
         invalidIP: 'آی‌پی / دامنه نامعتبر'
@@ -171,7 +175,7 @@ export default {
         resolvingDomain: 'Hostname wird aufgelöst...',
         showGeoInfo: 'Mehr Details anzeigen',
         fetchingGeo: 'Wird abgerufen...',
-        geoFetchError: 'Fehler beim Empfangen von Daten. Bitte versuchen Sie es später erneut.',
+        geoFetchError: 'Fehler beim Empfangen von Daten.',
         loading: 'Wird geladen...',
         ipSearchPlaceholder: 'Hostname oder IP-Adresse',
         networkDetails: 'Netzwerkdetails',
@@ -192,6 +196,8 @@ export default {
         engine: 'Engine',
         userAgent: 'User Agent',
         cookiesEnabled: 'Cookies',
+        language: 'Sprache',
+        adblockStatus: 'Werbeblocker',
 
         // --- System ---
         systemInfo: 'Systeminformationen',
@@ -201,7 +207,7 @@ export default {
         cpuCores: 'CPU-Kerne',
         memory: 'Speicher',
         systemTimezone: 'Zeitzone',
-        preferredTheme: 'Bevorzugtes Thema',
+        preferredTheme: 'Bevorzugtes Design',
 
         // --- Display & Graphics ---
         displayGraphics: 'Anzeige & Grafik',
@@ -214,7 +220,7 @@ export default {
         // --- Security & Privacy ---
         securityPrivacy: 'Sicherheit & Datenschutz',
         https: 'HTTPS',
-        dnt: 'Do Not Track',
+        dnt: 'Nicht verfolgen',
         webrtc: 'WebRTC',
         localStorage: 'Lokaler Speicher',
         sessionStorage: 'Sitzungsspeicher',
@@ -242,8 +248,8 @@ export default {
         offline: 'Offline',
         darkMode: 'Dunkelmodus',
         lightMode: 'Heller Modus',
-        systemPreference: 'Systempräferenz',
-        notDetected: 'Nicht erkannt / Unbekannt',
+        systemPreference: 'Systemeinstellung',
+        notDetected: 'Nicht erkannt',
         unknown: 'Unbekannt',
         unavailable: 'Nicht verfügbar',
         invalidIP: 'Ungültige IP / Domain'
@@ -254,7 +260,7 @@ export default {
         resolvingDomain: 'Resolviendo nombre de host...',
         showGeoInfo: 'Mostrar más detalles',
         fetchingGeo: 'Obteniendo...',
-        geoFetchError: 'Error al recibir los datos. Por favor, inténtelo de nuevo más tarde.',
+        geoFetchError: 'Error al recibir los datos.',
         loading: 'Cargando...',
         ipSearchPlaceholder: 'Nombre de host o dirección IP',
         networkDetails: 'Detalles de la red',
@@ -273,8 +279,10 @@ export default {
         browser: 'Navegador',
         version: 'Versión',
         engine: 'Motor',
-        userAgent: 'User Agent',
+        userAgent: 'Agente de usuario',
         cookiesEnabled: 'Cookies',
+        language: 'Idioma',
+        adblockStatus: 'Bloqueador de anuncios',
 
         // --- System ---
         systemInfo: 'Información del sistema',
@@ -289,7 +297,7 @@ export default {
         // --- Display & Graphics ---
         displayGraphics: 'Pantalla y gráficos',
         screenResolution: 'Resolución de pantalla',
-        viewportSize: 'Tamaño de viewport',
+        viewportSize: 'Tamaño del viewport',
         colorDepth: 'Profundidad de color',
         gpu: 'GPU',
         pixelRatio: 'Relación de píxeles',
@@ -297,7 +305,7 @@ export default {
         // --- Security & Privacy ---
         securityPrivacy: 'Seguridad y privacidad',
         https: 'HTTPS',
-        dnt: 'Do Not Track',
+        dnt: 'No rastrear',
         webrtc: 'WebRTC',
         localStorage: 'Almacenamiento local',
         sessionStorage: 'Almacenamiento de sesión',
@@ -326,7 +334,7 @@ export default {
         darkMode: 'Modo oscuro',
         lightMode: 'Modo claro',
         systemPreference: 'Preferencia del sistema',
-        notDetected: 'No detectado / Desconocido',
+        notDetected: 'No detectado',
         unknown: 'Desconocido',
         unavailable: 'No disponible',
         invalidIP: 'IP / Dominio inválido'
@@ -337,7 +345,7 @@ export default {
         resolvingDomain: 'Resolvendo nome do host...',
         showGeoInfo: 'Mostrar mais detalhes',
         fetchingGeo: 'Buscando...',
-        geoFetchError: 'Erro ao receber os dados. Por favor, tente novamente mais tarde.',
+        geoFetchError: 'Erro ao receber os dados.',
         loading: 'Carregando...',
         ipSearchPlaceholder: 'Nome do host ou endereço IP',
         networkDetails: 'Detalhes da Rede',
@@ -356,8 +364,10 @@ export default {
         browser: 'Navegador',
         version: 'Versão',
         engine: 'Motor',
-        userAgent: 'User Agent',
+        userAgent: 'Agente de Usuário',
         cookiesEnabled: 'Cookies',
+        language: 'Idioma',
+        adblockStatus: 'Bloqueador de anúncios',
 
         // --- System ---
         systemInfo: 'Informações do Sistema',
@@ -372,15 +382,15 @@ export default {
         // --- Display & Graphics ---
         displayGraphics: 'Tela e Gráficos',
         screenResolution: 'Resolução da Tela',
-        viewportSize: 'Tamanho da Janela',
+        viewportSize: 'Tamanho da Viewport',
         colorDepth: 'Profundidade de Cor',
         gpu: 'GPU',
-        pixelRatio: 'Taxa de Pixels',
+        pixelRatio: 'Proporção de Pixels',
 
         // --- Security & Privacy ---
         securityPrivacy: 'Segurança e Privacidade',
         https: 'HTTPS',
-        dnt: 'Do Not Track',
+        dnt: 'Não Rastrear',
         webrtc: 'WebRTC',
         localStorage: 'Armazenamento Local',
         sessionStorage: 'Armazenamento de Sessão',
@@ -401,7 +411,7 @@ export default {
         supported: 'Suportado',
         notSupported: 'Não suportado',
         available: 'Disponível',
-        notAvailable: 'Indisponível',
+        notAvailable: 'Não disponível',
         secure: 'Seguro',
         insecure: 'Inseguro',
         online: 'Online',
@@ -409,7 +419,7 @@ export default {
         darkMode: 'Modo Escuro',
         lightMode: 'Modo Claro',
         systemPreference: 'Preferência do Sistema',
-        notDetected: 'Não detectado / Desconhecido',
+        notDetected: 'Não detectado',
         unknown: 'Desconhecido',
         unavailable: 'Indisponível',
         invalidIP: 'IP / Domínio Inválido'
@@ -420,7 +430,7 @@ export default {
         resolvingDomain: 'Résolution du nom d\'hôte...',
         showGeoInfo: 'Afficher plus de détails',
         fetchingGeo: 'Récupération...',
-        geoFetchError: 'Erreur lors de la réception des données. Veuillez réessayer plus tard.',
+        geoFetchError: 'Erreur lors de la réception des données.',
         loading: 'Chargement...',
         ipSearchPlaceholder: 'Nom d\'hôte ou adresse IP',
         networkDetails: 'Détails du réseau',
@@ -439,8 +449,10 @@ export default {
         browser: 'Navigateur',
         version: 'Version',
         engine: 'Moteur',
-        userAgent: 'User Agent',
+        userAgent: 'Agent utilisateur',
         cookiesEnabled: 'Cookies',
+        language: 'Langue',
+        adblockStatus: 'Bloqueur de publicités',
 
         // --- System ---
         systemInfo: 'Informations système',
@@ -463,7 +475,7 @@ export default {
         // --- Security & Privacy ---
         securityPrivacy: 'Sécurité et confidentialité',
         https: 'HTTPS',
-        dnt: 'Do Not Track',
+        dnt: 'Ne pas suivre',
         webrtc: 'WebRTC',
         localStorage: 'Stockage local',
         sessionStorage: 'Stockage de session',
@@ -492,7 +504,7 @@ export default {
         darkMode: 'Mode sombre',
         lightMode: 'Mode clair',
         systemPreference: 'Préférence système',
-        notDetected: 'Non détecté / Inconnu',
+        notDetected: 'Non détecté',
         unknown: 'Inconnu',
         unavailable: 'Indisponible',
         invalidIP: 'IP / Domaine invalide'
@@ -503,10 +515,9 @@ export default {
         resolvingDomain: 'Разрешение имени хоста...',
         showGeoInfo: 'Показать больше данных',
         fetchingGeo: 'Получение...',
-        geoFetchError: 'Ошибка при получении данных. Пожалуйста, повторите попытку позже.',
+        geoFetchError: 'Ошибка при получении данных.',
         loading: 'Загрузка...',
         ipSearchPlaceholder: 'Имя узла или IP адрес',
-        copyright: 'Все права защищены.',
         networkDetails: 'Сетевые данные',
         ipAddress: 'IP-адрес',
         ipv6: 'IPv6',
@@ -523,8 +534,10 @@ export default {
         browser: 'Браузер',
         version: 'Версия',
         engine: 'Движок',
-        userAgent: 'User Agent',
+        userAgent: 'Агент пользователя',
         cookiesEnabled: 'Cookies',
+        language: 'Язык',
+        adblockStatus: 'Блокировщик рекламы',
 
         // --- System ---
         systemInfo: 'Информация о системе',
@@ -539,7 +552,7 @@ export default {
         // --- Display & Graphics ---
         displayGraphics: 'Дисплей и графика',
         screenResolution: 'Разрешение экрана',
-        viewportSize: 'Размер окна',
+        viewportSize: 'Размер области просмотра',
         colorDepth: 'Глубина цвета',
         gpu: 'GPU',
         pixelRatio: 'Соотношение пикселей',
@@ -547,7 +560,7 @@ export default {
         // --- Security & Privacy ---
         securityPrivacy: 'Безопасность и конфиденциальность',
         https: 'HTTPS',
-        dnt: 'Do Not Track',
+        dnt: 'Не отслеживать',
         webrtc: 'WebRTC',
         localStorage: 'Локальное хранилище',
         sessionStorage: 'Сессионное хранилище',
@@ -557,10 +570,11 @@ export default {
         javascript: 'JavaScript',
         webgl: 'WebGL',
         geolocation: 'Геолокация',
-        touchSupport: 'Сенсорная поддержка',
+        touchSupport: 'Поддержка сенсорного ввода',
         onlineStatus: 'Статус в сети',
 
         // --- Status & General ---
+        copyright: 'Все права защищены.',
         enabled: 'Включено',
         disabled: 'Отключено',
         notSpecified: 'Не указано',
@@ -575,7 +589,7 @@ export default {
         darkMode: 'Темный режим',
         lightMode: 'Светлый режим',
         systemPreference: 'Системные настройки',
-        notDetected: 'Не определено / Неизвестно',
+        notDetected: 'Не обнаружено',
         unknown: 'Неизвестно',
         unavailable: 'Недоступно',
         invalidIP: 'Неверный IP / домен'
@@ -586,7 +600,7 @@ export default {
         resolvingDomain: 'ホスト名を解決中...',
         showGeoInfo: '詳細情報を表示',
         fetchingGeo: '取得中...',
-        geoFetchError: 'データの受信中にエラーが発生しました。後でもう一度お試しください。',
+        geoFetchError: 'データの受信中にエラーが発生しました。',
         loading: '読み込み中...',
         ipSearchPlaceholder: 'ホスト名またはIPアドレス',
         networkDetails: 'ネットワーク詳細',
@@ -607,6 +621,8 @@ export default {
         engine: 'エンジン',
         userAgent: 'ユーザーエージェント',
         cookiesEnabled: 'クッキー',
+        language: '言語',
+        adblockStatus: '広告ブロッカー',
 
         // --- System ---
         systemInfo: 'システム情報',
@@ -629,7 +645,7 @@ export default {
         // --- Security & Privacy ---
         securityPrivacy: 'セキュリティとプライバシー',
         https: 'HTTPS',
-        dnt: 'Do Not Track',
+        dnt: 'トラッキング拒否',
         webrtc: 'WebRTC',
         localStorage: 'ローカルストレージ',
         sessionStorage: 'セッションストレージ',
@@ -643,7 +659,7 @@ export default {
         onlineStatus: 'オンラインステータス',
 
         // --- Status & General ---
-        copyright: 'All rights reserved.',
+        copyright: 'すべての権利を保有します。',
         enabled: '有効',
         disabled: '無効',
         notSpecified: '指定なし',
@@ -658,7 +674,7 @@ export default {
         darkMode: 'ダークモード',
         lightMode: 'ライトモード',
         systemPreference: 'システム設定',
-        notDetected: '未検出/不明',
+        notDetected: '未検出',
         unknown: '不明',
         unavailable: '利用不可',
         invalidIP: '無効なIP / ドメイン'
@@ -669,10 +685,9 @@ export default {
         resolvingDomain: '호스트명 확인 중...',
         showGeoInfo: '자세히 보기',
         fetchingGeo: '가져오는 중...',
-        geoFetchError: '데이터를 받는 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.',
+        geoFetchError: '데이터를 받는 중 오류가 발생했습니다.',
         loading: '로드 중...',
         ipSearchPlaceholder: '호스트 이름 또는 IP 주소',
-        copyright: 'All rights reserved.',
         networkDetails: '네트워크 정보',
         ipAddress: 'IP 주소',
         ipv6: 'IPv6',
@@ -691,6 +706,8 @@ export default {
         engine: '엔진',
         userAgent: '사용자 에이전트',
         cookiesEnabled: '쿠키',
+        language: '언어',
+        adblockStatus: '광고 차단기',
 
         // --- System ---
         systemInfo: '시스템 정보',
@@ -713,7 +730,7 @@ export default {
         // --- Security & Privacy ---
         securityPrivacy: '보안 및 개인 정보',
         https: 'HTTPS',
-        dnt: 'Do Not Track',
+        dnt: '추적 안 함',
         webrtc: 'WebRTC',
         localStorage: '로컬 스토리지',
         sessionStorage: '세션 스토리지',
@@ -727,6 +744,7 @@ export default {
         onlineStatus: '온라인 상태',
 
         // --- Status & General ---
+        copyright: '모든 권리 보유.',
         enabled: '활성화됨',
         disabled: '비활성화됨',
         notSpecified: '지정되지 않음',
@@ -741,7 +759,7 @@ export default {
         darkMode: '다크 모드',
         lightMode: '라이트 모드',
         systemPreference: '시스템 환경설정',
-        notDetected: '감지되지 않음 / 알 수 없음',
+        notDetected: '감지되지 않음',
         unknown: '알 수 없음',
         unavailable: '사용 불가',
         invalidIP: '잘못된 IP / 도메인'
@@ -752,10 +770,9 @@ export default {
         resolvingDomain: '正在解析主机名...',
         showGeoInfo: '显示更多详情',
         fetchingGeo: '正在获取...',
-        geoFetchError: '接收数据时出错。请稍后重试。',
+        geoFetchError: '接收数据时出错。',
         loading: '加载中...',
         ipSearchPlaceholder: '主机名或 IP 地址',
-        copyright: '版权所有。',
         networkDetails: '网络详情',
         ipAddress: 'IP地址',
         ipv6: 'IPv6',
@@ -773,7 +790,9 @@ export default {
         version: '版本',
         engine: '引擎',
         userAgent: '用户代理',
-        cookiesEnabled: 'Cookie',
+        cookiesEnabled: 'Cookies',
+        language: '语言',
+        adblockStatus: '广告拦截器',
 
         // --- System ---
         systemInfo: '系统信息',
@@ -810,6 +829,7 @@ export default {
         onlineStatus: '在线状态',
 
         // --- Status & General ---
+        copyright: '版权所有。',
         enabled: '已启用',
         disabled: '已禁用',
         notSpecified: '未指定',
@@ -824,7 +844,7 @@ export default {
         darkMode: '深色模式',
         lightMode: '浅色模式',
         systemPreference: '系统偏好',
-        notDetected: '未检测到/未知',
+        notDetected: '未检测到',
         unknown: '未知',
         unavailable: '不可用',
         invalidIP: '无效IP / 域名'

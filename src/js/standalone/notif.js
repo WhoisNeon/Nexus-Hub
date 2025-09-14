@@ -73,3 +73,10 @@ function closeNotif(notif) {
         }
     });
 }
+
+export function clearNotifications() {
+    const notifContainer = document.getElementById('notif-container');
+    if (notifContainer) {
+        notifContainer.innerHTML = '';
+    }
+}
