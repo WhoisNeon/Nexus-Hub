@@ -118,7 +118,7 @@ export function resetNetworkInfoState(elements) {
 export const FINDIP_TOKEN = 'eb2978e07c2e4a5e9bcb8c40e5f68292';
 export const REFRESH_COOLDOWN = 2500;
 export const TIMEOUT = 5000;
-export const isLocal = false;
+export const isLocal = true;
 
 let spamClicks = [];
 const SPAM_LIMIT = 10;

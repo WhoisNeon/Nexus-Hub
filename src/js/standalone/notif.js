@@ -1,4 +1,4 @@
-export function showNotif(message, type = 'info', durationInSeconds = 4) {
+export function showNotif(message, type = 'info', durationInSeconds = 5) {
     const notifContainer = document.getElementById('notif-container');
     if (!notifContainer) {
         console.error('Notification container not found!');

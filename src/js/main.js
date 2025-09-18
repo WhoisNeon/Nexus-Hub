@@ -244,11 +244,44 @@ window.addEventListener('resize', () => setTextContent(elements.viewportSize, `$
 
 elements.networkCardIcon.addEventListener('dblclick', async () => {
     const ip = elements.ipAddress.textContent.trim();
-    const countryIso = elements.country.dataset.iso;
-    if (ip && ip !== 'Unavailable' && countryIso) {
+    let countryIso = elements.country.dataset.iso;
+
+    if (!ip || ip === 'Unavailable') {
+        showNotif('IP address is unavailable.', 'info', 5);
+        return;
+    }
+
+    if (!countryIso) {
+        showNotif('Fetching geolocation data...', 'info', 3);
+        const geoFetchSuccess = await fetchIPInfo(
+            elements.ipDomainSearch.value,
+            true,
+            elements,
+            showNotif,
+            compressIPv6,
+            isValidIP,
+            resolveDomainToIP
+        );
+
+        if (geoFetchSuccess) {
+            countryIso = elements.country.dataset.iso;
+        } else {
+            showNotif('Failed to fetch geolocation data.', 'error', 5);
+            return;
+        }
+    }
+
+    if (countryIso) {
         const flag = String.fromCodePoint(...[...countryIso.toUpperCase()].map(char => 0x1F1E6 + char.charCodeAt(0) - 'A'.charCodeAt(0)));
         const textToCopy = `${flag}| \`${ip}\`\n`;
-        try { await navigator.clipboard.writeText(textToCopy); } catch (err) { }
+        try {
+            await navigator.clipboard.writeText(textToCopy);
+            showNotif('Copied to clipboard!', 'success', 5);
+        } catch (err) {
+            showNotif('Failed to copy to clipboard.', 'error', 5);
+        }
+    } else {
+        showNotif('Information is unavailable.', 'info', 5);
     }
 });
 
@@ -257,7 +290,7 @@ elements.browserCardIcon.addEventListener('dblclick', async () => {
     elements.footer.classList.toggle("hidden");
     window.isGeoFetchInstant = !window.isGeoFetchInstant;
     handleFetchGeo(elements, fetchIPInfo, showNotif);
-    showNotif('Instant Geo fetch ' + (window.isGeoFetchInstant ? 'enabled.' : 'disabled.'), 'success', 5);
+    showNotif('Instant Geo fetch ' + (window.isGeoFetchInstant ? 'enabled.' : 'disabled.'), 'info', 5);
     elements.infoCards.forEach((card, index) => {
         if (index >= 2) {
             card.classList.toggle("hidden");
