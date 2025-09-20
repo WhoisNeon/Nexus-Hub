@@ -103,7 +103,13 @@ export function resetGeolocationState(elements) {
         elements.isp, elements.organization, elements.asn, elements.ipTimezone
     ];
     geoElements.forEach(el => {
-        if (el) setInnerHTML(el, '<i class="loading"></i>');
+        if (el) {
+            setInnerHTML(el, '<i class="loading"></i>');
+            // Clear the country ISO dataset when resetting geolocation state
+            if (el === elements.country) {
+                delete el.dataset.iso;
+            }
+        }
     });
     if (elements.regionItem) elements.regionItem.style.display = 'none';
     updateGeoButtonState(elements);
