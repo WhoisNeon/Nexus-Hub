@@ -62,9 +62,9 @@ export default {
         geolocation: 'Geolocation',
         touchSupport: 'Touch Support',
         onlineStatus: 'Online Status',
-
+        
         // --- Status & General ---
-        copyright: 'All rights reserved.',
+        madeWithLove: 'Made with 🤍 by',
         enabled: 'Enabled',
         disabled: 'Disabled',
         notSpecified: 'Not specified',
@@ -149,7 +149,7 @@ export default {
         onlineStatus: 'وضعیت آنلاین',
 
         // --- Status & General ---
-        copyright: 'تمامی حقوق محفوظ است.',
+        madeWithLove: 'ساخته شده با 🤍 توسط',
         enabled: 'فعال',
         disabled: 'غیرفعال',
         notSpecified: 'مشخص نشده',
@@ -234,7 +234,7 @@ export default {
         onlineStatus: 'Online-Status',
 
         // --- Status & General ---
-        copyright: 'Alle Rechte vorbehalten.',
+        madeWithLove: 'Erstellt mit 🤍 von',
         enabled: 'Aktiviert',
         disabled: 'Deaktiviert',
         notSpecified: 'Nicht angegeben',
@@ -319,7 +319,7 @@ export default {
         onlineStatus: 'Estado en línea',
 
         // --- Status & General ---
-        copyright: 'Todos los derechos reservados.',
+        madeWithLove: 'Hecho con 🤍 por',
         enabled: 'Habilitado',
         disabled: 'Deshabilitado',
         notSpecified: 'No especificado',
@@ -404,7 +404,7 @@ export default {
         onlineStatus: 'Status Online',
 
         // --- Status & General ---
-        copyright: 'Todos os direitos reservados.',
+        madeWithLove: 'Feito com 🤍 por',
         enabled: 'Ativado',
         disabled: 'Desativado',
         notSpecified: 'Não especificado',
@@ -489,7 +489,7 @@ export default {
         onlineStatus: 'Statut en ligne',
 
         // --- Status & General ---
-        copyright: 'Tous droits réservés.',
+        madeWithLove: 'Fait avec 🤍 par',
         enabled: 'Activé',
         disabled: 'Désactivé',
         notSpecified: 'Non spécifié',
@@ -574,7 +574,7 @@ export default {
         onlineStatus: 'Статус в сети',
 
         // --- Status & General ---
-        copyright: 'Все права защищены.',
+        madeWithLove: 'Сделано с 🤍 от',
         enabled: 'Включено',
         disabled: 'Отключено',
         notSpecified: 'Не указано',
@@ -659,7 +659,7 @@ export default {
         onlineStatus: 'オンラインステータス',
 
         // --- Status & General ---
-        copyright: 'すべての権利を保有します。',
+        madeWithLove: '🤍で作成',
         enabled: '有効',
         disabled: '無効',
         notSpecified: '指定なし',
@@ -744,7 +744,7 @@ export default {
         onlineStatus: '온라인 상태',
 
         // --- Status & General ---
-        copyright: '모든 권리 보유.',
+        madeWithLove: '🤍로 만들었습니다',
         enabled: '활성화됨',
         disabled: '비활성화됨',
         notSpecified: '지정되지 않음',
@@ -829,7 +829,7 @@ export default {
         onlineStatus: '在线状态',
 
         // --- Status & General ---
-        copyright: '版权所有。',
+        madeWithLove: '由🤍制作',
         enabled: '已启用',
         disabled: '已禁用',
         notSpecified: '未指定',
