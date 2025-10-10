@@ -1,5 +1,11 @@
 import { setTextContent } from '../utils/dom.js';
 
+// Heart emoji configuration for theme-based replacement
+const HEART_CONFIG = {
+    dark: '🤍',    // White heart for dark theme
+    light: '🖤'    // Black heart for light theme
+};
+
 export let currentLang = localStorage.getItem('userLanguage') || 'en';
 
 export function setLanguage(lang, langName, flagCode, elements) {
@@ -37,11 +43,15 @@ export function setLanguage(lang, langName, flagCode, elements) {
 export function translatePage(elements) {
     const lang = currentLang;
     const translationSet = window.translations[lang] || window.translations['en'];
+    const isDarkMode = document.body.classList.contains('dark-mode');
 
     document.querySelectorAll('[data-translate]').forEach(el => {
         const key = el.dataset.translate;
         if (translationSet[key]) {
-            setTextContent(el, translationSet[key]);
+            let translatedText = translationSet[key];
+            // Replace {heart} placeholder with appropriate emoji based on theme
+            translatedText = translatedText.replace('{heart}', isDarkMode ? HEART_CONFIG.dark : HEART_CONFIG.light);
+            setTextContent(el, translatedText);
         }
     });
 

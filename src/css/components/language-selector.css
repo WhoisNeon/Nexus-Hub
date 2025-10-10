@@ -19,6 +19,14 @@
     box-sizing: border-box;
 }
 
+.language-button i.ph-caret-down {
+    transition: transform 0.3s ease;
+}
+
+.language-selector.active .language-button i.ph-caret-down {
+    transform: rotate(180deg);
+}
+
 .language-button img {
     width: 1.75rem;
     height: 1.75rem;

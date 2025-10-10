@@ -35,6 +35,7 @@ const elements = {
     networkCardIcon: document.querySelector('#network-card-icon'),
     refreshNetworkButton: document.querySelector('#refresh-network-button'),
     ipDomainSearch: document.querySelector('#ip-domain-search'),
+    clearSearchButton: document.querySelector('#clear-search-button'),
     searchButton: document.querySelector('#search-button'),
     ipAddress: document.querySelector('#ip-address'),
     ipv6Address: document.querySelector('#ipv6-address'),
@@ -113,7 +114,7 @@ function lazyLoadVideo() {
 function adjustHeaderContent() {
     const headerLogo = document.querySelector('.header .logo');
     if (headerLogo) {
-        if (window.innerWidth < 386) {
+        if (window.innerWidth < 400) {
             headerLogo.textContent = 'Nexus';
         } else {
             headerLogo.textContent = 'Nexus Hub';
@@ -214,6 +215,10 @@ document.addEventListener('DOMContentLoaded', function () {
     elements.searchButton?.addEventListener('click', () => {
         if (!spamDetector(elements, showNotif)) fetchIPInfo(elements.ipDomainSearch.value, false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
     });
+    elements.clearSearchButton?.addEventListener('click', () => {
+        elements.ipDomainSearch.value = '';
+        elements.ipDomainSearch.focus();
+    });
 
     if (elements.refreshNetworkButton) elements.refreshNetworkButton.disabled = false;
     if (elements.searchButton) elements.searchButton.disabled = false;
@@ -301,3 +306,13 @@ elements.browserCardIcon.addEventListener('dblclick', async () => {
 document.addEventListener('DOMContentLoaded', adjustHeaderContent);
 window.addEventListener('resize', adjustHeaderContent);
 history.scrollRestoration = 'manual';
+
+const card1 = document.getElementById('network-details');
+const card2 = document.getElementById('security-and-privacy');
+
+function matchHeight() {
+    const card2Height = card2.offsetHeight;
+    card1.style.minHeight = card2Height + 'px';
+}
+matchHeight();
+window.addEventListener('resize', matchHeight);

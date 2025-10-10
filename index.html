@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexus Hub</title>
-    <link rel="icon" href="src/assets/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="src/assets/favicon.svg" type="image/x-icon">
 
     <meta name="description" content="Get detailed information about your system, browser, network, and more.">
     <meta name="keywords" content="system info, browser info, ip address, network details, device information">
@@ -87,7 +87,7 @@
         </header>
 
         <main class="info-grid">
-            <section class="info-card">
+            <section id="network-details" class="info-card">
                 <div class="card-header">
                     <div class="card-icon" id="network-card-icon"><i class="ph-fill ph-globe-hemisphere-west"></i></div>
                     <h3 class="card-title" data-translate="networkDetails">Network Details</h3>
@@ -96,8 +96,13 @@
                     </button>
                 </div>
                 <div class="ip-search-container">
-                    <input type="text" id="ip-domain-search" class="ip-search-input"
-                    placeholder="" data-translate="searchPlaceholder">
+                    <div class="input-wrapper">
+                        <input type="text" id="ip-domain-search" class="ip-search-input"
+                        placeholder="" data-translate="searchPlaceholder">
+                        <button id="clear-search-button" class="clear-search-button" aria-label="Clear search">
+                            <i class="ph ph-x"></i>
+                        </button>
+                    </div>
                     <button id="search-button" class="search-button">
                         <i class="ph ph-magnifying-glass"></i>
                     </button>
@@ -149,7 +154,7 @@
                 </div>
             </section>
 
-            <section class="info-card">
+            <section id="browser-details" class="info-card">
                 <div class="card-header">
                     <div class="card-icon" id="browser-card-icon"><i class="ph-fill ph-browser"></i></div>
                     <h3 class="card-title" data-translate="browserDetails">Browser Details</h3>
@@ -184,7 +189,7 @@
                 </div>
             </section>
 
-            <section class="info-card">
+            <section id="system-information" class="info-card">
                 <div class="card-header">
                     <div class="card-icon" id="os-icon"><i class="loading"></i></div>
                     <h3 class="card-title" data-translate="systemInfo">System Information</h3>
@@ -219,7 +224,7 @@
                 </div>
             </section>
 
-            <section class="info-card">
+            <section id="display-and-graphics" class="info-card">
                 <div class="card-header">
                     <div class="card-icon"><i class="ph-fill ph-monitor"></i></div>
                     <h3 class="card-title" data-translate="displayGraphics">Display & Graphics</h3>
@@ -246,7 +251,7 @@
                 </div>
             </section>
 
-            <section class="info-card">
+            <section id="security-and-privacy" class="info-card">
                 <div class="card-header">
                     <div class="card-icon"><i class="ph-fill ph-lock-simple"></i></div>
                     <h3 class="card-title" data-translate="securityPrivacy">Security & Privacy</h3>
@@ -273,7 +278,7 @@
                 </div>
             </section>
 
-            <section class="info-card">
+            <section id="web-features" class="info-card">
                 <div class="card-header">
                     <div class="card-icon"><i class="ph-fill ph-lightning"></i></div>
                     <h3 class="card-title" data-translate="webFeatures">Web Features</h3>
@@ -302,7 +307,7 @@
         </main>
 
         <footer class="footer">
-            <p><span data-translate="madeWithLove">Made with 🤍 by</span> <a class="notranslate" href="https://github.com/WhoisNeon/Nexus-Hub" target="_blank">WhoisNeon</a></p>
+            <p><span data-translate="madeWithLove">Made with <span id="footer-heart">🤍</span> by</span> <a class="notranslate" href="https://github.com/WhoisNeon/Nexus-Hub" target="_blank">WhoisNeon</a></p>
         </footer>
     </div>
     <div id="notif-container"></div>
