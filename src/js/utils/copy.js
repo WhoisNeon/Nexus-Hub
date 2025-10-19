@@ -6,7 +6,6 @@ export const addCopyFeature = (elementId) => {
         const copyButton = document.createElement('button');
         copyButton.className = 'copy-button';
         copyButton.innerHTML = '<i class="ph ph-clipboard"></i>';
-        copyButton.setAttribute('aria-label', `Copy ${element.id.replace(/-/g, ' ')}`);
 
         copyButton.onclick = async (e) => {
             e.stopPropagation();

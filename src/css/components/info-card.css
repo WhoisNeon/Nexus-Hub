@@ -88,11 +88,13 @@
 .info-item {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
     padding: 1rem 0;
     border-bottom: 1px solid var(--info-item-border);
 }
-
+#browser-details .info-item:last-child{
+    align-items: baseline;
+}
 .info-item:last-child {
     border-bottom: none;
     padding-bottom: 0;
@@ -117,7 +119,7 @@
     font-weight: 500;
     text-align: right;
     flex-basis: max-content;
-    max-width: 75%;
+    max-width: 85%;
     overflow-wrap: break-word;
     word-break: break-word;
     position: relative;
@@ -125,6 +127,10 @@
     align-items: center;
     justify-content: flex-end;
     gap: 5px;
+}
+
+html[lang="fa"] .info-value {
+    max-width: 70%;
 }
 
 .info-value .copy-button {
@@ -200,7 +206,6 @@
 }
 
 @keyframes ping {
-
     75%,
     100% {
         transform: scale(2);

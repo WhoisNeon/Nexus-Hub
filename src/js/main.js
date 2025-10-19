@@ -290,18 +290,21 @@ elements.networkCardIcon.addEventListener('dblclick', async () => {
     }
 });
 
+function isMobile() {
+    return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+}
+
 elements.browserCardIcon.addEventListener('dblclick', async () => {
-    elements.header.classList.toggle("hidden");
-    elements.footer.classList.toggle("hidden");
+    if (isMobile()) {
+        elements.header.classList.toggle("hidden");
+        elements.footer.classList.toggle("hidden");
+    }
+
     window.isGeoFetchInstant = !window.isGeoFetchInstant;
     handleFetchGeo(elements, fetchIPInfo, showNotif);
     showNotif('Instant Geo fetch ' + (window.isGeoFetchInstant ? 'enabled.' : 'disabled.'), 'info', 5);
-    elements.infoCards.forEach((card, index) => {
-        if (index >= 2) {
-            card.classList.toggle("hidden");
-        }
-    });
 });
+
 
 document.addEventListener('DOMContentLoaded', adjustHeaderContent);
 window.addEventListener('resize', adjustHeaderContent);

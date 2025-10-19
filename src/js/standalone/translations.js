@@ -16,6 +16,7 @@ export default {
         city: 'City',
         isp: 'ISP',
         organization: 'Organization',
+        ispOrg: 'ISP / Org',
         asn: 'ASN',
         ipTimezone: 'Time Zone',
 
@@ -90,7 +91,7 @@ export default {
         resolvingDomain: 'در حال دریافت آی‌پی دامنه...',
         showGeoInfo: 'نمایش جزئیات بیشتر',
         fetchingGeo: 'در حال دریافت...',
-        geoFetchError: 'خطا در دریافت اطلاعات.',
+        geoFetchError: 'خطا در دریافت اطلاعات',
         loading: 'در حال بارگذاری...',
         ipSearchPlaceholder: 'دامنه یا آدرس آی‌پی',
         networkDetails: 'جزئیات شبکه',
@@ -99,8 +100,9 @@ export default {
         country: 'کشور',
         region: 'منطقه',
         city: 'شهر',
-        isp: 'ارائه دهنده اینترنت',
+        isp: 'ارائه دهنده',
         organization: 'سازمان',
+        ispOrg: 'ارائه دهنده / سازمان',
         asn: 'ASN',
         ipTimezone: 'منطقه زمانی',
 
@@ -186,6 +188,7 @@ export default {
         city: 'Stadt',
         isp: 'ISP',
         organization: 'Organisation',
+        ispOrg: 'ISP / Org',
         asn: 'ASN',
         ipTimezone: 'Zeitzone',
 
@@ -271,6 +274,7 @@ export default {
         city: 'Ciudad',
         isp: 'ISP',
         organization: 'Organización',
+        ispOrg: 'ISP / Org',
         asn: 'ASN',
         ipTimezone: 'Zona horaria',
 
@@ -356,6 +360,7 @@ export default {
         city: 'Cidade',
         isp: 'ISP',
         organization: 'Organização',
+        ispOrg: 'ISP / Org',
         asn: 'ASN',
         ipTimezone: 'Fuso Horário',
 
@@ -441,6 +446,7 @@ export default {
         city: 'Ville',
         isp: 'FAI',
         organization: 'Organisation',
+        ispOrg: 'FAI / Org',
         asn: 'ASN',
         ipTimezone: 'Fuseau horaire',
 
@@ -526,6 +532,7 @@ export default {
         city: 'Город',
         isp: 'Провайдер',
         organization: 'Организация',
+        ispOrg: 'Провайдер / Организация',
         asn: 'ASN',
         ipTimezone: 'Часовой пояс',
 
@@ -611,6 +618,7 @@ export default {
         city: '都市',
         isp: 'ISP',
         organization: '組織',
+        ispOrg: 'ISP / 組織',
         asn: 'ASN',
         ipTimezone: 'タイムゾーン',
 
@@ -696,6 +704,7 @@ export default {
         city: '도시',
         isp: 'ISP',
         organization: '조직',
+        ispOrg: 'ISP / 조직',
         asn: 'ASN',
         ipTimezone: '시간대',
 
@@ -781,6 +790,7 @@ export default {
         city: '城市',
         isp: 'ISP',
         organization: '组织',
+        ispOrg: 'ISP / 组织',
         asn: 'ASN',
         ipTimezone: '时区',
 

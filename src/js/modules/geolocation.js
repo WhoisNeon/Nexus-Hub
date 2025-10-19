@@ -63,7 +63,22 @@ export function displayGeoData(geoData, elements) {
 
     const organizationItem = elements.organization.parentElement;
 
-    if (organization === isp || organization === translationSet.unavailable) {
+    const ispLabel = elements.isp.parentElement.querySelector('.info-label');
+
+    if (organization.toLowerCase() === isp.toLowerCase() || organization === translationSet.unavailable) {
+        organizationItem.style.display = 'none';
+        if (ispLabel) {
+            ispLabel.textContent = translationSet.ispOrg;
+        }
+    } else {
+        organizationItem.style.display = 'flex';
+        setTextContent(elements.organization, organization || translationSet.unavailable);
+        if (ispLabel) {
+            ispLabel.textContent = translationSet.isp;
+        }
+    }
+
+    if (organization.toLowerCase() === isp.toLowerCase() || organization === translationSet.unavailable) {
         organizationItem.style.display = 'none';
     } else {
         organizationItem.style.display = 'flex';
@@ -105,13 +120,19 @@ export function resetGeolocationState(elements) {
     geoElements.forEach(el => {
         if (el) {
             setInnerHTML(el, '<i class="loading"></i>');
-            // Clear the country ISO dataset when resetting geolocation state
             if (el === elements.country) {
                 delete el.dataset.iso;
             }
         }
     });
     if (elements.regionItem) elements.regionItem.style.display = 'none';
+
+    const translationSet = window.translations[currentLang] || window.translations['en'];
+    const ispLabel = elements.isp.parentElement.querySelector('.info-label');
+    if (ispLabel) {
+        ispLabel.textContent = translationSet.isp;
+    }
+
     updateGeoButtonState(elements);
 }
 
@@ -203,11 +224,38 @@ const showGeo = (geo, elements, t) => {
         return;
     }
     lastGeoData = geo;
+
     displayGeoData(geo, elements);
+
     const isp = geo.traits?.isp || geo.traits?.autonomous_system_organization || t.unavailable;
+    const organization = geo.traits?.organization || t.unavailable;
     const asn = geo.traits?.autonomous_system_number ? `AS${geo.traits.autonomous_system_number}` : t.unknown;
+
     setCopy('isp', isp);
-    setCopy('asn', asn);
+    setCopy('organization', organization);
+    addAsnLinkFeature('asn', asn);
+};
+
+const addAsnLinkFeature = (elementId, asnValue) => {
+    const element = document.getElementById(elementId);
+
+    if (element && !element.querySelector('.asn-link-button')) {
+        const t = window.translations[currentLang] || window.translations.en;
+        if (!asnValue || asnValue === t.unknown || asnValue === t.unavailable) return;
+
+        const linkButton = document.createElement('a');
+        linkButton.className = 'copy-button asn-link-button';
+        linkButton.innerHTML = '<i class="ph ph-arrow-square-out"></i>';
+        linkButton.href = `http://ipinfo.io/${asnValue}`;
+        linkButton.target = '_blank';
+        linkButton.setAttribute('aria-label', 'View ASN details on ipinfo.io');
+
+        linkButton.onclick = (e) => {
+            e.stopPropagation();
+        };
+
+        element.appendChild(linkButton);
+    }
 };
 
 export async function fetchIPInfo(query = '', fetchGeo = false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP) {

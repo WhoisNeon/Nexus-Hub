@@ -57,7 +57,7 @@ export async function loadBrowserAndSystemInfo(elements, isLanguageUpdate = fals
                 e.stopPropagation();
                 try {
                     await navigator.clipboard.writeText(fullUserAgent);
-                    uaCopyButton.innerHTML = 'Copied<i class="ph ph-check"></i>';
+                    uaCopyButton.innerHTML = 'Copied!<i class="ph ph-check"></i>';
                     setTimeout(() => {
                         uaCopyButton.innerHTML = 'Copy<i class="ph ph-clipboard"></i>';
                     }, 1500);

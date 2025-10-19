@@ -50,13 +50,9 @@ body.dark-mode {
     -webkit-mask-position: center;
 }
 
-html[dir="rtl"] .info-value {
+html[lang="fa"] .info-value {
     direction: ltr;
     flex-direction: row-reverse;
-}
-
-html[dir="rtl"] .notif {
-    direction: rtl;
 }
 
 * {

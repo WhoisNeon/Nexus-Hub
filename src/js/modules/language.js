@@ -11,6 +11,7 @@ export let currentLang = localStorage.getItem('userLanguage') || 'en';
 export function setLanguage(lang, langName, flagCode, elements) {
     currentLang = lang;
     localStorage.setItem('userLanguage', lang);
+    document.documentElement.setAttribute('lang', lang);
 
     if (elements.selectedFlag) {
         if (flagCode === 'ir') {
