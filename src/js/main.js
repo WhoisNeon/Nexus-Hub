@@ -130,18 +130,26 @@ document.addEventListener('DOMContentLoaded', function () {
         setLanguage('en', 'English', 'us', elements);
     }
 
-    elements.languageDropdown.addEventListener('click', (e) => {
+    elements.languageDropdown.addEventListener('click', async (e) => {
         const link = e.target.closest('button[data-lang]');
         if (link) {
             e.preventDefault();
             clearNotifications();
+
+            const wasGeoExpanded = elements.geolocationItems.classList.contains('hidden') === false;
+
             setLanguage(link.dataset.lang, link.dataset.langName, link.dataset.flagCode, elements);
             elements.languageSelector.classList.remove('active');
             loadBrowserAndSystemInfo(elements);
             updateOnlineStatusIndicator(navigator.onLine, elements.onlineStatus);
             const translationSet = window.translations[link.dataset.lang] || window.translations['en'];
             updatePreferredThemeDisplay(elements.preferredTheme, translationSet);
-            fetchIPInfo('', false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
+
+            const initialFetchSuccess = await fetchIPInfo('', false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
+
+            if (initialFetchSuccess && wasGeoExpanded) {
+                handleFetchGeo(elements, fetchIPInfo, showNotif);
+            }
         }
     });
 
@@ -218,10 +226,9 @@ document.addEventListener('DOMContentLoaded', function () {
     elements.clearSearchButton?.addEventListener('click', () => {
         elements.ipDomainSearch.value = '';
         elements.ipDomainSearch.focus();
+        elements.ipDomainSearch.dataset.lastSearched = '';
+        updateNetworkButtons();
     });
-
-    if (elements.refreshNetworkButton) elements.refreshNetworkButton.disabled = false;
-    if (elements.searchButton) elements.searchButton.disabled = false;
 
     lazyLoadVideo();
 
@@ -234,6 +241,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     elements.fetchGeoButton?.addEventListener('click', () => handleFetchGeo(elements, fetchIPInfo, showNotif));
+
+    elements.ipDomainSearch.addEventListener('input', updateNetworkButtons);
+    updateNetworkButtons();
 
     hidePreloader(elements);
     loadBrowserAndSystemInfo(elements);
@@ -319,3 +329,21 @@ function matchHeight() {
 }
 matchHeight();
 window.addEventListener('resize', matchHeight);
+
+function updateNetworkButtons() {
+    const inputField = elements.ipDomainSearch;
+    const refreshBtn = elements.refreshNetworkButton;
+    const searchBtn = elements.searchButton;
+
+    if (!inputField || !refreshBtn || !searchBtn) return;
+
+    const lastSearchedValue = inputField.dataset.lastSearched || '';
+    const currentValue = inputField.value.trim();
+
+    const isRedundantSearch = currentValue === lastSearchedValue;
+
+    searchBtn.disabled = currentValue === '' || isRedundantSearch;
+
+    refreshBtn.disabled = currentValue !== '';
+}
+window.updateNetworkButtons = updateNetworkButtons;

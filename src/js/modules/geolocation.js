@@ -145,7 +145,7 @@ export function resetNetworkInfoState(elements) {
 export const FINDIP_TOKEN = 'eb2978e07c2e4a5e9bcb8c40e5f68292';
 export const REFRESH_COOLDOWN = 2500;
 export const TIMEOUT = 5000;
-export const isLocal = false;
+export const isLocal = true;
 
 let spamClicks = [];
 const SPAM_LIMIT = 10;
@@ -260,7 +260,6 @@ const addAsnLinkFeature = (elementId, asnValue) => {
 
 export async function fetchIPInfo(query = '', fetchGeo = false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP) {
     if (spamDetector(elements, showNotif)) return false;
-    if (elements.refreshNetworkButton.disabled && !fetchGeo) return false;
 
     if (!fetchGeo) {
         elements.refreshNetworkButton.disabled = true;
@@ -270,13 +269,17 @@ export async function fetchIPInfo(query = '', fetchGeo = false, elements, showNo
 
     const t = window.translations[currentLang] || window.translations.en;
 
-    const finish = () => {
+    const finish = (finalQuery) => {
         if (!fetchGeo) {
             elements.ipDomainSearch.value = query;
             elements.ipDomainSearch.placeholder = t.ipSearchPlaceholder;
+
+            elements.ipDomainSearch.dataset.lastSearched = finalQuery;
+
             setTimeout(() => {
-                elements.refreshNetworkButton.disabled = false;
-                if (elements.searchButton) elements.searchButton.disabled = false;
+                if (window.updateNetworkButtons) {
+                    window.updateNetworkButtons();
+                }
             }, REFRESH_COOLDOWN);
         }
         updateGeoButtonState(elements);
@@ -285,6 +288,7 @@ export async function fetchIPInfo(query = '', fetchGeo = false, elements, showNo
     try {
         let processedQuery = query.trim();
         let effectiveIP = null;
+        const isUserSearch = !!processedQuery;
 
         if (fetchGeo) {
             effectiveIP = elements.ipAddress.textContent.trim();
@@ -343,7 +347,7 @@ export async function fetchIPInfo(query = '', fetchGeo = false, elements, showNo
                 }
             }
 
-            if (window.isGeoFetchInstant && !fetchGeo && effectiveIP && effectiveIP !== t.unavailable && effectiveIP !== t.invalidIP) {
+            if ((window.isGeoFetchInstant || isUserSearch) && !fetchGeo && effectiveIP && effectiveIP !== t.unavailable && effectiveIP !== t.invalidIP) {
                 setTextContent(elements.fetchGeoButton, '', 'fetchingGeo');
                 const geo = await fetchGeoData(effectiveIP, t);
                 showGeo(geo, elements, t);
@@ -368,7 +372,7 @@ export async function fetchIPInfo(query = '', fetchGeo = false, elements, showNo
         showGeo(null, elements, t);
         return false;
     } finally {
-        finish();
+        finish(query.trim());
     }
 }
 
