@@ -7,10 +7,33 @@ import { currentLang, setLanguage, translatePage, getTranslatedName } from './mo
 import { preloaderHidden, hidePreloader } from './modules/preloader.js';
 import { lastGeoData, cleanCityName, displayGeoData, updateGeoButtonState, resetGeolocationState, resetNetworkInfoState, FINDIP_TOKEN, REFRESH_COOLDOWN, TIMEOUT, isLocal, spamDetector, fetchIPInfo, handleFetchGeo } from './modules/geolocation.js';
 import { updateOnlineStatusIndicator, loadBrowserAndSystemInfo } from './modules/info-loader.js';
+import { showNotif, clearNotifications } from './standalone/notif.js';
 
 window.translations = translations;
 window.currentLang = currentLang;
 window.isGeoFetchInstant = false;
+
+function getInitialSearchQuery() {
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get('host');
+    return query ? decodeURIComponent(query) : '';
+}
+
+function updateUrl(query, isReplace = false) {
+    const t = window.translations[currentLang] || window.translations['en'];
+    const invalidValues = [t.unavailable, t.invalidIP];
+
+    if (query && !invalidValues.includes(query)) {
+        const newUrl = `${window.location.pathname}?host=${encodeURIComponent(query)}`;
+        if (isReplace) {
+            history.replaceState(null, '', newUrl);
+        } else {
+            history.pushState(null, '', newUrl);
+        }
+    } else {
+        history.pushState(null, '', window.location.pathname);
+    }
+}
 
 const elements = {
     // --- Core Layout & General UI ---
@@ -95,8 +118,6 @@ const elements = {
     onlineStatus: document.querySelector('#online-status'),
 };
 
-import { showNotif, clearNotifications } from './standalone/notif.js';
-
 function lazyLoadVideo() {
     const videoBackground = elements.videoBackground;
     const videoSource = videoBackground.querySelector('source');
@@ -122,12 +143,87 @@ function adjustHeaderContent() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function () {
+function isMobile() {
+    return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+}
+
+function matchHeight() {
+    const card1 = document.getElementById('network-details');
+    const card2 = document.getElementById('security-and-privacy');
+    if (card1 && card2) {
+        const card2Height = card2.offsetHeight;
+        card1.style.minHeight = card2Height + 'px';
+    }
+}
+
+function updateNetworkButtons() {
+    const inputField = elements.ipDomainSearch;
+    const refreshBtn = elements.refreshNetworkButton;
+    const searchBtn = elements.searchButton;
+
+    if (!inputField || !refreshBtn || !searchBtn) return;
+
+    const lastSearchedValue = inputField.dataset.lastSearched || '';
+    const currentValue = inputField.value.trim();
+
+    const isRedundantSearch = currentValue === lastSearchedValue;
+
+    searchBtn.disabled = currentValue === '' || isRedundantSearch;
+    refreshBtn.disabled = currentValue !== '';
+}
+window.updateNetworkButtons = updateNetworkButtons;
+
+document.addEventListener('DOMContentLoaded', async function () {
     const initialLangLink = elements.languageDropdown.querySelector(`[data-lang="${window.currentLang}"]`);
     if (initialLangLink) {
         setLanguage(window.currentLang, initialLangLink.dataset.langName, initialLangLink.dataset.flagCode, elements);
     } else {
         setLanguage('en', 'English', 'us', elements);
+    }
+
+    const prefersDarkMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const userThemePreference = localStorage.getItem('userThemePreference');
+    if (userThemePreference === 'dark') applyTheme(true, elements.body, elements.themeToggle);
+    else if (userThemePreference === 'light') applyTheme(false, elements.body, elements.themeToggle);
+    else applyTheme(prefersDarkMediaQuery.matches, elements.body, elements.themeToggle);
+
+
+    const initialQuery = getInitialSearchQuery();
+
+    hidePreloader(elements);
+    loadBrowserAndSystemInfo(elements);
+    updateOnlineStatusIndicator(navigator.onLine, elements.onlineStatus);
+
+    const initialFetchSuccess = await fetchIPInfo(initialQuery, false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
+
+    if (initialFetchSuccess && !initialQuery) {
+        const detectedIP = elements.ipAddress.textContent.trim();
+        const t = window.translations[currentLang] || window.translations['en'];
+
+        if (detectedIP && detectedIP !== t.unavailable && detectedIP !== t.invalidIP) {
+            updateUrl(detectedIP, true);
+        }
+    }
+
+    elements.languageButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        elements.languageSelector.classList.toggle('active');
+        updateBorders();
+    });
+    window.addEventListener('click', (e) => {
+        if (!elements.languageSelector.contains(e.target)) {
+            elements.languageSelector.classList.remove('active');
+        }
+    });
+    function updateBorders() {
+        const visibleButtons = elements.languageDropdown.querySelectorAll('button:not(.hidden)');
+        elements.languageDropdown.querySelectorAll('button').forEach(btn => {
+            btn.classList.remove('first-visible', 'last-visible');
+        });
+        if (visibleButtons.length > 0) {
+            visibleButtons[0].classList.add('first-visible');
+            visibleButtons[visibleButtons.length - 1].classList.add('last-visible');
+        }
     }
 
     elements.languageDropdown.addEventListener('click', async (e) => {
@@ -145,68 +241,12 @@ document.addEventListener('DOMContentLoaded', function () {
             const translationSet = window.translations[link.dataset.lang] || window.translations['en'];
             updatePreferredThemeDisplay(elements.preferredTheme, translationSet);
 
-            const initialFetchSuccess = await fetchIPInfo('', false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
-
-            if (initialFetchSuccess && wasGeoExpanded) {
+            const fetchSuccess = await fetchIPInfo('', false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
+            if (fetchSuccess && wasGeoExpanded) {
                 handleFetchGeo(elements, fetchIPInfo, showNotif);
             }
         }
     });
-
-    elements.languageButton.addEventListener('click', (e) => {
-        e.stopPropagation();
-        elements.languageSelector.classList.toggle('active');
-        updateBorders();
-    });
-
-    function updateBorders() {
-        const visibleButtons = elements.languageDropdown.querySelectorAll('button:not(.hidden)');
-
-        elements.languageDropdown.querySelectorAll('button').forEach(btn => {
-            btn.classList.remove('first-visible', 'last-visible');
-        });
-
-        if (visibleButtons.length > 0) {
-            visibleButtons[0].classList.add('first-visible');
-            visibleButtons[visibleButtons.length - 1].classList.add('last-visible');
-        }
-    }
-
-    window.addEventListener('click', (e) => {
-        if (!elements.languageSelector.contains(e.target)) {
-            elements.languageSelector.classList.remove('active');
-        }
-    });
-
-    const flagImages = document.querySelectorAll('.language-dropdown img, .language-button img');
-    const createFallbackContainer = () => {
-        const container = document.createElement('div');
-        container.className = 'fallback-icon-container';
-        container.style.display = 'none';
-
-        const icon = document.createElement('i');
-        icon.className = 'ph ph-translate fallback-icon';
-
-        container.appendChild(icon);
-        return container;
-    };
-
-    flagImages.forEach(image => {
-        const parent = image.parentNode;
-        const fallbackContainer = createFallbackContainer();
-        parent.insertBefore(fallbackContainer, image.nextSibling);
-
-        image.addEventListener('error', function () {
-            this.style.display = 'none';
-            fallbackContainer.style.display = 'flex';
-        });
-    });
-
-    const userThemePreference = localStorage.getItem('userThemePreference');
-    const prefersDarkMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    if (userThemePreference === 'dark') applyTheme(true, elements.body, elements.themeToggle);
-    else if (userThemePreference === 'light') applyTheme(false, elements.body, elements.themeToggle);
-    else applyTheme(prefersDarkMediaQuery.matches, elements.body, elements.themeToggle);
 
     elements.themeToggle.addEventListener('click', () => {
         const audio = new Audio('src/assets/switch.mp3');
@@ -214,24 +254,6 @@ document.addEventListener('DOMContentLoaded', function () {
         audio.play().catch(error => console.log('Audio play failed:', error));
         toggleTheme(elements.body, elements.themeToggle);
     });
-    elements.refreshNetworkButton?.addEventListener('click', () => {
-        if (!spamDetector(elements, showNotif)) fetchIPInfo(elements.ipDomainSearch.value, false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
-    });
-    elements.ipDomainSearch.addEventListener('keypress', (event) => {
-        if (event.key === 'Enter' && !spamDetector(elements, showNotif)) fetchIPInfo(elements.ipDomainSearch.value, false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
-    });
-    elements.searchButton?.addEventListener('click', () => {
-        if (!spamDetector(elements, showNotif)) fetchIPInfo(elements.ipDomainSearch.value, false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
-    });
-    elements.clearSearchButton?.addEventListener('click', () => {
-        elements.ipDomainSearch.value = '';
-        elements.ipDomainSearch.focus();
-        elements.ipDomainSearch.dataset.lastSearched = '';
-        updateNetworkButtons();
-    });
-
-    lazyLoadVideo();
-
     if (window.matchMedia) {
         prefersDarkMediaQuery.addEventListener('change', (event) => {
             if (localStorage.getItem('userThemePreference') === null) applyTheme(event.matches, elements.body, elements.themeToggle);
@@ -240,22 +262,73 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    elements.refreshNetworkButton?.addEventListener('click', async () => {
+        if (!spamDetector(elements, showNotif)) {
+            const query = elements.ipDomainSearch.value;
+            const success = await fetchIPInfo(query, false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
+            if (success) {
+                updateUrl(query || elements.ipAddress.textContent.trim(), true);
+            }
+        }
+    });
+    elements.ipDomainSearch.addEventListener('keypress', async (event) => {
+        if (event.key === 'Enter' && !spamDetector(elements, showNotif)) {
+            const query = elements.ipDomainSearch.value;
+            const success = await fetchIPInfo(query, false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
+            if (success) {
+                updateUrl(query);
+            }
+        }
+    });
+    elements.searchButton?.addEventListener('click', async () => {
+        if (!spamDetector(elements, showNotif)) {
+            const query = elements.ipDomainSearch.value;
+            const success = await fetchIPInfo(query, false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
+            if (success) {
+                updateUrl(query);
+            }
+        }
+    });
+    elements.clearSearchButton?.addEventListener('click', () => {
+        elements.ipDomainSearch.value = '';
+        elements.ipDomainSearch.focus();
+        elements.ipDomainSearch.dataset.lastSearched = '';
+        updateNetworkButtons();
+        updateUrl('');
+    });
+
     elements.fetchGeoButton?.addEventListener('click', () => handleFetchGeo(elements, fetchIPInfo, showNotif));
 
     elements.ipDomainSearch.addEventListener('input', updateNetworkButtons);
     updateNetworkButtons();
 
-    hidePreloader(elements);
-    loadBrowserAndSystemInfo(elements);
-    updateOnlineStatusIndicator(navigator.onLine, elements.onlineStatus);
-    fetchIPInfo('', false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
+    matchHeight();
+    adjustHeaderContent();
+    lazyLoadVideo();
 });
 
-const handleScroll = () => { document.body.classList.toggle('scrolled', window.scrollY > 25); };
-window.addEventListener('scroll', handleScroll);
+
+window.addEventListener('scroll', () => { document.body.classList.toggle('scrolled', window.scrollY > 25); });
 window.addEventListener('online', () => updateOnlineStatusIndicator(true, elements.onlineStatus));
 window.addEventListener('offline', () => updateOnlineStatusIndicator(false, elements.onlineStatus));
-window.addEventListener('resize', () => setTextContent(elements.viewportSize, `${window.innerWidth}×${window.innerHeight}`));
+window.addEventListener('resize', () => {
+    setTextContent(elements.viewportSize, `${window.innerWidth}×${window.innerHeight}`);
+    matchHeight();
+    adjustHeaderContent();
+});
+
+history.scrollRestoration = 'manual';
+
+elements.browserCardIcon.addEventListener('dblclick', async () => {
+    if (isMobile()) {
+        elements.header.classList.toggle("hidden");
+        elements.footer.classList.toggle("hidden");
+    }
+
+    window.isGeoFetchInstant = !window.isGeoFetchInstant;
+    handleFetchGeo(elements, fetchIPInfo, showNotif);
+    showNotif('Instant Geo fetch ' + (window.isGeoFetchInstant ? 'enabled.' : 'disabled.'), 'info', 5);
+});
 
 elements.networkCardIcon.addEventListener('dblclick', async () => {
     const ip = elements.ipAddress.textContent.trim();
@@ -299,51 +372,3 @@ elements.networkCardIcon.addEventListener('dblclick', async () => {
         showNotif('Information is unavailable.', 'info', 5);
     }
 });
-
-function isMobile() {
-    return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
-}
-
-elements.browserCardIcon.addEventListener('dblclick', async () => {
-    if (isMobile()) {
-        elements.header.classList.toggle("hidden");
-        elements.footer.classList.toggle("hidden");
-    }
-
-    window.isGeoFetchInstant = !window.isGeoFetchInstant;
-    handleFetchGeo(elements, fetchIPInfo, showNotif);
-    showNotif('Instant Geo fetch ' + (window.isGeoFetchInstant ? 'enabled.' : 'disabled.'), 'info', 5);
-});
-
-
-document.addEventListener('DOMContentLoaded', adjustHeaderContent);
-window.addEventListener('resize', adjustHeaderContent);
-history.scrollRestoration = 'manual';
-
-const card1 = document.getElementById('network-details');
-const card2 = document.getElementById('security-and-privacy');
-
-function matchHeight() {
-    const card2Height = card2.offsetHeight;
-    card1.style.minHeight = card2Height + 'px';
-}
-matchHeight();
-window.addEventListener('resize', matchHeight);
-
-function updateNetworkButtons() {
-    const inputField = elements.ipDomainSearch;
-    const refreshBtn = elements.refreshNetworkButton;
-    const searchBtn = elements.searchButton;
-
-    if (!inputField || !refreshBtn || !searchBtn) return;
-
-    const lastSearchedValue = inputField.dataset.lastSearched || '';
-    const currentValue = inputField.value.trim();
-
-    const isRedundantSearch = currentValue === lastSearchedValue;
-
-    searchBtn.disabled = currentValue === '' || isRedundantSearch;
-
-    refreshBtn.disabled = currentValue !== '';
-}
-window.updateNetworkButtons = updateNetworkButtons;
