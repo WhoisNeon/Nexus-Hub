@@ -99,7 +99,7 @@ To run Nexus Hub locally:
     *   Set the `isLocal` variable to `true`.
     *   Replace `YOUR_FINDIP_API_TOKEN` with your actual FindIP API token.
         ```javascript
-        // Around line 120:
+        // Around line 140:
         const isLocal = true; // Set to true for local development
         const FINDIP_TOKEN = 'YOUR_FINDIP_API_TOKEN'; // Replace with your FindIP API token
         ```
