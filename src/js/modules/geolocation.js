@@ -178,14 +178,30 @@ const raceTimeout = (ms, msg = 'Request timeout') =>
 const fetchWithTimeout = (url, opts, ms = TIMEOUT) =>
     Promise.race([fetch(url, opts), raceTimeout(ms)]);
 
+const fetchWithRetry = async (url, timeoutMs = TIMEOUT) => {
+    try {
+        const response = await fetchWithTimeout(url, {}, timeoutMs);
+        if (response.ok) {
+            return await response.json();
+        }
+        throw new Error(`HTTP ${response.status}`);
+    } catch (error) {
+        // Wait 2 seconds and retry
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        const retryResponse = await fetchWithTimeout(url, {}, timeoutMs);
+        if (retryResponse.ok) {
+            return await retryResponse.json();
+        }
+        throw new Error(`HTTP ${retryResponse.status} (after retry)`);
+    }
+};
+
 const fetchUserIPs = async (t) => {
     const result = { ipv4: t.unavailable, ipv6: t.unavailable };
-    const q4 = fetchWithTimeout('https://api.ipify.org?format=json')
-        .then((r) => (r.ok ? r.json() : Promise.reject()))
+    const q4 = fetchWithRetry('https://api.ipify.org?format=json')
         .then((d) => (result.ipv4 = d.ip || t.unavailable))
         .catch(() => (result.ipv4 = t.unavailable));
-    const q6 = fetchWithTimeout('https://api6.ipify.org?format=json')
-        .then((r) => (r.ok ? r.json() : Promise.reject()))
+    const q6 = fetchWithRetry('https://api6.ipify.org?format=json')
         .then((d) => (result.ipv6 = d.ip || t.unavailable))
         .catch(() => (result.ipv6 = t.unavailable));
     await Promise.allSettled([q4, q6]);

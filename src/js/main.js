@@ -297,7 +297,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         updateUrl('');
     });
 
-    elements.fetchGeoButton?.addEventListener('click', () => handleFetchGeo(elements, fetchIPInfo, showNotif));
+    elements.fetchGeoButton?.addEventListener('click', () => {
+        if (isMobile()) return;
+        handleFetchGeo(elements, fetchIPInfo, showNotif);
+    });
 
     elements.ipDomainSearch.addEventListener('input', updateNetworkButtons);
     updateNetworkButtons();
@@ -330,7 +333,17 @@ elements.browserCardIcon.addEventListener('dblclick', async () => {
     showNotif('Instant Geo fetch ' + (window.isGeoFetchInstant ? 'enabled.' : 'disabled.'), 'info', 5);
 });
 
-elements.networkCardIcon.addEventListener('dblclick', async () => {
+if (isMobile()) {
+    elements.networkCardIcon.addEventListener('click', async () => {
+        await handleNetworkClick();
+    });
+} else {
+    elements.networkCardIcon.addEventListener('dblclick', async () => {
+        await handleNetworkClick();
+    });
+}
+
+async function handleNetworkClick() {
     const ip = elements.ipAddress.textContent.trim();
     let countryIso = elements.country.dataset.iso;
 
@@ -371,4 +384,4 @@ elements.networkCardIcon.addEventListener('dblclick', async () => {
     } else {
         showNotif('Information is unavailable.', 'info', 5);
     }
-});
+}
