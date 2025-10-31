@@ -100,16 +100,6 @@
     padding-bottom: 0;
 }
 
-#ip-address-item,
-#ipv6-item {
-    border-bottom: none;
-}
-
-.geolocation-items .info-item:first-child,
-#ipv6-item {
-    border-top: 1px solid var(--info-item-border);
-}
-
 .info-label {
     font-weight: 600;
     opacity: 0.7;

@@ -3,8 +3,7 @@ export default {
     'en': {
         // --- Network & Geo ---
         resolvingDomain: 'Resolving Hostname...',
-        showGeoInfo: 'Show More Details',
-        fetchingGeo: 'Fetching...',
+
         geoFetchError: 'Error while receiving data.',
         loading: 'Loading...',
         ipSearchPlaceholder: 'Hostname or IP Address',
@@ -89,8 +88,6 @@ export default {
     'fa': {
         // --- Network & Geo ---
         resolvingDomain: 'در حال دریافت آی‌پی دامنه...',
-        showGeoInfo: 'نمایش جزئیات بیشتر',
-        fetchingGeo: 'در حال دریافت...',
         geoFetchError: 'خطا در دریافت اطلاعات',
         loading: 'در حال بارگذاری...',
         ipSearchPlaceholder: 'دامنه یا آدرس آی‌پی',
@@ -175,8 +172,6 @@ export default {
     'de': {
         // --- Network & Geo ---
         resolvingDomain: 'Hostname wird aufgelöst...',
-        showGeoInfo: 'Mehr Details anzeigen',
-        fetchingGeo: 'Wird abgerufen...',
         geoFetchError: 'Fehler beim Empfangen von Daten.',
         loading: 'Wird geladen...',
         ipSearchPlaceholder: 'Hostname oder IP-Adresse',
@@ -261,8 +256,6 @@ export default {
     'es': {
         // --- Network & Geo ---
         resolvingDomain: 'Resolviendo nombre de host...',
-        showGeoInfo: 'Mostrar más detalles',
-        fetchingGeo: 'Obteniendo...',
         geoFetchError: 'Error al recibir los datos.',
         loading: 'Cargando...',
         ipSearchPlaceholder: 'Nombre de host o dirección IP',
@@ -347,8 +340,6 @@ export default {
     'pt': {
         // --- Network & Geo ---
         resolvingDomain: 'Resolvendo nome do host...',
-        showGeoInfo: 'Mostrar mais detalhes',
-        fetchingGeo: 'Buscando...',
         geoFetchError: 'Erro ao receber os dados.',
         loading: 'Carregando...',
         ipSearchPlaceholder: 'Nome do host ou endereço IP',
@@ -433,8 +424,6 @@ export default {
     'fr': {
         // --- Network & Geo ---
         resolvingDomain: 'Résolution du nom d\'hôte...',
-        showGeoInfo: 'Afficher plus de détails',
-        fetchingGeo: 'Récupération...',
         geoFetchError: 'Erreur lors de la réception des données.',
         loading: 'Chargement...',
         ipSearchPlaceholder: 'Nom d\'hôte ou adresse IP',
@@ -519,8 +508,6 @@ export default {
     'ru': {
         // --- Network & Geo ---
         resolvingDomain: 'Разрешение имени хоста...',
-        showGeoInfo: 'Показать больше данных',
-        fetchingGeo: 'Получение...',
         geoFetchError: 'Ошибка при получении данных.',
         loading: 'Загрузка...',
         ipSearchPlaceholder: 'Имя узла или IP адрес',
@@ -605,8 +592,6 @@ export default {
     'ja': {
         // --- Network & Geo ---
         resolvingDomain: 'ホスト名を解決中...',
-        showGeoInfo: '詳細情報を表示',
-        fetchingGeo: '取得中...',
         geoFetchError: 'データの受信中にエラーが発生しました。',
         loading: '読み込み中...',
         ipSearchPlaceholder: 'ホスト名またはIPアドレス',
@@ -691,8 +676,6 @@ export default {
     'ko': {
         // --- Network & Geo ---
         resolvingDomain: '호스트명 확인 중...',
-        showGeoInfo: '자세히 보기',
-        fetchingGeo: '가져오는 중...',
         geoFetchError: '데이터를 받는 중 오류가 발생했습니다.',
         loading: '로드 중...',
         ipSearchPlaceholder: '호스트 이름 또는 IP 주소',
@@ -777,8 +760,6 @@ export default {
     'zh': {
         // --- Network & Geo ---
         resolvingDomain: '正在解析主机名...',
-        showGeoInfo: '显示更多详情',
-        fetchingGeo: '正在获取...',
         geoFetchError: '接收数据时出错。',
         loading: '加载中...',
         ipSearchPlaceholder: '主机名或 IP 地址',

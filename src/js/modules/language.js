@@ -60,9 +60,7 @@ export function translatePage(elements) {
         elements.ipDomainSearch.placeholder = translationSet.ipSearchPlaceholder;
     }
 
-    if (elements.fetchGeoButton) {
-        setTextContent(elements.fetchGeoButton, translationSet.showGeoInfo);
-    }
+
 
 
     if (elements.ipDomainSearch) {

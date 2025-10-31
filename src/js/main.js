@@ -5,13 +5,13 @@ import { applyTheme, toggleTheme, getPreferredThemeString, updatePreferredThemeD
 import { compressIPv6, isValidIP, resolveDomainToIP } from './utils/network.js';
 import { currentLang, setLanguage, translatePage, getTranslatedName } from './modules/language.js';
 import { preloaderHidden, hidePreloader } from './modules/preloader.js';
-import { lastGeoData, cleanCityName, displayGeoData, updateGeoButtonState, resetGeolocationState, resetNetworkInfoState, FINDIP_TOKEN, REFRESH_COOLDOWN, TIMEOUT, isLocal, spamDetector, fetchIPInfo, handleFetchGeo } from './modules/geolocation.js';
+import { lastGeoData, cleanCityName, displayGeoData, resetGeolocationState, resetNetworkInfoState, FINDIP_TOKEN, REFRESH_COOLDOWN, TIMEOUT, isLocal, spamDetector, fetchIPInfo } from './modules/geolocation.js';
 import { updateOnlineStatusIndicator, loadBrowserAndSystemInfo } from './modules/info-loader.js';
 import { showNotif, clearNotifications } from './standalone/notif.js';
 
 window.translations = translations;
 window.currentLang = currentLang;
-window.isGeoFetchInstant = false;
+window.isGeoFetchInstant = true;
 
 function getInitialSearchQuery() {
     const params = new URLSearchParams(window.location.search);
@@ -64,7 +64,6 @@ const elements = {
     ipv6Address: document.querySelector('#ipv6-address'),
     ipv4Item: document.querySelector('#ip-address-item'),
     ipv6Item: document.querySelector('#ipv6-item'),
-    fetchGeoButton: document.querySelector('#fetch-geo-button'),
     geoFetchContainer: document.querySelector('.geo-fetch-container'),
     geolocationItems: document.querySelector('.geolocation-items'),
     country: document.querySelector('#country'),
@@ -196,15 +195,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     const initialFetchSuccess = await fetchIPInfo(initialQuery, false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
 
-    if (initialFetchSuccess && !initialQuery) {
-        const detectedIP = elements.ipAddress.textContent.trim();
-        const t = window.translations[currentLang] || window.translations['en'];
-
-        if (detectedIP && detectedIP !== t.unavailable && detectedIP !== t.invalidIP) {
-            updateUrl(detectedIP, true);
-        }
-    }
-
     elements.languageButton.addEventListener('click', (e) => {
         e.stopPropagation();
         elements.languageSelector.classList.toggle('active');
@@ -242,9 +232,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             updatePreferredThemeDisplay(elements.preferredTheme, translationSet);
 
             const fetchSuccess = await fetchIPInfo('', false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
-            if (fetchSuccess && wasGeoExpanded) {
-                handleFetchGeo(elements, fetchIPInfo, showNotif);
-            }
         }
     });
 
@@ -297,10 +284,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         updateUrl('');
     });
 
-    elements.fetchGeoButton?.addEventListener('click', () => {
-        if (isMobile()) return;
-        handleFetchGeo(elements, fetchIPInfo, showNotif);
-    });
+
 
     elements.ipDomainSearch.addEventListener('input', updateNetworkButtons);
     updateNetworkButtons();
@@ -327,10 +311,6 @@ elements.browserCardIcon.addEventListener('dblclick', async () => {
         elements.header.classList.toggle("hidden");
         elements.footer.classList.toggle("hidden");
     }
-
-    window.isGeoFetchInstant = !window.isGeoFetchInstant;
-    handleFetchGeo(elements, fetchIPInfo, showNotif);
-    showNotif('Instant Geo fetch ' + (window.isGeoFetchInstant ? 'enabled.' : 'disabled.'), 'info', 5);
 });
 
 if (isMobile()) {

@@ -92,27 +92,9 @@ export function displayGeoData(geoData, elements) {
     setTextContent(elements.ipTimezone, ipTimezone);
 }
 
-export function updateGeoButtonState(elements) {
-    if (!elements.fetchGeoButton) return;
-    const t = window.translations[currentLang] || window.translations.en;
-    const ipText = elements.ipAddress.textContent;
-    const isInvalid = ipText === t.invalidIP || ipText === t.unavailable;
-    elements.fetchGeoButton.disabled = isInvalid;
-}
+
 
 export function resetGeolocationState(elements) {
-    if (elements.geoFetchContainer) {
-        elements.geoFetchContainer.classList.remove('hidden');
-    }
-    if (elements.geolocationItems) {
-        elements.geolocationItems.classList.add('hidden');
-    }
-    if (elements.fetchGeoButton) {
-        elements.fetchGeoButton.disabled = false;
-        const translationSet = window.translations[currentLang] || window.translations['en'];
-        setTextContent(elements.fetchGeoButton, translationSet.showGeoInfo);
-    }
-
     const geoElements = [
         elements.country, elements.region, elements.city,
         elements.isp, elements.organization, elements.asn, elements.ipTimezone
@@ -132,8 +114,6 @@ export function resetGeolocationState(elements) {
     if (ispLabel) {
         ispLabel.textContent = translationSet.isp;
     }
-
-    updateGeoButtonState(elements);
 }
 
 export function resetNetworkInfoState(elements) {
@@ -145,7 +125,7 @@ export function resetNetworkInfoState(elements) {
 export const FINDIP_TOKEN = 'eb2978e07c2e4a5e9bcb8c40e5f68292';
 export const REFRESH_COOLDOWN = 2500;
 export const TIMEOUT = 5000;
-export const isLocal = false;
+export const isLocal = true;
 
 let spamClicks = [];
 const SPAM_LIMIT = 10;
@@ -159,12 +139,10 @@ export function spamDetector(elements, showNotif) {
     if (spamClicks.length > SPAM_LIMIT) {
         if (elements.refreshNetworkButton) elements.refreshNetworkButton.disabled = true;
         if (elements.searchButton) elements.searchButton.disabled = true;
-        if (elements.fetchGeoButton) elements.fetchGeoButton.disabled = true;
         setTimeout(() => {
             spamClicks = [];
             if (elements.refreshNetworkButton) elements.refreshNetworkButton.disabled = false;
             if (elements.searchButton) elements.searchButton.disabled = false;
-            updateGeoButtonState(elements);
         }, SPAM_BLOCK_TIME);
         showNotif('You are clicking too fast!<br>15 seconds cooldown applied.', 'warning', 5);
         return true;
@@ -298,7 +276,6 @@ export async function fetchIPInfo(query = '', fetchGeo = false, elements, showNo
                 }
             }, REFRESH_COOLDOWN);
         }
-        updateGeoButtonState(elements);
     };
 
     try {
@@ -363,16 +340,9 @@ export async function fetchIPInfo(query = '', fetchGeo = false, elements, showNo
                 }
             }
 
-            if ((window.isGeoFetchInstant || isUserSearch) && !fetchGeo && effectiveIP && effectiveIP !== t.unavailable && effectiveIP !== t.invalidIP) {
-                setTextContent(elements.fetchGeoButton, '', 'fetchingGeo');
+            if (!fetchGeo && effectiveIP && effectiveIP !== t.unavailable && effectiveIP !== t.invalidIP) {
                 const geo = await fetchGeoData(effectiveIP, t);
                 showGeo(geo, elements, t);
-                if (geo) {
-                    elements.geoFetchContainer.classList.add('hidden');
-                    elements.geolocationItems.classList.remove('hidden');
-                } else {
-                    setTextContent(elements.fetchGeoButton, '', 'showGeoInfo');
-                }
             }
         }
 
@@ -389,28 +359,5 @@ export async function fetchIPInfo(query = '', fetchGeo = false, elements, showNo
         return false;
     } finally {
         finish(query.trim());
-    }
-}
-
-export async function handleFetchGeo(elements, fetchIPInfo, showNotif) {
-    const btn = elements.fetchGeoButton;
-    btn.disabled = true;
-    const translationSet = window.translations[currentLang] || window.translations['en'];
-    setTextContent(btn, translationSet.fetchingGeo);
-
-    const success = await fetchIPInfo(elements.ipDomainSearch.value, true, elements, showNotif);
-
-    if (success) {
-        if (elements.geoFetchContainer) {
-            elements.geoFetchContainer.classList.add('hidden');
-        }
-        if (elements.geolocationItems) {
-            elements.geolocationItems.classList.remove('hidden');
-        }
-    } else {
-        btn.disabled = false;
-        setTextContent(btn, translationSet.showGeoInfo);
-        const t = window.translations[currentLang] || window.translations.en;
-        showNotif(t.geoFetchError, 'error', 5);
     }
 }
