@@ -240,9 +240,9 @@ const addAsnLinkFeature = (elementId, asnValue) => {
         const linkButton = document.createElement('a');
         linkButton.className = 'copy-button asn-link-button';
         linkButton.innerHTML = '<i class="ph ph-arrow-square-out"></i>';
-        linkButton.href = `http://ipinfo.io/${asnValue}`;
+        linkButton.href = `https://bgp.tools/as/${asnValue.replace(/^AS/i, '')}`;
         linkButton.target = '_blank';
-        linkButton.setAttribute('aria-label', 'View ASN details on ipinfo.io');
+        linkButton.setAttribute('aria-label', 'View ASN details on bgp.tools');
 
         linkButton.onclick = (e) => {
             e.stopPropagation();
