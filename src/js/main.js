@@ -222,8 +222,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             e.preventDefault();
             clearNotifications();
 
-            const wasGeoExpanded = elements.geolocationItems.classList.contains('hidden') === false;
-
             setLanguage(link.dataset.lang, link.dataset.langName, link.dataset.flagCode, elements);
             elements.languageSelector.classList.remove('active');
             loadBrowserAndSystemInfo(elements);
