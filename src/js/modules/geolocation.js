@@ -125,7 +125,7 @@ export function resetNetworkInfoState(elements) {
 export const FINDIP_TOKEN = 'eb2978e07c2e4a5e9bcb8c40e5f68292';
 export const REFRESH_COOLDOWN = 2500;
 export const TIMEOUT = 5000;
-export const isLocal = true;
+export const isLocal = false;
 
 let spamClicks = [];
 const SPAM_LIMIT = 10;
@@ -252,7 +252,7 @@ const addAsnLinkFeature = (elementId, asnValue) => {
     }
 };
 
-export async function fetchIPInfo(query = '', fetchGeo = false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP) {
+export async function fetchBGP(query = '', fetchGeo = false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP) {
     if (spamDetector(elements, showNotif)) return false;
 
     if (!fetchGeo) {

@@ -5,9 +5,9 @@
   </mask>
   <g class="layer" display="inline">
     <g id="svg_2" mask="url(#a)">
-      <path d="m0,144.7l258.8,-105.1l253.2,105.1l0,222.6l-255,125.7l-257,-125.7l0,-222.6z" fill="#eee" id="svg_3"/>
-      <rect fill="#d80027" height="160" id="svg_8" width="512" x="0" y="352"/>
-      <rect fill="#6da544" height="160" id="svg_9" width="512" x="0" y="0"/>
+      <path d="m0,144.7l258.8,-105.1l253.2,105.1l0,222.6l-255,125.7l-257,-125.7l0,-222.6z" fill="#FBFFF1" id="svg_3"/>
+      <rect fill="#AB0104" height="160" id="svg_8" width="512" x="0" y="352"/>
+      <rect fill="#124A3F" height="160" id="svg_9" width="512" x="0" y="0"/>
     </g>
   </g>
   <g id="svg2" transform="matrix(1.397329, 0, 0, 1.397329, -5.190218, 22.409372)" style="transform-origin: 261.225px 233.565px;">

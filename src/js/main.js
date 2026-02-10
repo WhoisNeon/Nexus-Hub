@@ -5,7 +5,7 @@ import { applyTheme, toggleTheme, getPreferredThemeString, updatePreferredThemeD
 import { compressIPv6, isValidIP, resolveDomainToIP } from './utils/network.js';
 import { currentLang, setLanguage, translatePage, getTranslatedName } from './modules/language.js';
 import { preloaderHidden, hidePreloader } from './modules/preloader.js';
-import { lastGeoData, cleanCityName, displayGeoData, resetGeolocationState, resetNetworkInfoState, FINDIP_TOKEN, REFRESH_COOLDOWN, TIMEOUT, isLocal, spamDetector, fetchIPInfo } from './modules/geolocation.js';
+import { lastGeoData, cleanCityName, displayGeoData, resetGeolocationState, resetNetworkInfoState, FINDIP_TOKEN, REFRESH_COOLDOWN, TIMEOUT, isLocal, spamDetector, fetchBGP } from './modules/geolocation.js';
 import { updateOnlineStatusIndicator, loadBrowserAndSystemInfo } from './modules/info-loader.js';
 import { showNotif, clearNotifications } from './standalone/notif.js';
 
@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     loadBrowserAndSystemInfo(elements);
     updateOnlineStatusIndicator(navigator.onLine, elements.onlineStatus);
 
-    const initialFetchSuccess = await fetchIPInfo(initialQuery, false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
+    const initialFetchSuccess = await fetchBGP(initialQuery, false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
 
     elements.languageButton.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             const translationSet = window.translations[link.dataset.lang] || window.translations['en'];
             updatePreferredThemeDisplay(elements.preferredTheme, translationSet);
 
-            const fetchSuccess = await fetchIPInfo('', false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
+            const fetchSuccess = await fetchBGP('', false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
         }
     });
 
@@ -250,7 +250,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     elements.refreshNetworkButton?.addEventListener('click', async () => {
         if (!spamDetector(elements, showNotif)) {
             const query = elements.ipDomainSearch.value;
-            const success = await fetchIPInfo(query, false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
+            const success = await fetchBGP(query, false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
             if (success) {
                 updateUrl(query || elements.ipAddress.textContent.trim(), true);
             }
@@ -259,7 +259,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     elements.ipDomainSearch.addEventListener('keypress', async (event) => {
         if (event.key === 'Enter' && !spamDetector(elements, showNotif)) {
             const query = elements.ipDomainSearch.value;
-            const success = await fetchIPInfo(query, false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
+            const success = await fetchBGP(query, false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
             if (success) {
                 updateUrl(query);
             }
@@ -268,7 +268,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     elements.searchButton?.addEventListener('click', async () => {
         if (!spamDetector(elements, showNotif)) {
             const query = elements.ipDomainSearch.value;
-            const success = await fetchIPInfo(query, false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
+            const success = await fetchBGP(query, false, elements, showNotif, compressIPv6, isValidIP, resolveDomainToIP);
             if (success) {
                 updateUrl(query);
             }
@@ -332,7 +332,7 @@ async function handleNetworkClick() {
 
     if (!countryIso) {
         showNotif('Fetching geolocation data...', 'info', 3);
-        const geoFetchSuccess = await fetchIPInfo(
+        const geoFetchSuccess = await fetchBGP(
             elements.ipDomainSearch.value,
             true,
             elements,
