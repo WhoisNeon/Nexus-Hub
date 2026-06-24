@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="https://nexus.usrsrc.com"><img src="https://img.shields.io/badge/demo-online-brightgreen?style=for-the-badge" alt="Demo"></a>
+  <a href="https://whoisneon.github.io/Nexus-Hub/"><img src="https://img.shields.io/badge/demo-online-brightgreen?style=for-the-badge" alt="Demo"></a>
   <a href="https://github.com/WhoisNeon/Nexus-Hub/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" alt="License"></a>
   <a href="#"><img src="https://img.shields.io/badge/build-passing-darkgreen?style=for-the-badge" alt="Build Passing"></a>
   </p>
